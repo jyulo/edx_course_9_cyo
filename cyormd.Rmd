@@ -1,0 +1,27 @@
+---
+title: "R Data Science Course 9: Choose Your Own Project"
+author: "James Lo"
+date: '2022-06-09'
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    df_print: kable
+    toc : TRUE
+    toc_depth: 3
+urlcolor: blue
+mainfont: Calibri Light
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+# Methods
+
+# Results
+
+# Conclusion
+
+# Citation
