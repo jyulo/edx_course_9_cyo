@@ -134,6 +134,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Major Axis Lengths')
 ```
+For Major Axis Length, Bombay once again had an IQR that was distinctively larger than all others. Barbunya/Horoz and Dermason/Seker had heavily overlapping IQRs, while Cali had a smaller IQR overlap with Horoz/Barbunya.
 ```{r MinorAxisLength_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, MinorAxisLength), y = MinorAxisLength)) +
@@ -141,6 +142,8 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Minor Axis Lengths')
 ```
+The distribution of Minor Axis Lengths was similar to that of Major Axis lengths, but with a few differences: here the heaviest overlap was between Cali and Barbunya, followed by Horoz/Sira and Sira/Seker. Also, Dermason had a partial IQR overlap with Horoz rather than a near-complete one with Seker.
+
 ```{r Aspectratio_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, AspectRation), y = AspectRation)) +
@@ -148,6 +151,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Aspect Ratios')
 ```
+
+The Aspect Ratio distributions differed from the previous potential predictors in that Bombay no longer had the most distinct distribution of values. Instead, Horoz and Cali had IQRs distinctively higher than others, while Seker had a lower IQR. The remaining varieties (Dermason, Barbunya, Sira, Bombay) all had heavily overlapping IQRs.
+
 ```{r Eccentricity_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, Eccentricity), y = Eccentricity)) +
@@ -155,6 +161,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Eccentricity Values')
 ```
+
+The Eccentricity distributions were similar to that of Aspect Ratios, but with the two varieties having higher IQRs (Horoz, Cali) deviating from the others less while the one with lower IQR (Seker) deviating more.
+
 ```{r ConvexArea_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, ConvexArea), y = ConvexArea)) +
@@ -162,6 +171,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Convex Area Sizes')
 ```
+
+
+
 ```{r EquivDiameter_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, EquivDiameter), y = EquivDiameter)) +
