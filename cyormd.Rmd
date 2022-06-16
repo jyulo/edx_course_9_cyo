@@ -18,6 +18,10 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 # Introduction
 
+(words go here)
+
+## Data Loading
+
 ```{r packages, warning = F}
 if(!require(tidyverse)) install.packages("tidyverse",
                                          repos = "http://cran.us.r-project.org")
@@ -66,17 +70,24 @@ path <- paste0(getwd(), '/DryBeanDataset/Dry_Bean_Dataset.xlsx')
 beans <- read_xlsx(path, sheet = 1)
 ```
 
-```{r data_overview}
+## Exploratory Analysis
 
+### Overview
+
+```{r data_overview}
 # overview of the data's size and format
 str(beans)
 ```
 The dataset contains 13611 entries, each representing a scanned bean. There are 12 metrics describing the dimensions of each bean, plus four 'shape factors' which are derived from a previous machine learning article on rice grains (cite).
 
+### Checking for NA Values
+
 ```{r na_check}
 which(is.na(beans))
 ```
 As described on the UCI website, the dataset indeed contains no NA entries.
+
+### Distribution of Outcome Classes
 
 ```{r num_classes}
 # checking the distribution of classes (bean types) in the dataset
@@ -84,6 +95,18 @@ beans %>% group_by(Class) %>%
   summarize(count = n())
 ```
 The dataset has a rather uneven distribution of the 7 bean varieties. The most frequently found type is Dermason at 3546 entries, while the least common is Bombay at 522 entries. This uneven distribution must be accounted for during model fitting and accuracy assessments.
+
+### Distribution of Potential Predictor Variables Among Classes
+
+(find a combination of 2 variables that combine to separate the varieties into distinct groups, do color-coded scatterplots to confirm good choice)
+(should finish this part by the 19th; 17th for describing variables, 18th for plotting, 19th for troubleshooting)
+(20th, 21th will be for outline of methodologies)
+(22-24th will be for trying first model: log reg)
+(25th will be an off day for reasons)
+(26-27th will be more first model or beginnings of second model: the KNN)
+(don't forget to have a life in the meantime, and not spend your whole day like today the 16th)
+
+#### Area
 
 ```{r Area_boxplot}
 beans %>%
@@ -102,6 +125,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Perimeter Sizes')
 ```
+Similarly to the Area metric, Bombay had a distinctively higher range of Perimeter lengths than the other varieties. The IQR for Cali existed entirely within that of Barbunya, while the IQRs for Dermason and Seker overlapped. The IQRs of perimeter lengths for smaller bean varieties were less tight than seen in the Area graph, but also somewhat more distinct relative to the scale of the y-axis.
 
 ```{r MajorAxisLength_boxplot}
 beans %>%
