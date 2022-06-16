@@ -67,9 +67,74 @@ beans <- read_xlsx(path, sheet = 1)
 ```
 
 ```{r data_overview}
+
+# overview of the data's size and format
 str(beans)
 ```
+The dataset contains 13611 entries, each representing a scanned bean. There are 12 metrics describing the dimensions of each bean, plus four 'shape factors' which are derived from a previous machine learning article on rice grains (cite).
 
+```{r na_check}
+which(is.na(beans))
+```
+As described on the UCI website, the dataset indeed contains no NA entries.
+
+```{r num_classes}
+# checking the distribution of classes (bean types) in the dataset
+beans %>% group_by(Class) %>%
+  summarize(count = n())
+```
+The dataset has a rather uneven distribution of the 7 bean varieties. The most frequently found type is Dermason at 3546 (out of 13611) entries, while the least common is Bombay at 522 entries. This uneven distribution must be accounted for during model fitting and accuracy assessments.
+
+```{r Area_boxplot}
+boxplot(Area ~ Class, data = beans, main = 'Distribution of Area Sizes Among Bean Types')
+```
+
+```{r Perimeter_boxplot}
+boxplot(Perimeter ~ Class, data = beans, main = 'Distribution of Perimeter Sizes Among Bean Types')
+```
+
+```{r MajorAxisLength_boxplot}
+boxplot(MajorAxisLength ~ Class, data = beans,  main = 'Distribution of Major Axis Lengths Among Bean Types')
+```
+```{r MinorAxisLength_boxplot}
+boxplot(MinorAxisLength ~ Class, data = beans,  main = 'Distribution of Minor Axis Lengths Among Bean Types')
+```
+```{r Aspectratio_boxplot}
+boxplot(AspectRation ~ Class, data = beans,  main = 'Distribution of Aspect Ratios Among Bean Types')
+```
+```{r Eccentricity_boxplot}
+boxplot(Eccentricity ~ Class, data = beans,  main = 'Distribution of Eccentricity Values Among Bean Types')
+```
+```{r ConvexArea_boxplot}
+boxplot(ConvexArea ~ Class, data = beans,  main = 'Distribution of Convex Area Lengths Among Bean Types')
+```
+```{r EquivDiameter_boxplot}
+boxplot(EquivDiameter ~ Class, data = beans,  main = 'Distribution of Equivalent Diameters Among Bean Types')
+```
+```{r Extent_boxplot}
+boxplot(Extent ~ Class, data = beans,  main = 'Distribution of Extent Ratios Among Bean Types')
+```
+```{r Solidity_boxplot}
+boxplot(Solidity ~ Class, data = beans,  main = 'Distribution of Solidity Ratios Among Bean Types')
+```
+```{r roundness_boxplot}
+boxplot(roundness ~ Class, data = beans,  main = 'Distribution of Roundness Values Among Bean Types')
+```
+```{r Compactness_boxplot}
+boxplot(Compactness ~ Class, data = beans,  main = 'Distribution of Compactness Values Among Bean Types')
+```
+```{r ShapeFactor1_boxplot}
+boxplot(ShapeFactor1 ~ Class, data = beans,  main = 'Distribution of Shape Factor 1 Values Among Bean Types')
+```
+```{r ShapeFactor2_boxplot}
+boxplot(ShapeFactor2 ~ Class, data = beans,  main = 'Distribution of Shape Factor 2 Values Among Bean Types')
+```
+```{r ShapeFactor3_boxplot}
+boxplot(ShapeFactor3 ~ Class, data = beans,  main = 'Distribution of Shape Factor 3 Values Among Bean Types')
+```
+```{r ShapeFactor4_boxplot}
+boxplot(ShapeFactor4 ~ Class, data = beans,  main = 'Distribution of Shape Factor 4 Values Among Bean Types')
+```
 # Methods
 
 # Results
