@@ -92,7 +92,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Areas')
 ```
-The area IQR for Bombay was distinctively higher than those of all other varieties. 
+The area IQR for Bombay was distinctively higher than those of all other varieties. Heavily overlapping IQRs exist in Cali and Barbunya, as well as Sira and Seker. Dermason, Seker, and Sira all have much narrower IQRs compared to the other varieties, despite having very close distribution ranges.
 
 
 ```{r Perimeter_boxplot}
