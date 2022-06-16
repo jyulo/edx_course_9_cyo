@@ -67,6 +67,7 @@ beans <- read_xlsx(path, sheet = 1)
 ```
 
 ```{r data_overview}
+
 # overview of the data's size and format
 str(beans)
 ```
