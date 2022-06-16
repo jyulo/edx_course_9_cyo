@@ -92,6 +92,8 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Areas')
 ```
+The area IQR for Bombay was distinctively higher than those of all other varieties. 
+
 
 ```{r Perimeter_boxplot}
 beans %>%
