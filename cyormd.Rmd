@@ -86,54 +86,118 @@ beans %>% group_by(Class) %>%
 The dataset has a rather uneven distribution of the 7 bean varieties. The most frequently found type is Dermason at 3546 entries, while the least common is Bombay at 522 entries. This uneven distribution must be accounted for during model fitting and accuracy assessments.
 
 ```{r Area_boxplot}
-boxplot(Area ~ Class, data = beans, main = 'Distribution of Area Sizes Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, Area), y = Area)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Areas')
 ```
 
 ```{r Perimeter_boxplot}
-boxplot(Perimeter ~ Class, data = beans, main = 'Distribution of Perimeter Sizes Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, Perimeter), y = Perimeter)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Perimeter Sizes')
 ```
 
 ```{r MajorAxisLength_boxplot}
-boxplot(MajorAxisLength ~ Class, data = beans,  main = 'Distribution of Major Axis Lengths Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, MajorAxisLength), y = MajorAxisLength)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Major Axis Lengths')
 ```
 ```{r MinorAxisLength_boxplot}
-boxplot(MinorAxisLength ~ Class, data = beans,  main = 'Distribution of Minor Axis Lengths Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, MinorAxisLength), y = MinorAxisLength)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Minor Axis Lengths')
 ```
 ```{r Aspectratio_boxplot}
-boxplot(AspectRation ~ Class, data = beans,  main = 'Distribution of Aspect Ratios Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, AspectRation), y = AspectRation)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Aspect Ratios')
 ```
 ```{r Eccentricity_boxplot}
-boxplot(Eccentricity ~ Class, data = beans,  main = 'Distribution of Eccentricity Values Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, Eccentricity), y = Eccentricity)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Eccentricity Values')
 ```
 ```{r ConvexArea_boxplot}
-boxplot(ConvexArea ~ Class, data = beans,  main = 'Distribution of Convex Area Lengths Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, ConvexArea), y = ConvexArea)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Convex Area Sizes')
 ```
 ```{r EquivDiameter_boxplot}
-boxplot(EquivDiameter ~ Class, data = beans,  main = 'Distribution of Equivalent Diameters Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, EquivDiameter), y = EquivDiameter)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Equivalent Diameters')
 ```
 ```{r Extent_boxplot}
-boxplot(Extent ~ Class, data = beans,  main = 'Distribution of Extent Ratios Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, Extent), y = Extent)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Extent Ratios')
 ```
 ```{r Solidity_boxplot}
-boxplot(Solidity ~ Class, data = beans,  main = 'Distribution of Solidity Ratios Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, Solidity), y = Solidity)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Solidity Ratios')
 ```
 ```{r roundness_boxplot}
-boxplot(roundness ~ Class, data = beans,  main = 'Distribution of Roundness Values Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, roundness), y = roundness)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Roundness Values')
 ```
 ```{r Compactness_boxplot}
-boxplot(Compactness ~ Class, data = beans,  main = 'Distribution of Compactness Values Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, Compactness), y = Compactness)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Compactness Values')
 ```
 ```{r ShapeFactor1_boxplot}
-boxplot(ShapeFactor1 ~ Class, data = beans,  main = 'Distribution of Shape Factor 1 Values Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, ShapeFactor1), y = ShapeFactor1)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Shape Factor 1 Values')
 ```
 ```{r ShapeFactor2_boxplot}
-boxplot(ShapeFactor2 ~ Class, data = beans,  main = 'Distribution of Shape Factor 2 Values Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, ShapeFactor2), y = ShapeFactor2)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Shape Factor 2 Values')
 ```
 ```{r ShapeFactor3_boxplot}
-boxplot(ShapeFactor3 ~ Class, data = beans,  main = 'Distribution of Shape Factor 3 Values Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, ShapeFactor3), y = ShapeFactor3)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Shape Factor 3 Values')
 ```
 ```{r ShapeFactor4_boxplot}
-boxplot(ShapeFactor4 ~ Class, data = beans,  main = 'Distribution of Shape Factor 4 Values Among Bean Types')
+beans %>%
+  ggplot(aes(x = reorder(Class, ShapeFactor4), y = ShapeFactor4)) +
+  geom_boxplot() +
+  xlab('Class') +
+  ggtitle('Distribution of Shape Factor 4 Values')
 ```
 
 # Methods
