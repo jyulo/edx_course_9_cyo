@@ -82,7 +82,7 @@ As described on the UCI website, the dataset indeed contains no NA entries.
 beans %>% group_by(Class) %>%
   summarize(count = n())
 ```
-The dataset has a rather uneven distribution of the 7 bean varieties. The most frequently found type is Dermason at 3546 (out of 13611) entries, while the least common is Bombay at 522 entries. This uneven distribution must be accounted for during model fitting and accuracy assessments.
+The dataset has a rather uneven distribution of the 7 bean varieties. The most frequently found type is Dermason at 3546 entries, while the least common is Bombay at 522 entries. This uneven distribution must be accounted for during model fitting and accuracy assessments.
 
 ```{r Area_boxplot}
 boxplot(Area ~ Class, data = beans, main = 'Distribution of Area Sizes Among Bean Types')
@@ -134,6 +134,7 @@ boxplot(ShapeFactor3 ~ Class, data = beans,  main = 'Distribution of Shape Facto
 ```{r ShapeFactor4_boxplot}
 boxplot(ShapeFactor4 ~ Class, data = beans,  main = 'Distribution of Shape Factor 4 Values Among Bean Types')
 ```
+
 # Methods
 
 # Results
