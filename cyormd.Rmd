@@ -261,6 +261,7 @@ beans %>%
   geom_jitter(data = outliers) + 
   xlab('Class') +
   ggtitle('Distribution of Convex Areas')
+
 ```
 
 With the Covex Area Sizes, a distribution somewhat similar to the Area, Perimeter, and Axis Length distributions could be seen again. Bombay had a distinctively high IQR of Convex Areas, while Dermason had the lowest range. Cali and Barbunya had heavily overlapping IQRs, with less overlap existing among the other varieties. The narrowest IQRs belonged to Seker and Sira. Outliers were biased towards the top end for Bombay, Cali, Barbunya, Sira, and Seker.
