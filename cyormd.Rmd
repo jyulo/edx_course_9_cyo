@@ -172,7 +172,7 @@ beans %>%
   ggtitle('Distribution of Convex Area Sizes')
 ```
 
-
+With the Covex Area Sizes, a distribution somewhat similar to the Area, Perimeter, and Axis Length distributions could be seen again. Bombay had a distinctively high IQR of Convex Areas, while Dermason had the lowest range. Cali and Barbunya had heavily overlapping IQRs, with less overlap existing among the other varieties. The narrowest IQRs belonged to Seker and Sira.
 
 ```{r EquivDiameter_boxplot}
 beans %>%
@@ -181,6 +181,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Equivalent Diameters')
 ```
+
+The distributions of Equivalent Diameters were fairly similar to that of Convex Areas. Once again, Cali and Barbunya had heavy overlaps, with Bombay having a distinctly higher IQR.
+
 ```{r Extent_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, Extent), y = Extent)) +
@@ -188,6 +191,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Extent Ratios')
 ```
+
+The distribution of Extent Ratios exhibited heavy IQR overlaps between all bean varieties.
+
 ```{r Solidity_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, Solidity), y = Solidity)) +
@@ -195,6 +201,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Solidity Ratios')
 ```
+
+The distribution of Solidity values exhibited heavy IQR overlaps between nearly all bean varieties. Also, every bean variety had many outliers (values outside the boxplot whiskers) on the lower end of their respective distributions.
+
 ```{r roundness_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, roundness), y = roundness)) +
@@ -202,6 +211,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Roundness Values')
 ```
+
+The ranking of median Roundness values were similar to that of that of Solidity, but with the lowest three (Cali, Barnunya, Horoz) switched. Less overlap existed than in Solidity (except for heavy overlap Horoz and Barbunya), but many outliers outside the whiskers existed for all varieties.
+
 ```{r Compactness_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, Compactness), y = Compactness)) +
@@ -209,6 +221,9 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Compactness Values')
 ```
+
+The
+
 ```{r ShapeFactor1_boxplot}
 beans %>%
   ggplot(aes(x = reorder(Class, ShapeFactor1), y = ShapeFactor1)) +
