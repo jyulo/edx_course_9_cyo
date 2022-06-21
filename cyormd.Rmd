@@ -538,6 +538,23 @@ beans %>%
   ggtitle('Normalized Perimeter and Compactness Combinations on a Cartesian Plane')
 ```
 
+```{r Perim_SF2}
+beans %>%
+  # normalize variables: get the difference of each value from the minimum, then divide by the range
+  # this process will also be used to train and test the algorithms
+  mutate(perim_tf = (Perimeter - min(Perimeter)) / (max(Perimeter) - min(Perimeter)),
+         sf2_tf = (ShapeFactor2 - min(ShapeFactor2)) / (max(ShapeFactor2) - min(ShapeFactor2))) %>%
+  # plot with coloring by bean variety (Class)
+  ggplot(aes(x = perim_tf, y = sf2_tf, color = Class)) +
+  geom_point(alpha = 0.6) +
+  # using the viridis color scale for color-based accessibility
+  scale_color_viridis(discrete = T) +
+  xlab('Perimeter (Normalized)') +
+  ylab('Shape Factor 2 (Normalized)') +
+  ggtitle('Normalized Perimeter and Shape Factor 2 Combinations on a Cartesian Plane')
+```
+
+
 ```{r Perim_SF3}
 beans %>%
   # normalize variables: get the difference of each value from the minimum, then divide by the range
