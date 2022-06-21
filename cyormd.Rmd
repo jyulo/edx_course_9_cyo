@@ -41,6 +41,9 @@ if(!require(readr)) install.packages("readr",
                                        repos = "http://cran.us.r-project.org")
 if(!require(readxl)) install.packages("readxl", 
                                        repos = "http://cran.us.r-project.org")
+if(!require(viridis)) install.packages("viridis", 
+                                       repos = "http://cran.us.r-project.org")
+
 library(tidyverse)
 library(caret)
 library(data.table)
@@ -50,6 +53,7 @@ library(lubridate)
 library(ggplot2)
 library(readr)
 library(readxl)
+library(viridis)
 # will add more packages as needed
 
 ```
@@ -503,15 +507,67 @@ To identify promising combinations, the variables were roughly grouped into six 
 Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both had relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter had large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter had large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (which is derived form Equivalent Diameter) and Shape Factor 3 (which is derived from Area, like ED), while Perimeter is compatible with Aspect Ratio, Compactness, and Shape Factor 3. Included below are four scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
 
 ```{r Perim_AR}
+beans %>%
+  # normalize variables: get the difference of each value from the minimum, then divide by the range
+  # this process will also be used to train and test the algorithms
+  mutate(perim_tf = (Perimeter - min(Perimeter)) / (max(Perimeter) - min(Perimeter)),
+         ar_tf = (AspectRation - min(AspectRation)) / (max(AspectRation) - min(AspectRation))) %>%
+  # plot with coloring by bean variety (Class)
+  ggplot(aes(x = perim_tf, y = ar_tf, color = Class)) +
+  geom_point(alpha = 0.6) +
+  # using the viridis color scale for color-based accessibility
+  scale_color_viridis(discrete = T) +
+  xlab('Perimeter (Normalized)') +
+  ylab('Aspect Ratio (Normalized)') +
+  ggtitle('Normalized Perimeter and Aspect Ratio Combinations on a Cartesian Plane')
 ```
 
 ```{r Perim_Comp}
+beans %>%
+  # normalize variables: get the difference of each value from the minimum, then divide by the range
+  # this process will also be used to train and test the algorithms
+  mutate(perim_tf = (Perimeter - min(Perimeter)) / (max(Perimeter) - min(Perimeter)),
+         comp_tf = (Compactness - min(Compactness)) / (max(Compactness) - min(Compactness))) %>%
+  # plot with coloring by bean variety (Class)
+  ggplot(aes(x = perim_tf, y = comp_tf, color = Class)) +
+  geom_point(alpha = 0.6) +
+  # using the viridis color scale for color-based accessibility
+  scale_color_viridis(discrete = T) +
+  xlab('Perimeter (Normalized)') +
+  ylab('Compactness (Normalized)') +
+  ggtitle('Normalized Perimeter and Compactness Combinations on a Cartesian Plane')
 ```
 
 ```{r Perim_SF3}
+beans %>%
+  # normalize variables: get the difference of each value from the minimum, then divide by the range
+  # this process will also be used to train and test the algorithms
+  mutate(perim_tf = (Perimeter - min(Perimeter)) / (max(Perimeter) - min(Perimeter)),
+         sf3_tf = (ShapeFactor3 - min(ShapeFactor3)) / (max(ShapeFactor3) - min(ShapeFactor3))) %>%
+  # plot with coloring by bean variety (Class)
+  ggplot(aes(x = perim_tf, y = sf3_tf, color = Class)) +
+  geom_point(alpha = 0.6) +
+  # using the viridis color scale for color-based accessibility
+  scale_color_viridis(discrete = T) +
+  xlab('Perimeter (Normalized)') +
+  ylab('Shape Factor 3 (Normalized)') +
+  ggtitle('Normalized Perimeter and Shape Factor 3 Combinations on a Cartesian Plane')
 ```
 
 ```{r ED_AR}
+beans %>%
+  # normalize variables: get the difference of each value from the minimum, then divide by the range
+  # this process will also be used to train and test the algorithms
+  mutate(ed_tf = (EquivDiameter - min(EquivDiameter)) / (max(EquivDiameter) - min(EquivDiameter)),
+         ar_tf = (AspectRation - min(AspectRation)) / (max(AspectRation) - min(AspectRation))) %>%
+  # plot with coloring by bean variety (Class)
+  ggplot(aes(x = ed_tf, y = ar_tf, color = Class)) +
+  geom_point(alpha = 0.6) +
+  # using the viridis color scale for color-based accessibility
+  scale_color_viridis(discrete = T) +
+  xlab('Equivalent Diameter (Normalized)') +
+  ylab('Aspect Ratio (Normalized)') +
+  ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations on a Cartesian Plane')
 ```
 
 # Methods
