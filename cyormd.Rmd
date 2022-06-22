@@ -504,7 +504,7 @@ To identify promising combinations, the variables were roughly grouped into six 
 
 * Group 5 ("Seker high, Bombay low"): Shape Factor 2 was the only variable assigned under this group.
 
-Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both had relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter had large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter had large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (which is derived form Equivalent Diameter) and Shape Factor 3 (which is derived from Area, like ED), while Perimeter is compatible with Aspect Ratio, Compactness, and Shape Factor 3. Included below are four scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
+Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both had relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter had large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter had large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (Equivalent Diameter divided by Major Axis length), Shape Factor 2 (Minimum Axis length divided by Area), and Shape Factor 3 (which is derived from Area and Major Axis length). Meanwhile, Perimeter is compatible with Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3. Included below are five scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
 
 ```{r Perim_AR}
 beans %>%
@@ -587,7 +587,19 @@ beans %>%
   ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations on a Cartesian Plane')
 ```
 
+In all 5 scatterplots, adding another variable improved separation of the bean Class clusters that were poorly resolved in the group 1 variables (Barbunya/Cali, Sira/Seker, Seker/Dermason). However, large overlaps could still observed, especially in Dermason/Sira and Barbunya/Cali. Although the separation between Barbunya and Cali had improved from the near complete overlap in Perimeter and Equivalent Diameter boxplots, the scatterplots still revealed that a sizeable portion of the Barbunya cluster had been covered by the Cali cluster. Cluster visualization would be useful for further determination of which variable combination had the least amounts of overlap, but such a procedure would involve visualizing already tuned clustering algorithms and defeat the purpose of exploratory analysis. As a result, all five variable combinations were chosen for model building.
+
 # Methods
+
+-Test-train split (90-10 like last time... but why?)
+
+-validation data partition (choose numbers, explain)
+
+-K-fold X-val (10-fold? why?)
+
+-models for categorical classification (KNN, SVD, kmeans DT, RF?) -> might just end up with all 5 models being tuned for the first three
+
+-moment of truth (final run)
 
 # Results
 
