@@ -592,16 +592,20 @@ In all 5 scatterplots, adding another variable improved separation of the bean C
 # Methods
 
 ## Training and Validation
+Consider a 80-20 split for train/val
 
-
+Explain that 1) it's a common split and 2) one source listed it as a good ratio for your data size
 
 ## Cross-Validation
+Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
 
 ## Accuracy Metric
+You are running a classification model, so it's either accuracy, confusion matrix, or F1 score (I guess...)
 
 ## Model Choices
 
 -models for categorical classification (KNN, SVD, kmeans DT, RF?) -> might just end up with all 5 models being tuned for the first three
+-> you don't have all year; just do log. reg for model 1 and one of the above for model 2, then maybe one more if you realy want.
 
 -moment of truth (final run)
 
