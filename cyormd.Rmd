@@ -591,11 +591,15 @@ In all 5 scatterplots, adding another variable improved separation of the bean C
 
 # Methods
 
--Test-train split (90-10 like last time... but why?)
+## Training and Validation
 
--validation data partition (choose numbers, explain)
 
--K-fold X-val (10-fold? why?)
+
+## Cross-Validation
+
+## Accuracy Metric
+
+## Model Choices
 
 -models for categorical classification (KNN, SVD, kmeans DT, RF?) -> might just end up with all 5 models being tuned for the first three
 
