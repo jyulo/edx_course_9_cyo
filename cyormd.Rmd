@@ -601,6 +601,14 @@ Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as
 
 ## Accuracy Metric
 You are running a classification model, so it's either accuracy, confusion matrix, or F1 score (I guess...)
+-F1 chosen over accuracy due to imbalance in data (despite the original paper's claims of even class dist.)
+
+-Tune with multiclass F1, then examine tuned results more closely with multi-class confusion matrix
+-> will need to do a custom function under trainControl
+-> or set metric = F and set summary function = pr summary under traincontrol?
+-> address issue of precision and recall: in the context of classifying beans, unless if large differences in value exist between bean varieties, false positives vs false negatives should not make too much of a difference
+
+(read paper, how to calc F1, and setting custom performance metric funcs in caret later)
 
 ## Model Choices
 
@@ -617,6 +625,8 @@ You are running a classification model, so it's either accuracy, confusion matri
 -If tree-based, will need multiple (non-redundant) predictors (the 5 categories would still help with variable combination; will exclude things from group 0 when choosing)
 
 -log reg, KNN, DT, RF (4 models) then...
+
+-For DT, RF: use a mix of 3 predictors (Perim, EQ, one more out of AR/Comp/SF3/SF2, depending on which one performed best in KNN)
 
 # Results
 
