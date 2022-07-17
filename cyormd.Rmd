@@ -610,18 +610,35 @@ val_index <-
                       list = F)
 # split the data
 beans_train <- beans[-val_index,]
-beans_test <- beans[val_index,]
+beans_val <- beans[val_index,]
 ```
 Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not reply on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set.
 
-```{r test_set_overview}
-str(beans_test)
+```{r val_set_overview}
+nrow(beans_val)
 ```
-```{r train_set_overview}
-str(beans_train)
+```{r val_set_classes}
+beans_val %>%
+  group_by(Class) %>%
+  summarize(counts = n())
 ```
+
+```{r train_set_rows}
+nrow(beans_train)
+```
+```{r train_set_classes}
+beans_train %>%
+  group_by(Class) %>%
+  summarize(counts = n())
+```
+The number of rows ad up, and both sets have all 7 bean classes.
+
 ## Cross-Validation
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
+
+```{r xval_method}
+
+```
 
 ## Accuracy Metric
 You are running a classification model, so it's either accuracy, confusion matrix, or F1 score (I guess...)
