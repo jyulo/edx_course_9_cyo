@@ -596,6 +596,12 @@ Consider a 80-20 split for train/val
 
 Explain that 1) it's a common split and 2) one source listed it as a good ratio for your data size
 
+```{r data_split}
+set.seed(1, sample.kind = 'Rounding') # arbitrary seed for reproducibility
+
+
+```
+
 ## Cross-Validation
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
 
