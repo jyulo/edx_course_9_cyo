@@ -637,7 +637,11 @@ The number of rows ad up, and both sets have all 7 bean classes.
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
 
 ```{r xval_method}
-
+# 10-fold cross-validation
+tenfold_xval <-
+  trainControl(method = 'cv',
+               number = 10,
+               p = 0.9)
 ```
 
 ## Accuracy Metric
@@ -670,6 +674,9 @@ You are running a classification model, so it's either accuracy, confusion matri
 -For DT, RF: use a mix of 3 predictors (Perim, EQ, one more out of AR/Comp/SF3/SF2, depending on which one performed best in KNN)
 
 # Results
+
+```{r logreg_}
+```
 
 # Conclusion
 
