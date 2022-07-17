@@ -596,12 +596,30 @@ Consider a 80-20 split for train/val
 
 Explain that 1) it's a common split and 2) one source listed it as a good ratio for your data size
 
+Note that in most online sources outside EdX, the comparison dataset used to gauge final model performance is called the "training set", and the comparison dataset used for tuning is the "vaidation set"; in short, the two terms are switched between EdX and outside sources. For the sake of consistency, this project will use the EdX naming conventions.
+
 ```{r data_split}
-set.seed(1, sample.kind = 'Rounding') # arbitrary seed for reproducibility
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
 
-
+# creating the validation indeces
+val_index <-
+  createDataPartition(y = beans$Class,
+                      times = 1,
+                      p = 0.2,
+                      list = F)
+# split the data
+beans_train <- beans[-val_index,]
+beans_test <- beans[val_index,]
 ```
+Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not reply on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set.
 
+```{r test_set_overview}
+str(beans_test)
+```
+```{r train_set_overview}
+str(beans_train)
+```
 ## Cross-Validation
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
 
