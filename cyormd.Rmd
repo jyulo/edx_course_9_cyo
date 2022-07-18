@@ -621,7 +621,7 @@ beans_val <- beans[val_index,]
 ```
 Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not reply on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set.
 
-```{r val_set_overview}
+```{r val_set_rows}
 nrow(beans_val)
 ```
 ```{r val_set_classes}
@@ -640,6 +640,28 @@ beans_train %>%
 ```
 The number of rows ad up, and both sets have all 7 bean classes.
 
+To facilitate the use of algorithms under caret's train function, the predictors and outcomes will be split
+
+```{r x_y_split}
+x_train <- subset(beans_train, select = -c(Class))
+y_train <- subset(beans_train, select = c(Class))
+
+x_val <- subset(beans_val, select = -c(Class))
+y_val <- subset(beans_val, select = c(Class))
+```
+
+```{r x_train_check}
+head(x_train, 2)
+```
+```{r y_train_check}
+head(y_train, 2)
+```
+```{r x_val_check}
+head(x_val, 2)
+```
+```{r y_val_check}
+head(y_val, 2)
+```
 ## Cross-Validation
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
 
@@ -682,8 +704,24 @@ You are running a classification model, so it's either accuracy, confusion matri
 
 # Results
 
-```{r logreg_}
+## Model 1: Logistic Regression
+
+```{r model1_Perimeter_AspectRation}
+model_1a <-
+  train(y_train ~ Perimeter + AspectRation, 
+        method = 'glm',
+        data = x_train)
 ```
+
+```{r model1_Perimeter_Compactness}
+```
+```{r model1_Perimeter_ShapeFactor2}
+```
+```{r model1_Perimeter_ShapeFactor3}
+```
+```{r model1_EquivDiameter_AspectRation}
+```
+
 
 # Conclusion
 
