@@ -737,12 +737,12 @@ You are running a classification model, so it's either accuracy, confusion matri
 
 ```{r model1_Perimeter_AspectRation}
 # arbitrary seed for reproducibility
-set.seed(1, sample.kind = 'Rounding')
-
-model_1a <-
-  train(beans_y_train$Class ~ Perimeter + AspectRation, 
-        method = 'glm',
-        data = beans_x_train)
+# set.seed(1, sample.kind = 'Rounding')
+# 
+# model_1a <-
+#   train(beans_y_train$Class ~ Perimeter + AspectRation, 
+#         method = 'glm',
+#         data = beans_x_train)
 ```
 
 ```{r model1_Perimeter_Compactness}
@@ -760,12 +760,14 @@ model_1a <-
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
-
-
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 10)
+# using the y ~ x formula seems to keep throwing errors
 model_2a <-
-  train(beans_y_train$Class ~ Perimeter + AspectRation, 
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,5)], # col 2 for perimeter, 5 for aspect ratio
         method = 'knn',
-        data = beans_x_train)
+        tuneGrid = data.frame(k = nearest_neighbors))
 ```
 
 # Conclusion
