@@ -740,9 +740,9 @@ You are running a classification model, so it's either accuracy, confusion matri
 set.seed(1, sample.kind = 'Rounding')
 
 model_1a <-
-  train(beans_y_train ~ Perimeter + AspectRation, 
+  train(beans_y_train$Class ~ Perimeter + AspectRation, 
         method = 'glm',
-        data = beans_xx_train)
+        data = beans_x_train)
 ```
 
 ```{r model1_Perimeter_Compactness}
