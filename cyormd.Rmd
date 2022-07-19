@@ -699,7 +699,8 @@ Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as
 tenfold_xval <-
   trainControl(method = 'cv',
                number = 10,
-               p = 0.9)
+               p = 0.9,
+               summaryFunction = prSummary) # precision and recall summary (two statistics needed for F1 score)
 ```
 
 ## Accuracy Metric
@@ -767,7 +768,8 @@ model_2a <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,5)], # col 2 for perimeter, 5 for aspect ratio
         method = 'knn',
-        tuneGrid = data.frame(k = nearest_neighbors))
+        tuneGrid = data.frame(k = nearest_neighbors),
+        metric = 'fmeas') # F1 metric for performance (keeps saying "not in result set"...)
 ```
 
 # Conclusion
