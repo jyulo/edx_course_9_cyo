@@ -620,9 +620,28 @@ As previously done in the scatterplots, the predictor variables must be normaliz
 ```{r x_normalization}
 # for every column, apply the range formula onto each cell value:
 # new value = (value - column min) / (column max - column min)
-beans_x <- sweep(beans_x, 2, FUN = function(x) {(x - min(x)) / (max(x) - min(x))})
+max_predictors <- apply(beans_x, 2, max) # column maxima
+min_predictors <- apply(beans_x, 2, min) # column minima
+colranges <- max_predictors - min_predictors # column ranges
+beans_x <- sweep(beans_x, 2, STAT = min_predictors, FUN = '-') # subtract minima
+beans_x <- sweep(beans_x, 2, STAT = colranges, FUN = '/') # divide by col ranges
+# x is each matrix cell value, y is each entry in colranges
 head(beans_x, 3)
 ```
+```{r testing_matrix_norm_ED_AR}
+# reconstitute the data table
+as.data.frame(beans_x) %>%
+  mutate(Class = beans_y$Class) %>%
+ # plot with coloring by bean variety (Class)
+  ggplot(aes(x = EquivDiameter, y = AspectRation, color = Class)) +
+  geom_point(alpha = 0.6) +
+  # using the viridis color scale for color-based accessibility
+  scale_color_viridis(discrete = T) +
+  xlab('Equivalent Diameter (Normalized)') +
+  ylab('Aspect Ratio (Normalized)') +
+  ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations on a Cartesian Plane')
+```
+All right, normalization seems legit...
 
 ## Training and Validation
 Consider a 80-20 split for train/val
@@ -654,7 +673,7 @@ Unlike with the previous project (MovieLens Rating Prediction), the models used 
 dim(beans_x_val)
 ```
 ```{r val_set_classes}
-beans_x_val %>%
+as.data.frame(beans_y_val) %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
@@ -663,7 +682,7 @@ beans_x_val %>%
 dim(beans_x_train)
 ```
 ```{r train_set_classes}
-beans_x_train %>%
+as.data.frame(beans_y_train) %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
@@ -717,6 +736,9 @@ You are running a classification model, so it's either accuracy, confusion matri
 ## Model 1: Logistic Regression
 
 ```{r model1_Perimeter_AspectRation}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
 model_1a <-
   train(beans_y_train ~ Perimeter + AspectRation, 
         method = 'glm',
