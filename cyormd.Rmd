@@ -507,7 +507,7 @@ To identify promising combinations, the variables were roughly grouped into six 
 Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both had relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter had large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter had large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (Equivalent Diameter divided by Major Axis length), Shape Factor 2 (Minimum Axis length divided by Area), and Shape Factor 3 (which is derived from Area and Major Axis length). Meanwhile, Perimeter is compatible with Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3. Included below are five scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
 
 ```{r trim_group0}
-# trim off group 0 "don't bother" variables, which will not be further considered
+# trim off group 0 ("don't bother") variables, which will not be considered further
 beans <-
   subset(beans, select = -c(Extent, Solidity, ShapeFactor4))
 head(beans, 3)
@@ -598,6 +598,32 @@ In all 5 scatterplots, adding another variable improved separation of the bean C
 
 # Methods
 
+## Data Formatting
+
+Split into predictors (x; everything but Class) and outcomes (y; Class).
+
+```{r x_y_split}
+beans_x <- subset(beans, select = -c(Class))
+beans_y <- subset(beans, select = c(Class))
+head(beans_y, 3)
+```
+
+Turn predictors (known to be all numerical) into matrix for easier manipulation.
+
+```{r x_as_matrix}
+beans_x <- as.matrix(beans_x)
+head(beans_x, 3)
+```
+
+As previously done in the scatterplots, the predictor variables must be normalized for algorithms such as KNN to work effectively (incluide explanation here). For an intuitive scale, all numeric perdictors were nromalized on a scale of 0 (minimum value) to 1 (maximum value) (insert formula here...)
+
+```{r x_normalization}
+# for every column, apply the range formula onto each cell value:
+# new value = (value - column min) / (column max - column min)
+beans_x <- sweep(beans_x, 2, FUN = function(x) {(x - min(x)) / (max(x) - min(x))})
+head(beans_x, 3)
+```
+
 ## Training and Validation
 Consider a 80-20 split for train/val
 
@@ -616,52 +642,36 @@ val_index <-
                       p = 0.2,
                       list = F)
 # split the data
-beans_train <- beans[-val_index,]
-beans_val <- beans[val_index,]
+# as the x-y split had been made earlier, the train-val split must be made for both x and y
+beans_x_train <- beans_x[-val_index,]
+beans_y_train <- beans_y[-val_index,]
+beans_x_val <- beans_x[val_index,]
+beans_y_val <- beans_y[val_index,]
 ```
-Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not reply on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set.
+Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not reply on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set. However, we must still make sure that both sets have all 7 bean classes.
 
-```{r val_set_rows}
-nrow(beans_val)
+```{r val_set_dim}
+dim(beans_x_val)
 ```
 ```{r val_set_classes}
-beans_val %>%
+beans_x_val %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
 
 ```{r train_set_rows}
-nrow(beans_train)
+dim(beans_x_train)
 ```
 ```{r train_set_classes}
-beans_train %>%
+beans_x_train %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
-The number of rows ad up, and both sets have all 7 bean classes.
+The dimensions (specifically the number of rows) add up, and both sets have all 7 bean classes.
 
 To facilitate the use of algorithms under caret's train function, the predictors and outcomes will be split
 
-```{r x_y_split}
-x_train <- subset(beans_train, select = -c(Class))
-y_train <- subset(beans_train, select = c(Class))
 
-x_val <- subset(beans_val, select = -c(Class))
-y_val <- subset(beans_val, select = c(Class))
-```
-
-```{r x_train_check}
-head(x_train, 2)
-```
-```{r y_train_check}
-head(y_train, 2)
-```
-```{r x_val_check}
-head(x_val, 2)
-```
-```{r y_val_check}
-head(y_val, 2)
-```
 ## Cross-Validation
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
 
@@ -708,9 +718,9 @@ You are running a classification model, so it's either accuracy, confusion matri
 
 ```{r model1_Perimeter_AspectRation}
 model_1a <-
-  train(y_train ~ Perimeter + AspectRation, 
+  train(beans_y_train ~ Perimeter + AspectRation, 
         method = 'glm',
-        data = x_train)
+        data = beans_xx_train)
 ```
 
 ```{r model1_Perimeter_Compactness}
