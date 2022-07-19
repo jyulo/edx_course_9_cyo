@@ -754,6 +754,19 @@ model_1a <-
 ```{r model1_EquivDiameter_AspectRation}
 ```
 
+## Model 2: K-Nearest Neighbors (KNN)
+
+```{r model2_Perimeter_AspectRation}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+
+
+model_2a <-
+  train(beans_y_train$Class ~ Perimeter + AspectRation, 
+        method = 'knn',
+        data = beans_x_train)
+```
 
 # Conclusion
 
