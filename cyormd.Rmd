@@ -43,7 +43,8 @@ if(!require(readxl)) install.packages("readxl",
                                        repos = "http://cran.us.r-project.org")
 if(!require(viridis)) install.packages("viridis", 
                                        repos = "http://cran.us.r-project.org")
-
+if(!require(MLmetrics)) install.packages("MLmetrics", 
+                                       repos = "http://cran.us.r-project.org")
 library(tidyverse)
 library(caret)
 library(data.table)
@@ -54,6 +55,7 @@ library(ggplot2)
 library(readr)
 library(readxl)
 library(viridis)
+library(MLmetrics)
 # will add more packages as needed
 
 ```
@@ -699,8 +701,7 @@ Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as
 tenfold_xval <-
   trainControl(method = 'cv',
                number = 10,
-               p = 0.9,
-               summaryFunction = prSummary) # precision and recall summary (two statistics needed for F1 score)
+               p = 0.9) # having prSummary makes it throw an error about how it's not compatible with 7 Classes
 ```
 
 ## Accuracy Metric
@@ -769,7 +770,8 @@ model_2a <-
         x =  beans_x_train[,c(2,5)], # col 2 for perimeter, 5 for aspect ratio
         method = 'knn',
         tuneGrid = data.frame(k = nearest_neighbors),
-        metric = 'F_meas') # F1 metric for performance (keeps saying "not in result set"...)
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'F1') # F1 metric for performance (keeps saying "not in result set"...)
 ```
 
 # Conclusion
