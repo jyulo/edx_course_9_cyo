@@ -769,7 +769,7 @@ model_2a <-
         x =  beans_x_train[,c(2,5)], # col 2 for perimeter, 5 for aspect ratio
         method = 'knn',
         tuneGrid = data.frame(k = nearest_neighbors),
-        metric = 'fmeas') # F1 metric for performance (keeps saying "not in result set"...)
+        metric = 'F_meas') # F1 metric for performance (keeps saying "not in result set"...)
 ```
 
 # Conclusion
