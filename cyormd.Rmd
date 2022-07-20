@@ -701,7 +701,10 @@ Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as
 tenfold_xval <-
   trainControl(method = 'cv',
                number = 10,
-               p = 0.9) # having prSummary makes it throw an error about how it's not compatible with 7 Classes
+               p = 0.9,
+               summaryFunction = ) # having prSummary makes it throw an error about how it's not compatible with 7 Classes
+
+# Will need custom F1 func...
 ```
 
 ## Accuracy Metric
@@ -772,6 +775,10 @@ model_2a <-
         tuneGrid = data.frame(k = nearest_neighbors),
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'F1') # F1 metric for performance (keeps saying "not in result set"...)
+
+# The metric = F1 isn't problematic; the summaryFunction arg under trainControl (which specifies the "performance metrics across resamples", according to the doc at datacamp) is
+
+model_2a$finalModel
 ```
 
 # Conclusion
