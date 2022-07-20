@@ -706,17 +706,32 @@ You are running a classification model, so it's either accuracy, confusion matri
 
 ```{r custom_multiclass_f1}
 
-macro_f1 <- function(mat) {
-  precision <- diag(mat) / rowSums(mat)
-  recall <- diag(mat) / colSums(mat)
+macro_f1 <- function(data, lev = NULL, model = NULL) { # same args as a function called defaultSummary()
+  mF1 <- mean(f1(data$pred, data$obs)) 
+}
+
+f1 <- function(predicted, actual) {
+  mat <- as.matrix(table(predicted, actual)) # should make a table where rows are pred, cols are actual
+  precision <- diag(mat) / rowSums(mat) # true pos / all predicted pos
+  recall <- diag(mat) / colSums(mat) # true pos / all actual pos
   f1 <- ifelse(precision + recall == 0,
                       0,
                       2 * (precision * recall) / (precision + recall))
-  return(mean(f1))
+  return(f1)
 }
 
 ```
 
+```{r test_matrix}
+test_table <- data.table(actual = c(1,2,3,4),
+           predicted = c(5,6,7,8))
+
+test_table
+```
+
+```{r function_test}
+table(test_table$predicted, test_table$actual)
+```
 
 ## Cross-Validation
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
@@ -786,10 +801,10 @@ model_2a <-
         method = 'knn',
         tuneGrid = data.frame(k = nearest_neighbors),
         trControl = tenfold_xval, # use your 10-fold X-val 
-        metric = 'F1') # F1 metric for performance (keeps saying "not in result set"...)
+        metric = 'mF1') # my custom metric
 
-# The metric = F1 isn't problematic; the summaryFunction arg under trainControl (which specifies the "performance metrics across resamples", according to the doc at datacamp) is
-
+# Error in ctrl$summaryFunction(testOutput, lev, method) : 
+#  unused arguments (lev, method)
 model_2a$finalModel
 ```
 
