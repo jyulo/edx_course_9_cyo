@@ -704,6 +704,19 @@ You are running a classification model, so it's either accuracy, confusion matri
 
 (read paper, how to calc F1, and setting custom performance metric funcs in caret later)
 
+```{r custom_multiclass_f1}
+
+macro_f1 <- function(mat) {
+  precision <- diag(mat) / rowSums(mat)
+  recall <- diag(mat) / colSums(mat)
+  f1 <- ifelse(precision + recall == 0,
+                      0,
+                      2 * (precision * recall) / (precision + recall))
+  return(mean(f1))
+}
+
+```
+
 
 ## Cross-Validation
 Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
@@ -714,9 +727,7 @@ tenfold_xval <-
   trainControl(method = 'cv',
                number = 10,
                p = 0.9,
-               summaryFunction = ) # having prSummary makes it throw an error about how it's not compatible with 7 Classes
-
-# Will need custom F1 func...
+               summaryFunction = macro_f1) # custom macro f1 func in progress
 ```
 
 ## Model Choices
