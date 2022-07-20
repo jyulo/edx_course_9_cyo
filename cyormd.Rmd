@@ -705,13 +705,15 @@ You are running a classification model, so it's either accuracy, confusion matri
 (read paper, how to calc F1, and setting custom performance metric funcs in caret later)
 
 ```{r custom_multiclass_f1}
-
-macro_f1 <- function(data, lev = NULL, model = NULL) { # same args as a function called defaultSummary()
-  mF1 <- mean(f1(data$pred, data$obs)) 
+# Been told that this should take same args as a function called defaultSummary()
+# data = a dataframe with columns 'obs' and 'pred' (actual and predicted)
+macro_f1 <- function(data, lev = NULL, model = NULL) {
+  mF1 <- mean(f1(data$pred, data$obs)) # arithmetic mean for macro F1
+  return(mF1)
 }
 
 f1 <- function(predicted, actual) {
-  mat <- as.matrix(table(predicted, actual)) # should make a table where rows are pred, cols are actual
+  mat <- as.matrix(table(predicted, actual)) # should make a table where rows are pred, cols are actual/obs
   precision <- diag(mat) / rowSums(mat) # true pos / all predicted pos
   recall <- diag(mat) / colSums(mat) # true pos / all actual pos
   f1 <- ifelse(precision + recall == 0,
@@ -723,14 +725,17 @@ f1 <- function(predicted, actual) {
 ```
 
 ```{r test_matrix}
-test_table <- data.table(actual = c(1,2,3,4),
-           predicted = c(5,6,7,8))
+test_table <- data.table(actual = c(1, 1, 2, 2, 2, 3, 4),
+           predicted = c(1, 1, 2, 2, 1, 3, 4))
 
 test_table
 ```
 
-```{r function_test}
+```{r table_test}
 table(test_table$predicted, test_table$actual)
+```
+```{r f1_test}
+f1(test_table$predicted, test_table$actual) # okay so the f1 function returns something... and the right answers to boot!
 ```
 
 ## Cross-Validation
@@ -803,8 +808,8 @@ model_2a <-
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
-# Error in ctrl$summaryFunction(testOutput, lev, method) : 
-#  unused arguments (lev, method)
+# Warning in train.default(y = beans_y_train$Class, x = beans_x_train[, c(2,  :
+#   The metric "mF1" was not in the result set.  will be used instead.
 model_2a$finalModel
 ```
 
