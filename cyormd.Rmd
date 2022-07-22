@@ -709,6 +709,7 @@ You are running a classification model, so it's either accuracy, confusion matri
 # data = a dataframe with columns 'obs' and 'pred' (actual and predicted)
 macro_f1 <- function(data, lev = NULL, model = NULL) {
   mF1 <- mean(f1(data$pred, data$obs)) # arithmetic mean for macro F1
+  names(mF1) <- 'mF1'# names the function output
   return(mF1)
 }
 
@@ -725,17 +726,20 @@ f1 <- function(predicted, actual) {
 ```
 
 ```{r test_matrix}
-test_table <- data.table(actual = c(1, 1, 2, 2, 2, 3, 4),
-           predicted = c(1, 1, 2, 2, 1, 3, 4))
+test_table <- data.table(obs = c(1, 1, 2, 2, 2, 3, 4),
+           pred = c(1, 1, 2, 2, 1, 3, 4))
 
 test_table
 ```
 
 ```{r table_test}
-table(test_table$predicted, test_table$actual)
+table(test_table$pred, test_table$obs)
 ```
 ```{r f1_test}
-f1(test_table$predicted, test_table$actual) # okay so the f1 function returns something... and the right answers to boot!
+f1(test_table$pred, test_table$obs) # okay so the f1 function returns something... and the right answers to boot!
+```
+```{r macro_f1_test}
+macro_f1(test_table) # the macro_f1 func as a whole works
 ```
 
 ## Cross-Validation
@@ -810,6 +814,8 @@ model_2a <-
 
 # Warning in train.default(y = beans_y_train$Class, x = beans_x_train[, c(2,  :
 #   The metric "mF1" was not in the result set.  will be used instead.
+# -> using the names() func to name the output object of macro_f1 did the trick
+
 model_2a$finalModel
 ```
 
