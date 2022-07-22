@@ -705,8 +705,8 @@ You are running a classification model, so it's either accuracy, confusion matri
 (read paper, how to calc F1, and setting custom performance metric funcs in caret later)
 
 ```{r custom_multiclass_f1}
-# Been told that this should take same args as a function called defaultSummary()
-# data = a dataframe with columns 'obs' and 'pred' (actual and predicted)
+# this func should take same args as a function called defaultSummary()
+# data = a dataframe with columns 'obs' and 'pred' (observed/actual and predicted)
 macro_f1 <- function(data, lev = NULL, model = NULL) {
   mF1 <- mean(f1(data$pred, data$obs)) # arithmetic mean for macro F1
   names(mF1) <- 'mF1'# names the function output
@@ -733,7 +733,7 @@ test_table
 ```
 
 ```{r table_test}
-table(test_table$pred, test_table$obs)
+as.matrix(table(test_table$pred, test_table$obs))
 ```
 ```{r f1_test}
 f1(test_table$pred, test_table$obs) # okay so the f1 function returns something... and the right answers to boot!
@@ -802,7 +802,8 @@ tenfold_xval <-
 set.seed(1, sample.kind = 'Rounding')
 
  # trying various k values (# nearest neighbors)
-nearest_neighbors <- seq(1, 100, 10)
+nearest_neighbors <- seq(1, 100, 1)
+
 # using the y ~ x formula seems to keep throwing errors
 model_2a <-
   train(y = beans_y_train$Class,
@@ -815,10 +816,11 @@ model_2a <-
 # Warning in train.default(y = beans_y_train$Class, x = beans_x_train[, c(2,  :
 #   The metric "mF1" was not in the result set.  will be used instead.
 # -> using the names() func to name the output object of macro_f1 did the trick
-
-model_2a$finalModel
+ggplot(model_2a, highlight = T)
 ```
-
+```{r model_2a_besttune}
+model_2a$bestTune # k = 90 is best for this one
+```
 # Conclusion
 
 # Citation
