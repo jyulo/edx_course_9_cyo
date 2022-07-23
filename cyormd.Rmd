@@ -865,7 +865,7 @@ ggplot(model_2b, highlight = T)
 ```
 
 ```{r model_2b_besttune}
-model_2b$bestTune # k = 90 is best for this one
+model_2b$bestTune # 
 ```
 
 ```{r model2_Perimeter_ShapeFactor2}
@@ -888,7 +888,53 @@ ggplot(model_2c, highlight = T)
 ```
 
 ```{r model_2c_besttune}
-model_2c$bestTune # k = 90 is best for this one
+model_2c$bestTune # 
+```
+
+```{r model2_Perimeter_ShapeFactor3}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 1)
+
+# using the y ~ x formula seems to keep throwing errors
+model_2d <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,13)], # col 2 for perimeter, 13 for SF3
+        method = 'knn',
+        tuneGrid = data.frame(k = nearest_neighbors),
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'mF1') # my custom metric
+
+ggplot(model_2d, highlight = T)
+```
+
+```{r model_2d_besttune}
+model_2d$bestTune # 
+```
+
+```{r model2_EquivDiameter_AspectRation}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 1)
+
+# using the y ~ x formula seems to keep throwing errors
+model_2e <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(8,5)], # col 8 for equiv. diam., 5 for aspect ratio
+        method = 'knn',
+        tuneGrid = data.frame(k = nearest_neighbors),
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'mF1') # my custom metric
+
+ggplot(model_2e, highlight = T)
+```
+
+```{r model_2b_besttune}
+model_2e$bestTune # k = 90 is best for this one
 ```
 
 # Conclusion
