@@ -778,21 +778,94 @@ tenfold_xval <-
 
 ```{r model1_Perimeter_AspectRation}
 # arbitrary seed for reproducibility
-# set.seed(1, sample.kind = 'Rounding')
-# 
-# model_1a <-
-#   train(beans_y_train$Class ~ Perimeter + AspectRation, 
-#         method = 'glm',
-#         data = beans_x_train)
+set.seed(1, sample.kind = 'Rounding')
+
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 1)
+
+# using the y ~ x formula seems to keep throwing errors
+model_1a <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,5)], # col 2 for perimeter, 5 for aspect ratio
+        method = 'multinom', # multinomial log reg
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
+        metric = 'mF1') # my custom metric
+
+model_1a$results
 ```
 
 ```{r model1_Perimeter_Compactness}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 1)
+
+# using the y ~ x formula seems to keep throwing errors
+model_1b <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,10)], # col 2 for perimeter, 10 for compactness
+        method = 'multinom', # multinomial log reg
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
+        metric = 'mF1') # my custom metric
+
+model_1b$results
 ```
 ```{r model1_Perimeter_ShapeFactor2}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 1)
+
+# using the y ~ x formula seems to keep throwing errors
+model_1c <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,12)], # col 2 for perimeter, 12 for SF2
+        method = 'multinom', # multinomial log reg
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
+        metric = 'mF1') # my custom metric
+
+model_1c$results
 ```
 ```{r model1_Perimeter_ShapeFactor3}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 1)
+
+# using the y ~ x formula seems to keep throwing errors
+model_1d <-
+  train(y = beans_y_train$Class,
+                x =  beans_x_train[,c(2,13)], # col 2 for perimeter, 13 for SF3
+        method = 'multinom', # multinomial log reg
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
+        metric = 'mF1') # my custom metric
+
+model_1d$results
 ```
 ```{r model1_EquivDiameter_AspectRation}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+ # trying various k values (# nearest neighbors)
+nearest_neighbors <- seq(1, 100, 1)
+
+# using the y ~ x formula seems to keep throwing errors
+model_1e <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(8,5)], # col 8 for equiv. diam., 5 for aspect ratio
+        method = 'multinom', # multinomial log reg
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
+        metric = 'mF1') # my custom metric
+
+model_1e$results
 ```
 
 ## Model 2: K-Nearest Neighbors (KNN)
@@ -933,7 +1006,7 @@ model_2e <-
 ggplot(model_2e, highlight = T)
 ```
 
-```{r model_2b_besttune}
+```{r model_2e_besttune}
 model_2e$bestTune # k = 90 is best for this one
 ```
 
