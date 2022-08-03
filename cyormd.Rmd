@@ -1146,7 +1146,7 @@ model_4$bestTune
 ## Validation Run
 ```{r validation_run}
 validation_preds <- predict(model_4$finalModel, beans_x_val)
-confusionMatrix(beans_y_val, validation_preds)
+levels(validation_preds$predictions) # lost y val levels; not pred's fault
 ```
 
 -pick ultimate model, use it to predict validation set
