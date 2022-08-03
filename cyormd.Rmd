@@ -45,6 +45,8 @@ if(!require(viridis)) install.packages("viridis",
                                        repos = "http://cran.us.r-project.org")
 if(!require(MLmetrics)) install.packages("MLmetrics", 
                                        repos = "http://cran.us.r-project.org")
+if(!require(rpart.plot)) install.packages("rpart.plot", 
+                                       repos = "http://cran.us.r-project.org")
 library(tidyverse)
 library(caret)
 library(data.table)
@@ -56,6 +58,7 @@ library(readr)
 library(readxl)
 library(viridis)
 library(MLmetrics)
+library(rpart.plot)
 # will add more packages as needed
 
 ```
@@ -1021,11 +1024,90 @@ KNN performed better than logistic regression in all 5 factor combinations, but 
 
 -Start with Peri, SF2 (from models 1, 2)
 
+```{r model3_Perimeter_ShapeFactor2}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+# Trying various Complexity Parameters
+cps <- seq(0, 0.1, 0.01)
+
+# using the y ~ x formula seems to keep throwing errors
+model_3a <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,12)], # col 2 for perimeter, 12 for SF2
+        method = 'rpart',
+        tuneGrid = data.frame(cp = cps),
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'mF1') # my custom metric
+
+model_3a$results
+```
+
 -Then add more variables (on paper, make a compatibility matrix of all non-group-0 variables based on formulae) -> choose good ones that are also compatible
+```{r model3_Perimeter_ShapeFactor2_MajorAxisLength}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+# Trying various Complexity Parameters
+cps <- seq(0, 0.1, 0.01)
+
+# using the y ~ x formula seems to keep throwing errors
+model_3b <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,12,3)], # col 2 for perimeter, 12 for SF2, 3 for maj ax
+        method = 'rpart',
+        tuneGrid = data.frame(cp = cps),
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'mF1') # my custom metric
+
+model_3b$results
+```
+```{r model3_Perimeter_ShapeFactor2_Eccentricity}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+# Trying various Complexity Parameters
+cps <- seq(0, 0.1, 0.01)
+
+# using the y ~ x formula seems to keep throwing errors
+model_3c <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,12,6)], # col 2 for perimeter, 12 for SF2, 3 for Eccentricity
+        method = 'rpart',
+        tuneGrid = data.frame(cp = cps),
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'mF1') # my custom metric
+
+model_3c$results
+```
+```{r model3_Perimeter_ShapeFactor2_MajorAxisLEngth_Eccentricity}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+# Trying various Complexity Parameters
+cps <- seq(0, 0.1, 0.01)
+
+# using the y ~ x formula seems to keep throwing errors
+model_3d <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,12,3,6)],
+        method = 'rpart',
+        tuneGrid = data.frame(cp = cps),
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'mF1') # my custom metric
+
+model_3d$results
+```
+```{r four_factor_tree}
+rpart.plot(model_3d$finalModel)
+```
+
 
 -multiple trees with 3-4 variables (if you can even find that many good ones)
 
 -See which tree does best, then select that for RF
+
+-Using all 4 appeared to be the best? Ask about plotting (plot too cluttered to be readable) while you do RF tomorrow
 
 ## Model 4: Random Forests
 
