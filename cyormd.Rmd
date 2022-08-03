@@ -1099,7 +1099,8 @@ model_3d <-
 model_3d$results
 ```
 ```{r four_factor_tree}
-rpart.plot(model_3d$finalModel)
+plot(model_3d$finalModel)
+text(model_3d$finalModel, srt = 60, cex = 0.5)
 ```
 
 
@@ -1112,6 +1113,31 @@ rpart.plot(model_3d$finalModel)
 ## Model 4: Random Forests
 
 -Take the variables from the best DT, and run one (1) RF using ranger
+
+```{r model4}
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+# RF tuning grid
+forest_grid <-
+  expand.grid(
+    mtry = 2:4, # how many variables to use for splitting at each tree?
+    splitrule = 'gini', # for classification
+    min.node.size = c(1:522) # how many instances minimum in a node? 552 is chosen since it's the smallest class in the full set
+  )
+
+# using the y ~ x formula seems to keep throwing errors
+model_4 <-
+  train(y = beans_y_train$Class,
+        x =  beans_x_train[,c(2,12,3,6)],
+        method = 'ranger',
+        tuneGrid = forest_grid,
+        num.trees = 500, # arbitrary; will change with literature search
+        trControl = tenfold_xval, # use your 10-fold X-val 
+        metric = 'mF1') # my custom metric
+
+model_4$results
+```
 
 ## Validation Run
 
