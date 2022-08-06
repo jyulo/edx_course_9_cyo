@@ -1123,7 +1123,7 @@ forest_grid <-
   expand.grid(
     mtry = 1:4, # how many variables to use for splitting at each tree?
     splitrule = 'gini', # for classification
-    min.node.size = 1:10 # how many instances minimum in a node? Range rather arbitrary
+    min.node.size = 1:50 # how many instances minimum in a node? Range rather arbitrary
   )
 
 # using the y ~ x formula seems to keep throwing errors
