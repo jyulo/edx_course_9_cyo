@@ -1128,7 +1128,7 @@ forest_grid <-
     # min.node.size = 1:50 # for 100 trees; how many instances minimum in a node? Range rather arbitrary
     # min.node.size = 8:28 # for 500 trees; narrowed down from the 100-tree run
     # min.node.size = 1:50 # for 1K trees; readjusted from the 500-tree run
-    min.node.size = 10:40 # from the big 1K run; peak region is 10-30, but 40 included just in case
+    min.node.size = 10:30 # from the big 1K run; peak region is 10-30
   )
 
 # using the y ~ x formula seems to keep throwing errors
