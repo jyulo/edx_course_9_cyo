@@ -1121,12 +1121,14 @@ set.seed(1, sample.kind = 'Rounding')
 # RF tuning grid
 forest_grid <-
   expand.grid(
-    # mtry = 1:4, # how many variables to use for splitting at each tree?
-    mtry = 2, # best mtry seems to be consistently 2 when adjusting min.node.size using 100 trees
-    splitrule = 'gini', # for classification
+    mtry = 1:4, # how many variables to use for splitting at each tree?
+    # mtry = 2, # best mtry seems to be consistently 2 when adjusting min.node.size using 100 trees
+    # let's go back to 1:4, see how it goes
+    splitrule = 'gini', # for classification. Not changing this
     # min.node.size = 1:50 # for 100 trees; how many instances minimum in a node? Range rather arbitrary
     # min.node.size = 8:28 # for 500 trees; narrowed down from the 100-tree run
-    min.node.size = 1:50 # for 1K trees; readjusted from the 500-tree run
+    # min.node.size = 1:50 # for 1K trees; readjusted from the 500-tree run
+    min.node.size = 10:40 # from the big 1K run; peak region is 10-30, but 40 included just in case
   )
 
 # using the y ~ x formula seems to keep throwing errors
@@ -1137,7 +1139,8 @@ model_4 <-
         tuneGrid = forest_grid,
         # num.trees = 100, # arbitrary; will change with literature search
         # num.trees = 500, # progressively increasing...
-        num.trees = 1000,
+        # num.trees = 1000, # too much
+        num.trees = 750, # try this one. If no better, try 600 then back to 500...
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
@@ -1149,9 +1152,12 @@ model_4$bestTune
 # with 100 trees per run, best tune is mtry = 2 (1-4) and min.node.size = 18 (1-50); mF1 = 0.9155445 +/- 0.009949667
 # with 500 trees per run, best tune is mtry = 2 (no longer given option) and min.node.size = 12 (from 8 to 28); mF1 = 0.9155580 +/- 0.008680129
 # with 1000 trees per run, best tune is mtry 2 (again, no choice) and min.node.size = 16 (2 to 20); mF1 = 0.9148272	+/- 0.009596302
+# 1000 trees, opening min node to 1:50 but keeping mtry at 2: min = 21, mF1 = 0.9150073, mF1 = 0.010558968
+# there is a diminishing return thing going on for sure; chill out with the ntrees... Try 750?
+# also experiment with more min node sizes and even mtrys
 ```
 ```{r model_4_plot}
-plot(model_4)
+plot(model_4) # when holding mtry at 2 and expanding range of nodes to 1:50, you see that the peak region is 10-30
 ```
 ## Validation Run
 ```{r validation_run}
