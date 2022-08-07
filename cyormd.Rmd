@@ -1128,7 +1128,8 @@ forest_grid <-
     # min.node.size = 1:50 # for 100 trees; how many instances minimum in a node? Range rather arbitrary
     # min.node.size = 8:28 # for 500 trees; narrowed down from the 100-tree run
     # min.node.size = 1:50 # for 1K trees; readjusted from the 500-tree run
-    min.node.size = 10:30 # from the big 1K run; peak region is 10-30
+    # min.node.size = 10:30 # from the big 1K run; peak region is 10-30
+    min.node.size = 5:35 # expand a little to avoid cutting off max range for mtry = 1:4
   )
 
 # using the y ~ x formula seems to keep throwing errors
@@ -1140,7 +1141,8 @@ model_4 <-
         # num.trees = 100, # arbitrary; will change with literature search
         # num.trees = 500, # progressively increasing...
         # num.trees = 1000, # too much
-        num.trees = 600, # try this one. If no better, try more or less...
+        # num.trees = 600, # try this one. If no better, try more or less...
+        num.trees = 550, # try to shrink back towards 500
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
@@ -1153,18 +1155,21 @@ model_4$bestTune
 # with 500 trees per run, best tune is mtry = 2 (no longer given option) and min.node.size = 12 (from 8 to 28); mF1 = 0.9155580 +/- 0.008680129
 # with 1000 trees per run, best tune is mtry 2 (again, no choice) and min.node.size = 16 (2 to 20); mF1 = 0.9148272	+/- 0.009596302
 # 1000 trees, opening min node to 1:50 but keeping mtry at 2: min = 21, mF1 = 0.9150073, mF1 = 0.010558968
-# there is a diminishing return thing going on for sure; chill out with the ntrees... Try 750?
-# also experiment with more min node sizes and even mtrys
+# 600 trees, mtry 1:4, min nodes 10:30 -> best is mtry = 1, min node = 14; mF1 = 0.9153586 and mF1SD = 0.009217610
+# there is a diminishing return thing going on for sure
+
 ```
 ```{r model_4_plot}
-plot(model_4) # when holding mtry at 2 and expanding range of nodes to 1:50, you see that the peak region is 10-30
+plot(model_4) 
+# when holding mtry at 2 and expanding range of nodes to 1:50, you see that the peak region is 10-30
+# not so sure when mtry is 1:4 and num.trees is 600...
 ```
 ## Validation Run
 ```{r validation_run}
 validation_preds <- predict(model_4$finalModel, beans_x_val)
 beans_y_val$Class <- as.factor(beans_y_val$Class) # convert to factor class
-beans_y_val$Class
-# confusionMatrix(validation_preds$predictions, beans_y_val)
+# beans_y_val$Class # checking that format is right
+confusionMatrix(validation_preds$predictions, beans_y_val)
 ```
 
 -pick ultimate model, use it to predict validation set
