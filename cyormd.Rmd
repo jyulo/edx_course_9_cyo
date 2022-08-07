@@ -1163,7 +1163,7 @@ plot(model_4) # when holding mtry at 2 and expanding range of nodes to 1:50, you
 ```{r validation_run}
 validation_preds <- predict(model_4$finalModel, beans_x_val)
 beans_y_val$Class <- as.factor(beans_y_val$Class) # convert to factor class
-beans_y_cal$Class
+beans_y_val$Class
 # confusionMatrix(validation_preds$predictions, beans_y_val)
 ```
 
