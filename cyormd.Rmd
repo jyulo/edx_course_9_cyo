@@ -1154,7 +1154,7 @@ model_4 <-
         # num.trees = 600, # try this one. If no better, try more or less...
         # num.trees = 550, # try to shrink back towards 500
         # num.trees = 500, # return to 500
-        num.trees = 200, # 1K is too much; new goal is to find out how FEW trees you can get away with and still have similar performance qualities
+        num.trees = 250, # 1K is too much; new goal is to find out how FEW trees you can get away with and still have similar performance qualities
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
