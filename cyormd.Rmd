@@ -1171,7 +1171,8 @@ model_4$bestTune
 # 600 trees, mtry 1:4, min nodes 10:30 -> best is mtry = 1, min node = 14; mF1 = 0.9153586 and mF1SD = 0.009217610
 # 550 trees, mtry 1:4, min nodes 5:35 -> best is mtry = 1, min node = 18, mF1 = 0.9154987 +/- 0.009896242
 # 500 trees, mtry 1:4, min nodes 1:40 -> best is mtry = 2, min node = 20, mF1 = 0.9154909	+/- 0.010352430
-# 200 trees, mtry 1:4, min nodes 1:40 -> best mtry = 2, min node = 24, mF1 = 0.9155035	+/- 0.009571362; time is roughly 1.5 h
+# 250 trees, mtry 1:4, min nodes 1:40 -> best is mtry = 2, min node = 16, mF1 = 0.9153936	 +/- 0.010256291; time is roughly 1 h 45 mins
+# 200 trees, mtry 1:4, min nodes 1:40 -> best mtry = 2, min node = 24, mF1 = 0.9155035	+/- 0.009571362; time is roughly 1 h 25 mins
 # there is a diminishing return thing going on for sure
 # in the end, reducing # trees doesn't really make the model do better; it just makes the results more variable (plot more jagged; see below)
 ```
@@ -1199,6 +1200,12 @@ confusionMatrix(validation_preds_LR, beans_y_val$Class)
 
 ```{r validation_KNN}
 # KNN in R is not like the others, in that it fits and evaluates in one function
+# Thus, a second training is done with the pre-tuned k value
+
+# arbitrary seed for reproducibility
+set.seed(1, sample.kind = 'Rounding')
+
+
 validation_preds_KNN <- knn(train = beans_x_train[,c(2,12)],
                             cl = beans_y_train$Class,
                             test = beans_x_val[,c(2,12)],
