@@ -45,6 +45,8 @@ if(!require(viridis)) install.packages("viridis",
                                        repos = "http://cran.us.r-project.org")
 if(!require(MLmetrics)) install.packages("MLmetrics", 
                                        repos = "http://cran.us.r-project.org")
+if(!require(class)) install.packages("class", 
+                                       repos = "http://cran.us.r-project.org")
 if(!require(rpart)) install.packages("rpart", 
                                        repos = "http://cran.us.r-project.org")
 if(!require(rpart.plot)) install.packages("rpart.plot", 
@@ -62,6 +64,7 @@ library(readr)
 library(readxl)
 library(viridis)
 library(MLmetrics)
+library(class)
 library(rpart)
 library(rpart.plot)
 library(ranger)
@@ -1164,9 +1167,11 @@ model_4$bestTune
 # with 500 trees per run, best tune is mtry = 2 (no longer given option) and min.node.size = 12 (from 8 to 28); mF1 = 0.9155580 +/- 0.008680129
 # with 1000 trees per run, best tune is mtry 2 (again, no choice) and min.node.size = 16 (2 to 20); mF1 = 0.9148272	+/- 0.009596302
 # 1000 trees, opening min node to 1:50 but keeping mtry at 2: min = 21, mF1 = 0.9150073, mF1 = 0.010558968
+
 # 600 trees, mtry 1:4, min nodes 10:30 -> best is mtry = 1, min node = 14; mF1 = 0.9153586 and mF1SD = 0.009217610
 # 550 trees, mtry 1:4, min nodes 5:35 -> best is mtry = 1, min node = 18, mF1 = 0.9154987 +/- 0.009896242
 # 500 trees, mtry 1:4, min nodes 1:40 -> best is mtry = 2, min node = 20, mF1 = 0.9154909	+/- 0.010352430
+# 200 trees, mtry 1:4, min nodes 1:40 -> best mtry = 2, min node = 24, mF1 = 0.9155035	+/- 0.009571362; time is roughly 1.5 h
 # there is a diminishing return thing going on for sure
 # in the end, reducing # trees doesn't really make the model do better; it just makes the results more variable (plot more jagged; see below)
 ```
@@ -1176,37 +1181,43 @@ plot(model_4)
 # not so sure when mtry is 1:4 and num.trees is 600...
 # note that with lower ntrees, the plot gets more jagged
 # so how much do the numbers mean, really?
+
+# eh, 200 trees isn't much more jagged than 500
 ```
 ## Validation Run
 ```{r validation_setup}
 # convert beans_y_val$Class to class: Factor
 beans_y_val$Class <- as.factor(beans_y_val$Class) # convert to factor class
-levels(beans_y_val$Class) == levels(validation_preds$predictions) # check for level matching
-# beans_y_val$Class # checking that format is right
+levels(beans_y_val$Class) # checking that format is right
 ```
 
 ```{r validation_LR}
 validation_preds_LR <- predict(model_1c$finalModel, beans_x_val)
 
-confusionMatrix(validation_preds_LR$predictions, beans_y_val$Class)
+confusionMatrix(validation_preds_LR, beans_y_val$Class)
 ```
 
 ```{r validation_KNN}
-validation_preds_KNN <- predict(model_2c$finalModel, beans_x_val)
+# KNN in R is not like the others, in that it fits and evaluates in one function
+validation_preds_KNN <- knn(train = beans_x_train[,c(2,12)],
+                            cl = beans_y_train$Class,
+                            test = beans_x_val[,c(2,12)],
+                            k = 49) # KNN run on optimized k value tuned from caret::train
 
-confusionMatrix(validation_preds_KNN$predictions, beans_y_val$Class)
+confusionMatrix(validation_preds_KNN, beans_y_val$Class)
 ```
 
 ```{r validation_2_factor_DT}
-validation_preds_2DT <- predict(model_3a$finalModel, beans_x_val)
+# DT preds take dataframes...
+validation_preds_2DT <- predict(model_3a$finalModel, data.frame(beans_x_val), type = 'class')
 
-confusionMatrix(validation_preds_2DT$predictions, beans_y_val$Class)
+confusionMatrix(validation_preds_2DT, beans_y_val$Class)
 ```
 
 ```{r validation_4_factor_DT}
-validation_preds_4DT <- predict(model_3d$finalModel, beans_x_val)
+validation_preds_4DT <- predict(model_3d$finalModel, data.frame(beans_x_val), type = 'class')
 
-confusionMatrix(validation_preds_4DT$predictions, beans_y_val$Class)
+confusionMatrix(validation_preds_4DT, beans_y_val$Class)
 ```
 
 ```{r validation_RF}
