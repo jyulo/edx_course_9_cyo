@@ -45,7 +45,11 @@ if(!require(viridis)) install.packages("viridis",
                                        repos = "http://cran.us.r-project.org")
 if(!require(MLmetrics)) install.packages("MLmetrics", 
                                        repos = "http://cran.us.r-project.org")
+if(!require(rpart)) install.packages("rpart", 
+                                       repos = "http://cran.us.r-project.org")
 if(!require(rpart.plot)) install.packages("rpart.plot", 
+                                       repos = "http://cran.us.r-project.org")
+if(!require(ranger)) install.packages("ranger", 
                                        repos = "http://cran.us.r-project.org")
 library(tidyverse)
 library(caret)
@@ -58,7 +62,9 @@ library(readr)
 library(readxl)
 library(viridis)
 library(MLmetrics)
+library(rpart)
 library(rpart.plot)
+library(ranger)
 # will add more packages as needed
 
 ```
