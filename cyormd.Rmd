@@ -1144,7 +1144,8 @@ model_4 <-
         # num.trees = 1000, # too much
         # num.trees = 600, # try this one. If no better, try more or less...
         # num.trees = 550, # try to shrink back towards 500
-        num.trees = 500, # return to 500
+        # num.trees = 500, # return to 500
+        num.trees = 1000, # 1K again; 500 has "jagged" results in performance plot, with 600 being slightly less so
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
@@ -1159,26 +1160,60 @@ model_4$bestTune
 # 1000 trees, opening min node to 1:50 but keeping mtry at 2: min = 21, mF1 = 0.9150073, mF1 = 0.010558968
 # 600 trees, mtry 1:4, min nodes 10:30 -> best is mtry = 1, min node = 14; mF1 = 0.9153586 and mF1SD = 0.009217610
 # 550 trees, mtry 1:4, min nodes 5:35 -> best is mtry = 1, min node = 18, mF1 = 0.9154987 +/- 0.009896242
+# 500 trees, mtry 1:4, min nodes 1:40 -> best is mtry = 2, min node = 20, mF1 = 0.9154909	+/- 0.010352430
 # there is a diminishing return thing going on for sure
-
+# in the end, reducing # trees doesn't really make the model do better; it just makes the results more variable (plot more jagged; see below)
 ```
 ```{r model_4_plot}
 plot(model_4) 
 # when holding mtry at 2 and expanding range of nodes to 1:50, you see that the peak region is 10-30
 # not so sure when mtry is 1:4 and num.trees is 600...
+# note that with lower ntrees, the plot gets more jagged
+# so how much do the numbers mean, really?
 ```
 ## Validation Run
-```{r validation_run}
-validation_preds <- predict(model_4$finalModel, beans_x_val)
+```{r validation_setup}
+# convert beans_y_val$Class to class: Factor
 beans_y_val$Class <- as.factor(beans_y_val$Class) # convert to factor class
 levels(beans_y_val$Class) == levels(validation_preds$predictions) # check for level matching
 # beans_y_val$Class # checking that format is right
-confusionMatrix(validation_preds$predictions, beans_y_val$Class)
+```
+
+```{r validation_LR}
+validation_preds_LR <- predict(model_1c$finalModel, beans_x_val)
+
+confusionMatrix(validation_preds_LR$predictions, beans_y_val$Class)
+```
+
+```{r validation_KNN}
+validation_preds_KNN <- predict(model_2c$finalModel, beans_x_val)
+
+confusionMatrix(validation_preds_KNN$predictions, beans_y_val$Class)
+```
+
+```{r validation_2_factor_DT}
+validation_preds_2DT <- predict(model_3a$finalModel, beans_x_val)
+
+confusionMatrix(validation_preds_2DT$predictions, beans_y_val$Class)
+```
+
+```{r validation_4_factor_DT}
+validation_preds_4DT <- predict(model_3d$finalModel, beans_x_val)
+
+confusionMatrix(validation_preds_4DT$predictions, beans_y_val$Class)
+```
+
+```{r validation_RF}
+validation_preds_RF <- predict(model_4$finalModel, beans_x_val)
+
+confusionMatrix(validation_preds_RF$predictions, beans_y_val$Class)
 ```
 
 -pick ultimate model, use it to predict validation set
 
--report: mF1, confusion matrix, perhaps accuracy too
+-confusion matrix func comes with (balanced) accuracies; does not seem to have macro F1 and you don't know how to access the matrix values
+
+-However, could always calc by hand and hide the code chunks if you really want mF1 for final results... The matrix is right there.
 
 # Discussion
 
