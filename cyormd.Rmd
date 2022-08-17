@@ -1,7 +1,7 @@
 ---
 title: "R Data Science Course 9: Choose Your Own Project"
 author: "James Lo"
-date: '2022-06-09'
+date: '2022-08-27'
 output: 
   pdf_document:
     latex_engine: xelatex
@@ -18,9 +18,13 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE)
 
 # Introduction
 
-Machine learning has become increasingly [relevant in agriculture today](https://www.bayer.com/en/agriculture/article/machine-learning-uses-agriculture), as human population grows and researchers seek more efficient methods to meet demands for food on limited arable land. In particular, classifying large volumes of crops is important in modern agriculture in several contexts, including quality assessment after harvest and modeling the success of different crop varieties in various growing conditions. The use of machine learning algorithms for crop classification provides several advantages over manual classification including higher throughput, superior accuracy and precision, and the development of more complex models capable of recognizing data trends that a human observer may have difficulty noticing. 
+## Executive Summary
+
+Machine learning has become increasingly [relevant in agriculture today](https://www.bayer.com/en/agriculture/article/machine-learning-uses-agriculture), as human population grows and researchers seek more efficient methods to meet demands for food on limited arable land. In particular, classifying large volumes of crops is important in modern agriculture in several contexts, including quality assessment after harvest and modeling the success of different crop varieties in various growing conditions. The use of machine learning algorithms for crop classification provides several advantages over manual approaches including higher throughput, superior accuracy and precision, and the development of more complex models capable of recognizing data trends that a human observer may have difficulty noticing. Focusing on the classification of different crop varieties, this project seeks to analyze the potential predictors in a previously generated dataset, before choosing a small collection of appropriate algorithms and evaluating the performances of the models generated.
 
 ## Data Loading
+
+(mention where you got the set from, and briefly talk about the original paper)
 
 ```{r packages, warning = F}
 if(!require(tidyverse)) install.packages("tidyverse",
