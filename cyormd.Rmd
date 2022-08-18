@@ -127,6 +127,8 @@ The dataset has a rather uneven distribution of the 7 bean varieties. The most f
 
 Before building models, the distribution of values among different bean varieties were visualized with boxplots for all 16 possible predictor variables. This was done to understand the levels of variability between bean varieties that were present in each potential predictor, and select the most informative predictors for models that perform best with lower-dimensional data.
 
+*To conserve space, only the first instance in a series of very similar code chunks are displayed in the PDF file. A complete collection of code can be seen in the R Markdown and R files.*
+
 #### Area
 
 ```{r Area_boxplot}
@@ -152,7 +154,7 @@ The area IQR for Bombay is distinctively higher than those of all other varietie
 
 #### Perimeter
 
-```{r Perimeter_boxplot}
+```{r Perimeter_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -175,7 +177,7 @@ Similarly to the Area metric, Bombay has a distinctively higher range of Perimet
 
 #### Major Axis Length
 
-```{r MajorAxisLength_boxplot}
+```{r MajorAxisLength_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -198,7 +200,7 @@ For Major Axis Length, Bombay once again has an IQR that was distinctively large
 
 #### Minor Axis Length
 
-```{r MinorAxisLength_boxplot}
+```{r MinorAxisLength_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -218,11 +220,11 @@ beans %>%
   ggtitle('Distribution of Minor Axis Lengths')
 ```
 
-The distribution of Minor Axis Lengths was similar to that of Major Axis lengths, but with a few differences: here the heaviest overlap was between Cali and Barbunya, followed by Horoz/Sira and Sira/Seker. Also, Dermason had a partial IQR overlap with Horoz rather than a near-complete one with Seker. Most outliers were on the high ends of their respective groups. Cali, Seker, and Horoz had more outliers on th high ends of their respective groups, while Sira had more on the low end.
+The distribution of Minor Axis Lengths are similar to that of Major Axis lengths, but with a few differences: here the heaviest overlap is between Cali and Barbunya, followed by Horoz/Sira and Sira/Seker. Also, Dermason has a partial IQR overlap with Horoz rather than a near-complete one with Seker. Most outliers are on the high ends of their respective groups. Cali, Seker, and Horoz have more outliers on th high ends of their respective groups, while Sira has more on the low end.
 
 #### Aspect Ratio
 
-```{r AspectRation_boxplot}
+```{r AspectRation_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -242,11 +244,11 @@ beans %>%
   ggtitle('Distribution of Aspect Ratios')
 ```
 
-The Aspect Ratio distributions differed from the previous potential predictors in that Bombay no longer had the most distinct distribution of values. Instead, Horoz and Cali had IQRs distinctively higher than others, while Seker had a lower IQR. The remaining varieties (Dermason, Barbunya, Sira, Bombay) all had heavily overlapping IQRs. Horoz had more outliers on the bottom end of its distribution, while Sira, Dermason, and Seker had more on their high ends.
+The Aspect Ratio distributions differ from the previous potential predictors in that Bombay no longer has the most distinct distribution of values. Instead, Horoz and Cali have IQRs distinctively higher than others, while Seker has a lower IQR. The remaining varieties (Dermason, Barbunya, Sira, Bombay) all have heavily overlapping IQRs. Horoz has more outliers on the bottom end of its distribution, while Sira, Dermason, and Seker have more on their high ends.
 
 #### Eccentricity
 
-```{r Eccentricity_boxplot}
+```{r Eccentricity_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -266,11 +268,11 @@ beans %>%
   ggtitle('Distribution of Eccentricities')
 ```
 
-The Eccentricity distributions were similar to that of Aspect Ratios, but with the two varieties having higher IQRs (Horoz, Cali) deviating from the others less while the one with lower IQR (Seker) deviating more. Most outliers were on the low ends of their respective ranges.
+The Eccentricity distributions are similar to that of Aspect Ratios, but with the two varieties having higher IQRs (Horoz, Cali) deviating from the others less while the one with lower IQR (Seker) deviating more. Most outliers are on the low ends of their respective ranges.
 
 #### Convex Area
 
-```{r ConvexArea_boxplot}
+```{r ConvexArea_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -291,11 +293,11 @@ beans %>%
 
 ```
 
-With the Covex Area Sizes, a distribution somewhat similar to the Area, Perimeter, and Axis Length distributions could be seen again. Bombay had a distinctively high IQR of Convex Areas, while Dermason had the lowest range. Cali and Barbunya had heavily overlapping IQRs, with less overlap existing among the other varieties. The narrowest IQRs belonged to Seker and Sira. Outliers were biased towards the top end for Bombay, Cali, Barbunya, Sira, and Seker.
+With the Covex Area Sizes, a distribution somewhat similar to the Area, Perimeter, and Axis Length distributions could be seen again. Bombay has a distinctively high IQR of Convex Areas, while Dermason has the lowest range. Cali and Barbunya have heavily overlapping IQRs, with less overlap existing among the other varieties. The narrowest IQRs belong to Seker and Sira. Outliers are biased towards the top end for Bombay, Cali, Barbunya, Sira, and Seker.
 
 #### Equivalent Diameter
 
-```{r EquivDiameter_boxplot}
+```{r EquivDiameter_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -315,11 +317,11 @@ beans %>%
   ggtitle('Distribution of Equivalent Diameters')
 ```
 
-The distributions of Equivalent Diameters were fairly similar to that of Convex Areas. Once again, Cali and Barbunya had heavy overlaps, with Bombay having a distinctly higher IQR. Cali and Seker had more outliers on the top ends of their distributions, while Horoz had more on the bottom end.
+The distributions of Equivalent Diameters are fairly similar to that of Convex Areas. Once again, Cali and Barbunya have heavy overlaps, with Bombay having a distinctly higher IQR. Cali and Seker have more outliers on the top ends of their distributions, while Horoz has more on the bottom end.
 
 #### Extent
 
-```{r Extent_boxplot}
+```{r Extent_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -339,11 +341,11 @@ beans %>%
   ggtitle('Distribution of Extents')
 ```
 
-The distribution of Extent Ratios exhibited heavy IQR overlaps between all bean varieties. Among the three groups with outliers (Cali, Seker, Bombay), all had more on the bottom ends of their respective distributions.
+The distributions of Extent Ratios exhibit heavy IQR overlaps between all bean varieties. Among the three groups with outliers (Cali, Seker, Bombay), all have more on the bottom ends of their respective distributions.
 
 #### Solidity
 
-```{r Solidity_boxplot}
+```{r Solidity_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -363,11 +365,11 @@ beans %>%
   ggtitle('Distribution of Solidities')
 ```
 
-The distribution of Solidity values exhibited heavy IQR overlaps between nearly all bean varieties. Also, every bean variety had many outliers (values outside the boxplot whiskers) on the lower end of their respective distributions. Outliers were abundant, and located on the low ends of every group's distribution.
+The distributions of Solidity values exhibit heavy IQR overlaps between nearly all bean varieties. Also, every bean variety has many outliers (values outside the boxplot whiskers) on the lower end of their respective distributions.
 
 #### Roundness
 
-```{r roundness_boxplot}
+```{r roundness_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -387,11 +389,11 @@ beans %>%
   ggtitle('Distribution of Roundnesses')
 ```
 
-The ranking of median Roundness values were similar to that of that of Solidity, but with the lowest three (Cali, Barnunya, Horoz) switched. Less overlap existed than in Solidity (except for heavy overlap Horoz and Barbunya), but many outliers outside the whiskers existed for all varieties. Outliers were abundant, and biased towards the low end of the range for all groups except Bombay.
+The ranking of median Roundness values are similar to that of that of Solidity, but with the lowest three (Cali, Barnunya, Horoz) switched. Less overlaps exist than in Solidity (except for heavy overlap Horoz and Barbunya), but many outliers outside the whiskers exist for all varieties, and are biased towards the low end of the range for all groups except Bombay.
 
 #### Compactness
 
-```{r Compactness_boxplot}
+```{r Compactness_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -411,11 +413,11 @@ beans %>%
   ggtitle('Distribution of Compactness Values')
 ```
 
-The distribution of Compactness values had heavy overlaps between Bombay, Sira, Barbunya, and Dermason. Seker had the highest range of Compactness, while Horoz had the lowest. All varieties had many outliers, mostly on the high ends of the distributions. Seker had most of its outliers on the low end of its range; the opposite was true for Bombay, Cali, and Horoz.
+The distributions of Compactness values have heavy overlaps between Bombay, Sira, Barbunya, and Dermason. Seker has the highest range of Compactness, while Horoz has the lowest. All varieties have many outliers, mostly on the high ends of the distributions. Seker has most of its outliers on the low end of its range; the opposite was true for Bombay, Cali, and Horoz.
 
 #### Shape Factor 1
 
-```{r ShapeFactor1_boxplot}
+```{r ShapeFactor1_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -435,11 +437,11 @@ beans %>%
   ggtitle('Distribution of Shape Factor 1')
 ```
 
-The distributions of Shape Factor 1 values featured heavy overlap between Barbunya/Cali, and relatively less overlap between Seker/Sira/Horoz. Dermason had the highest range of Shape Factor 1, and Bombay had the lowest. All groups had more outliers on the top ends of their ranges except for Seker (more on the low end) and Bombay (two outliers on the low end only).
+The distributions of Shape Factor 1 values feature heavy overlap between Barbunya/Cali, and relatively less overlap between Seker/Sira/Horoz. Dermason has the highest range of Shape Factor 1, and Bombay the lowest. All groups have more outliers on the top ends of their ranges except for Seker (more on the low end) and Bombay (two outliers on the low end only).
 
 #### Shape Factor 2
 
-```{r ShapeFactor2_boxplot}
+```{r ShapeFactor2_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -459,11 +461,11 @@ beans %>%
   ggtitle('Distribution of Shape Factor 2')
 ```
 
-The distributions of Shape Factor 2 values had relatively less IQR overlap compared to most other variables examined, with the 4 highest Shape Factor 2 ranges (Seker, Dermason, Sira, Barbunya) all having non-overlapping IRRs. Horoz and Cali had a large IQR overlap, but neither had overlapping IQRs with Bombay. However, outliers on the high ends of the ranges were common. With the exception of Seker, all groups had more outliers on the top ends of their ranges.
+The distributions of Shape Factor 2 values have relatively less IQR overlap compared to most other variables examined, with the 4 highest Shape Factor 2 ranges (Seker, Dermason, Sira, Barbunya) all having non-overlapping IRRs. Horoz and Cali have a large IQR overlap, but neither has overlapping IQRs with Bombay. However, outliers on the high ends of the ranges are common. With the exception of Seker, all groups have more outliers on the top ends of their ranges.
 
 #### Shape Factor 3
 
-```{r ShapeFactor3_boxplot}
+```{r ShapeFactor3_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -483,11 +485,11 @@ beans %>%
   ggtitle('Distribution of Shape Factor 3')
 ```
 
-The distributions of Shape Factor 3 values had heavy overlaps in Bombay, Sira, Barbunya, and Dermason. Seker had a distinctively higher IQR than the other varieties but also many low outliers; the opposite was true for Horoz. Except for Seker, all groups had more outliers on the low ends of their ranges.
+The distributions of Shape Factor 3 values have heavy overlaps in Bombay, Sira, Barbunya, and Dermason. Seker had a distinctively higher IQR than the other varieties but also many low outliers; the opposite was true for Horoz. Except for Seker, all groups have more outliers on the low ends of their ranges.
 
 #### Shape Factor 4
 
-```{r ShapeFactor4_boxplot}
+```{r ShapeFactor4_boxplot, echo = F}
 # separately mark outliers
 outliers <-
   beans %>%
@@ -507,7 +509,7 @@ beans %>%
   ggtitle('Distribution of Shape Factor 4')
 ```
 
-The distributions for Shape Factor 4 exhibited heavy overlaps between nearly all varieties, with the possible exception of Seker. In addition, every variety had many outliers on the low ends of their respective distributions. All groups had outliers on the low ends of their distributions; Horoz had an exceptionally long range of outlier values.
+The distributions for Shape Factor 4 exhibit heavy overlaps between nearly all varieties, with the possible exception of Seker. In addition, every variety has many outliers on the low ends of their respective distributions. All groups have outliers on the low ends of their distributions; Horoz has an exceptionally long range of outlier values.
 
 ### Combining Predictors for Scatterplots
 
