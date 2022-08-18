@@ -97,7 +97,7 @@ beans <- read_xlsx(path, sheet = 1)
 
 ## Exploratory Analysis
 
-
+Before models could be trained and evaluated, the dataset itself was examined to reveal its format, number of potential predictors, and other information required for efficient data manipulation. Both the UCI Machine Learning Repository page and the Koklu and Ozkan (2020) paper were used as references for information not immediately obvious from the dataset alone.
 
 ### Overview
 
@@ -105,14 +105,14 @@ beans <- read_xlsx(path, sheet = 1)
 # overview of the data's size and format
 str(beans)
 ```
-The dataset contains 13611 entries, each representing a scanned bean. There are 12 metrics describing the dimensions of each bean, plus four 'shape factors' which are derived from a previous machine learning article on rice grains (cite).
+The dataset contains 13611 entries, each representing a scanned bean. There are 12 metrics describing the geometric features of each bean, plus four 'shape factors' which are derived from a previous machine learning article on rice grains (Koklu and Ozkan, 2020). All metrics except for `Class` (the outcome variable for this classification problem) are `numeric`, with `Class` being of class `character`.
 
 ### Checking for NA Values
 
 ```{r na_check}
 which(is.na(beans))
 ```
-As described on the UCI website, the dataset indeed contains no NA entries.
+As described on the UCI repository webpage, the dataset indeed contains no NA entries.
 
 ### Distribution of Outcome Classes
 
@@ -125,7 +125,7 @@ The dataset has a rather uneven distribution of the 7 bean varieties. The most f
 
 ### Distribution of Potential Predictor Variables Among Classes
 
-Before models could be built, the distribution of values among differnt bean varieties were visualized with boxplots for all 16 possible predictor variables. This was done to understand the levels of variability between bean varieties that were present in each potential predictor, and select the most informative predictors for models that perform best with lower-dimensional data.
+Before building models, the distribution of values among different bean varieties were visualized with boxplots for all 16 possible predictor variables. This was done to understand the levels of variability between bean varieties that were present in each potential predictor, and select the most informative predictors for models that perform best with lower-dimensional data.
 
 #### Area
 
@@ -148,7 +148,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Areas')
 ```
-The area IQR for Bombay was distinctively higher than those of all other varieties. Heavily overlapping IQRs exist in Cali and Barbunya, as well as Sira and Seker. Dermason, Seker, and Sira all have much narrower IQRs compared to the other varieties, despite having very close distribution ranges. Most outliers were found on the upper ends of their respective distributions.
+The area IQR for Bombay is distinctively higher than those of all other varieties. Heavily overlapping IQRs exist in Cali and Barbunya, as well as Sira and Seker. Dermason, Seker, and Sira all have much narrower IQRs compared to the other varieties, despite having very close distribution ranges. Most outliers are on the upper ends of their respective distributions.
 
 #### Perimeter
 
@@ -171,7 +171,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Perimeters')
 ```
-Similarly to the Area metric, Bombay had a distinctively higher range of Perimeter lengths than the other varieties. The IQR for Cali existed entirely within that of Barbunya, while the IQRs for Dermason and Seker overlapped. The IQRs of perimeter lengths for smaller bean varieties were less tight than seen in the Area graph, but also somewhat more distinct relative to the scale of the y-axis.
+Similarly to the Area metric, Bombay has a distinctively higher range of Perimeter lengths than the other varieties. The IQR for Cali exists entirely within that of Barbunya, while the IQRs for Dermason and Seker overlap. The IQRs of perimeter lengths for smaller bean varieties are less tight than seen in the Area graph, but also somewhat more distinct relative to the scale of the y-axis.
 
 #### Major Axis Length
 
@@ -194,7 +194,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Major Axis Lengths')
 ```
-For Major Axis Length, Bombay once again had an IQR that was distinctively larger than all others. Barbunya/Horoz and Dermason/Seker had heavily overlapping IQRs, while Cali had a smaller IQR overlap with Horoz/Barbunya. Seker and Sira had more outliers on the high end of their ranges, while Horoz had more on the low end.
+For Major Axis Length, Bombay once again has an IQR that was distinctively larger than all others. Barbunya/Horoz and Dermason/Seker have heavily overlapping IQRs, while Cali has a smaller IQR overlap with Horoz/Barbunya. Seker and Sira hav more outliers on the high end of their ranges, while Horoz has more on the low end.
 
 #### Minor Axis Length
 
