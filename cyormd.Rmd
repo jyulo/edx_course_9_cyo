@@ -513,15 +513,15 @@ The distributions for Shape Factor 4 exhibit heavy overlaps between nearly all v
 
 ### Combining Predictors for Scatterplots
 
-Some common classification models, such as KNN, do not perform efficiently with high-dimensional data due to a phenomenon known as the [Curse of Dimensionality](https://link.springer.com/referenceworkentry/10.1007/978-0-387-39940-9_133), where an increase in the amount of predictors (dimensionality) reduces.... As such, it would be constructive to select a pair of "compatible" predictor variables for those models. The goal is to have each variable contain inter-group (between bean varieties) variances that the other does not have sufficient amounts of. Also, the variables should be independent, lacking in redundancy of measurements. For instance, if one variable in the pair is already derived from bean lengths, the other variable should not also contain bean lengths in its formula. In addition, each of the two variables should have as much distance (or failing that, the least amount of overlap) between its group IQRs as possible, with the least amount (and skew) of outliers. Note that while some variables (like Area and Convex Area) exist on a far larger scale (at least in numbers alone) than others, normalization would make relative distances along the y-axis (as seen on the boxplots) more relevant than raw numerical differences.
+Some common classification models, notably KNN, do not perform efficiently with high-dimensional data due to a phenomenon known as the [Curse of Dimensionality](https://link.springer.com/referenceworkentry/10.1007/978-0-387-39940-9_133), where an increase in the amount of predictors (dimensionality) reduces differences in euclidian distance between neighboring pairs of data points. As such, it would be constructive to select a pair of "compatible" predictor variables for those models. The goal is to have each variable contain inter-group (between bean varieties) variances that the other does not have sufficient amounts of. Also, the variables should be independent, lacking in redundancy of measurements. For instance, if one variable in the pair is already derived from bean lengths, the other variable should not also contain bean lengths in its formula. In addition, each of the two variables should have as much distance (or failing that, the least amount of overlap) between its group IQRs as possible, with the least amount of outliers and skew. Some variables (like Area and Convex Area) exist over a far larger numerical scale than others; this could be solved through normalizing all variables, making relative distances along the y-axis (as seen on the boxplots) more relevant than raw numerical differences.
 
 To identify promising combinations, the variables were roughly grouped into six categories, reflecting broad features in their boxplots:
 
-* Group 0 ("don't bother"): Variables whose boxplots displayed heavily overlapping IQRs and outliers that are visibly more numerous (compared to the other variables in this dataset) and/or heavily skewed in distributions. Extent, Solidity, and Shape Factor 4 were placed under this category.
+* Group 0 ("don't bother"): Variables whose boxplots display heavily overlapping IQRs and outliers that are visibly more numerous (compared to the other variables in this dataset) and/or heavily skewed in distributions. Extent, Solidity, and Shape Factor 4 were placed under this category.
 
-* Group 1 ("Bombay high, Dermason low"): Variables where Bombay had the highest IQR (usually by a relatively large margin), and Dermason the lowest. Other bean varieties tended to have less separate or even overlapping IQRs. Area, Perimeter, Major Axis, Minor Axis, Convex Area, and Equivalent Diameter all fell under this category.
+* Group 1 ("Bombay high, Dermason low"): Variables where Bombay have the highest IQR (usually by a relatively large margin), and Dermason the lowest. Other bean varieties tend to have less separate or even overlapping IQRs. Area, Perimeter, Major Axis, Minor Axis, Convex Area, and Equivalent Diameter all fell under this category.
 
-* Group 2 ("Horoz high, Seker low"): Variables where Horoz had the highest IQR, and Seker the lowest. Again, other groups tended to have less separate or overlapping IQRs. Aspect Ratio and Eccentricity fell under this cetegory.
+* Group 2 ("Horoz high, Seker low"): Variables where Horoz has the highest IQR, and Seker the lowest. Again, other groups tend to have less separate or overlapping IQRs. Aspect Ratio and Eccentricity fell under this cetegory.
 
 * Group 3 ("Seker high, Horoz low"): The opposite of group 2.  Roundness and Compactness fell under this category. Note that as described in the original paper, Roundness and Compactness are both measures of how round a bean is, albeit calculated by different formulae. Both are also, by definition, the opposite metric of Aspect Ratio (which measures how elongated a bean is through the ratio between length/Major Axis Length and width/Minor Axis Width).
 
@@ -529,7 +529,7 @@ To identify promising combinations, the variables were roughly grouped into six 
 
 * Group 5 ("Seker high, Bombay low"): Shape Factor 2 was the only variable assigned under this group.
 
-Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both had relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter had large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter had large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (Equivalent Diameter divided by Major Axis length), Shape Factor 2 (Minimum Axis length divided by Area), and Shape Factor 3 (which is derived from Area and Major Axis length). Meanwhile, Perimeter is compatible with Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3. Included below are five scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
+Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both have relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter has large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter has large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (Equivalent Diameter divided by Major Axis length), Shape Factor 2 (Minimum Axis length divided by Area), and Shape Factor 3 (which is derived from Area and Major Axis length). Meanwhile, Perimeter is compatible with Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3. Included below are five scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
 
 ```{r trim_group0}
 # trim off group 0 ("don't bother") variables, which will not be considered further
@@ -554,7 +554,7 @@ beans %>%
   ggtitle('Normalized Perimeter and Aspect Ratio Combinations on a Cartesian Plane')
 ```
 
-```{r Perim_Comp}
+```{r Perim_Comp, echo = F}
 beans %>%
   # normalize variables: get the difference of each value from the minimum, then divide by the range
   # this process will also be used to train and test the algorithms
@@ -570,7 +570,7 @@ beans %>%
   ggtitle('Normalized Perimeter and Compactness Combinations on a Cartesian Plane')
 ```
 
-```{r Perim_SF2}
+```{r Perim_SF2, echo = F}
 beans %>%
   # normalize variables: get the difference of each value from the minimum, then divide by the range
   # this process will also be used to train and test the algorithms
@@ -587,7 +587,7 @@ beans %>%
 ```
 
 
-```{r Perim_SF3}
+```{r Perim_SF3, echo = F}
 beans %>%
   # normalize variables: get the difference of each value from the minimum, then divide by the range
   # this process will also be used to train and test the algorithms
@@ -603,7 +603,7 @@ beans %>%
   ggtitle('Normalized Perimeter and Shape Factor 3 Combinations on a Cartesian Plane')
 ```
 
-```{r ED_AR}
+```{r ED_AR, echo = F}
 beans %>%
   # normalize variables: get the difference of each value from the minimum, then divide by the range
   # this process will also be used to train and test the algorithms
