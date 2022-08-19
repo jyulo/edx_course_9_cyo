@@ -105,7 +105,7 @@ Before models could be trained and evaluated, the dataset itself was examined to
 # overview of the data's size and format
 str(beans)
 ```
-The dataset contains 13611 entries, each representing a scanned bean. There are 12 metrics describing the geometric features of each bean, plus four 'shape factors' which are derived from a previous machine learning article on rice grains (Koklu and Ozkan, 2020). All metrics except for `Class` (the outcome variable for this classification problem) are `numeric`, with `Class` being of class `character`.
+The dataset contains 13611 entries, each representing a scanned bean. There are 12 metrics describing the geometric features of each bean, plus four 'shape factors' which are derived from a previous machine learning article on rice grains (Koklu and Ozkan, 2020). All metrics except for `Class` (the outcome variable for this classification problem) are numeric, with `Class` being of class character.
 
 A quick glance at the magnitudes of each numeric metric revealed large differences in scale; normalization will be needed for plotting and model fitting.
 
@@ -710,24 +710,27 @@ In all 5 scatterplots, adding another variable improved separation of the bean C
 
 # Methods
 
+With the insights gained from exploratory analyses and the original paper, the following steps were taken to prepare then analyze the data:
+
 ## Data Formatting
 
-Split into predictors (x; everything but Class) and outcomes (y; Class).
+Before training any algorithms, the data was first split into two parts: a set containing all the potential predictors (the other 15 variables besides `Class`) named `beans_x`, and a set containing the bean varieties (`Class`) only named `beans_y`. This was done to comply with the argument format of `caret::train`, the function used to train all models in this project.
 
 ```{r x_y_split}
 beans_x <- subset(beans, select = -c(Class))
 beans_y <- subset(beans, select = c(Class))
 head(beans_y, 3)
 ```
+**Table 2: A very small sample of the beans_y dataset, as proof that the correct subset was selected.**
 
-Turn predictors (known to be all numerical) into matrix for easier manipulation.
+While `caret::train` is capable of processing predictor data in the dataframe format using the [formula](https://www.rdocumentation.org/packages/caret/versions/4.47/topics/train) `y ~ x1 + x2 + ...`, attempts to train algorithms using this input method resulted in repeated errors. As such, an alternative input method was chosen with the predictor entered in matrix format; `beans_x` was converted into matrix form to enable this decision.
 
 ```{r x_as_matrix}
 beans_x <- as.matrix(beans_x)
 head(beans_x, 3)
 ```
 
-As previously done in the scatterplots, the predictor variables must be normalized for algorithms such as KNN to work effectively (incluide explanation here). For an intuitive scale, all numeric perdictors were nromalized on a scale of 0 (minimum value) to 1 (maximum value) (insert formula here...)
+As previously done in the scatterplots (see Introduction - Exploratory Analysis - Distribution of Potential Predictor Variables Among Classes), the predictor variables must be normalized for algorithms such as KNN to work effectively. Since the variables vary greatly in scale, using them unaltered would lead to...
 
 ```{r x_normalization}
 # for every column, apply the range formula onto each cell value:
@@ -753,7 +756,6 @@ as.data.frame(beans_x) %>%
   ylab('Aspect Ratio (Normalized)') +
   ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations on a Cartesian Plane')
 ```
-All right, normalization seems legit...
 
 ## Training and Validation
 Consider a 80-20 split for train/val
