@@ -740,7 +740,7 @@ beans_x <- sweep(beans_x, 2, STAT = colranges, FUN = '/') # divide by col ranges
 # x is each matrix cell value, y is each entry in colranges
 head(beans_x, 3)
 ```
-```{r testing_matrix_norm_ED_AR}
+```{r testing_matrix_norm_ED_AR, include = F}
 # reconstitute the data table
 as.data.frame(beans_x) %>%
   mutate(Class = beans_y$Class) %>%
