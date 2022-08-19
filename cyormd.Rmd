@@ -107,6 +107,8 @@ str(beans)
 ```
 The dataset contains 13611 entries, each representing a scanned bean. There are 12 metrics describing the geometric features of each bean, plus four 'shape factors' which are derived from a previous machine learning article on rice grains (Koklu and Ozkan, 2020). All metrics except for `Class` (the outcome variable for this classification problem) are `numeric`, with `Class` being of class `character`.
 
+A quick glance at the magnitudes of each numeric metric revealed large differences in scale; normalization will be needed for plotting and model fitting.
+
 ### Checking for NA Values
 
 ```{r na_check}
@@ -121,15 +123,24 @@ As described on the UCI repository webpage, the dataset indeed contains no NA en
 beans %>% group_by(Class) %>%
   summarize(count = n())
 ```
+**Table 1: Number of instances among the seven bean types (classes).**
+
 The dataset has a rather uneven distribution of the 7 bean varieties. The most frequently found type is Dermason at 3546 entries, while the least common is Bombay at 522 entries. This uneven distribution must be accounted for during model fitting and accuracy assessments.
 
 ### Distribution of Potential Predictor Variables Among Classes
 
 Before building models, the distribution of values among different bean varieties were visualized with boxplots for all 16 possible predictor variables. This was done to understand the levels of variability between bean varieties that were present in each potential predictor, and select the most informative predictors for models that perform best with lower-dimensional data.
 
+As mentioned earlier, normalization was performed to produce all the plots featured within this report. While multiple formulae for normalization exist, the one used in this report is as follows:
+
+$$X_{normalized} = \frac{(X - min)}{(max - min)}$$
+Where $X$ is the value of a single instance within a metric, $max$ is the maximum value of the metric, and $min$ is the minimum value of the metric. This formula normalizes the values of each metric from 0 (minimum) to 1 (maximum).
+
 *To conserve space, only the first instance in a series of very similar code chunks are displayed in the PDF file. A complete collection of code can be seen in the R Markdown and R files.*
 
 #### Area
+
+Koklu and Ozkan (2020) used a computer vision system (camera connected to a computer loaded with image-processing software) to scan each bean within the dataset. In their paper, the metric of Area was defined as the number of pixels within each scanned bean image, and denoted by $A$.
 
 ```{r Area_boxplot}
 # separately mark outliers
@@ -150,9 +161,13 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Areas')
 ```
+**Figure 1: Normalized distribution of Areas among the seven bean varieties.**
+
 The area IQR for Bombay is distinctively higher than those of all other varieties. Heavily overlapping IQRs exist in Cali and Barbunya, as well as Sira and Seker. Dermason, Seker, and Sira all have much narrower IQRs compared to the other varieties, despite having very close distribution ranges. Most outliers are on the upper ends of their respective distributions.
 
 #### Perimeter
+
+The metric of Perimeter (denoted by $P$) was defined as the length of each bean image's border (Koklu and Ozkan, 2020).
 
 ```{r Perimeter_boxplot, echo = F}
 # separately mark outliers
@@ -173,9 +188,14 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Perimeters')
 ```
+**Figure 2: Normalized distribution of Perimeters among the seven bean varieties.**
+
 Similarly to the Area metric, Bombay has a distinctively higher range of Perimeter lengths than the other varieties. The IQR for Cali exists entirely within that of Barbunya, while the IQRs for Dermason and Seker overlap. The IQRs of perimeter lengths for smaller bean varieties are less tight than seen in the Area graph, but also somewhat more distinct relative to the scale of the y-axis.
 
 #### Major Axis Length
+
+The Major Axis Length ($L$) was defined as the "distance between the ends of the longest
+line that can be drawn from a bean" (Koklu and Ozkan, 2020); in other words, the length of each bean.
 
 ```{r MajorAxisLength_boxplot, echo = F}
 # separately mark outliers
@@ -196,9 +216,14 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Major Axis Lengths')
 ```
+**Figure 3: Normalized distribution of Major Axis Lengths among the seven bean varieties.**
+
 For Major Axis Length, Bombay once again has an IQR that was distinctively larger than all others. Barbunya/Horoz and Dermason/Seker have heavily overlapping IQRs, while Cali has a smaller IQR overlap with Horoz/Barbunya. Seker and Sira hav more outliers on the high end of their ranges, while Horoz has more on the low end.
 
 #### Minor Axis Length
+
+The Minor Axis Length ($l$) was described as the "longest line that can be drawn from the
+bean while standing perpendicular to the main axis" (Koklu and Ozkan, 2020); it can be thought of as the width of each bean.
 
 ```{r MinorAxisLength_boxplot, echo = F}
 # separately mark outliers
@@ -219,10 +244,15 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Minor Axis Lengths')
 ```
+**Figure 4: Normalized distribution of Minor Axis Lengths among the seven bean varieties.**
 
 The distribution of Minor Axis Lengths are similar to that of Major Axis lengths, but with a few differences: here the heaviest overlap is between Cali and Barbunya, followed by Horoz/Sira and Sira/Seker. Also, Dermason has a partial IQR overlap with Horoz rather than a near-complete one with Seker. Most outliers are on the high ends of their respective groups. Cali, Seker, and Horoz have more outliers on th high ends of their respective groups, while Sira has more on the low end.
 
 #### Aspect Ratio
+
+The Aspect Ratio ($K$) is given as the ratio between the Major and Minor Axis lengths (Koklu and Ozkan, 2020); in other words:
+
+$$K = \frac{L}{l}$$
 
 ```{r AspectRation_boxplot, echo = F}
 # separately mark outliers
@@ -243,6 +273,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Aspect Ratios')
 ```
+**Figure 4: Normalized distribution of Aspect Ratios among the seven bean varieties.**
 
 The Aspect Ratio distributions differ from the previous potential predictors in that Bombay no longer has the most distinct distribution of values. Instead, Horoz and Cali have IQRs distinctively higher than others, while Seker has a lower IQR. The remaining varieties (Dermason, Barbunya, Sira, Bombay) all have heavily overlapping IQRs. Horoz has more outliers on the bottom end of its distribution, while Sira, Dermason, and Seker have more on their high ends.
 
@@ -267,6 +298,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Eccentricities')
 ```
+**Figure 5: Normalized distribution of Eccentricities among the seven bean varieties.**
 
 The Eccentricity distributions are similar to that of Aspect Ratios, but with the two varieties having higher IQRs (Horoz, Cali) deviating from the others less while the one with lower IQR (Seker) deviating more. Most outliers are on the low ends of their respective ranges.
 
