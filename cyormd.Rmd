@@ -250,7 +250,7 @@ The distribution of Minor Axis Lengths are similar to that of Major Axis lengths
 
 #### Aspect Ratio
 
-The Aspect Ratio ($K$) is given as the ratio between the Major and Minor Axis lengths (Koklu and Ozkan, 2020); in other words:
+The Aspect Ratio ($K$) was given in the original paper as the ratio between the Major and Minor Axis lengths (Koklu and Ozkan, 2020); in other words:
 
 $$K = \frac{L}{l}$$
 
@@ -279,6 +279,10 @@ The Aspect Ratio distributions differ from the previous potential predictors in 
 
 #### Eccentricity
 
+[Eccentricity](https://www.cuemath.com/geometry/eccentricity/) is a measure describing the shape of a[conic section](https://www.cuemath.com/geometry/conic-sections/). The eccentricity of each bean ($Ec$) was defined by Koklu and Ozkan (2020) as being the "eccentricity of an ellipse having the same [moments](https://byjus.com/jee/moment-of-inertia-of-ellipse/) as the [bean image] region".
+
+The [eccentricity of an ellipse](https://www.cuemath.com/geometry/eccentricity-of-ellipse/) is in turn a ratio of two values: **the distance to any point on the ellipse from the [focus](https://www.cuemath.com/geometry/foci-of-ellipse/)**, and **the distance to that same point on the ellipse from the [directrix](https://www.cuemath.com/geometry/directrix-of-ellipse/)**.
+
 ```{r Eccentricity_boxplot, echo = F}
 # separately mark outliers
 outliers <-
@@ -304,6 +308,9 @@ The Eccentricity distributions are similar to that of Aspect Ratios, but with th
 
 #### Convex Area
 
+Koklu and Ozkan (2020) defined the Convex Area ($C$) of a bean as the "number of pixels in the smallest convex polygon
+that can contain the area of a bean seed".
+
 ```{r ConvexArea_boxplot, echo = F}
 # separately mark outliers
 outliers <-
@@ -324,10 +331,14 @@ beans %>%
   ggtitle('Distribution of Convex Areas')
 
 ```
+**Figure 6: Normalized distribution of Convex Areas among the seven bean varieties.**
 
 With the Covex Area Sizes, a distribution somewhat similar to the Area, Perimeter, and Axis Length distributions could be seen again. Bombay has a distinctively high IQR of Convex Areas, while Dermason has the lowest range. Cali and Barbunya have heavily overlapping IQRs, with less overlap existing among the other varieties. The narrowest IQRs belong to Seker and Sira. Outliers are biased towards the top end for Bombay, Cali, Barbunya, Sira, and Seker.
 
 #### Equivalent Diameter
+
+Koklu and Ozkan (2020) defined the Equivalent Diameter ($Ed$) as "the diameter of a circle having the same
+area as a bean seed area".
 
 ```{r EquivDiameter_boxplot, echo = F}
 # separately mark outliers
@@ -348,10 +359,14 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Equivalent Diameters')
 ```
+**Figure 7: Normalized distribution of Equivalent Diameters among the seven bean varieties.**
 
 The distributions of Equivalent Diameters are fairly similar to that of Convex Areas. Once again, Cali and Barbunya have heavy overlaps, with Bombay having a distinctly higher IQR. Cali and Seker have more outliers on the top ends of their distributions, while Horoz has more on the bottom end.
 
 #### Extent
+
+The Extent ($Ex$) of a bean is a metric for size, being defined as "ratio of the pixels in the bounding box to the bean
+area" (Koklu and Ozkan, 2020). What constituted a "bounding box" was not specified in the paper, but given its [mathematical definition](https://www.mathopenref.com/coordbounds.html) it was presumably a rectangular background containing all points within the bean image.
 
 ```{r Extent_boxplot, echo = F}
 # separately mark outliers
@@ -372,10 +387,14 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Extents')
 ```
+**Figure 8: Normalized distribution of Extents among the seven bean varieties.**
 
 The distributions of Extent Ratios exhibit heavy IQR overlaps between all bean varieties. Among the three groups with outliers (Cali, Seker, Bombay), all have more on the bottom ends of their respective distributions.
 
 #### Solidity
+
+Solidity ($S$) is another area-related metric, being the "ratio of the pixels in the
+convex shell to those found in beans" (Koklu and Ozkan, 2020). Note that "convex shell" does not appear to be a commonly used methematical term; however, a similar term named "[convex hull](https://mathworld.wolfram.com/ConvexHull.html)" exists and the authors presumably meant the latter.
 
 ```{r Solidity_boxplot, echo = F}
 # separately mark outliers
@@ -396,11 +415,15 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Solidities')
 ```
+**Figure 9: Normalized distribution of Solidities among the seven bean varieties.**
 
 The distributions of Solidity values exhibit heavy IQR overlaps between nearly all bean varieties. Also, every bean variety has many outliers (values outside the boxplot whiskers) on the lower end of their respective distributions.
 
 #### Roundness
 
+Koklu and Ozkan (2020) gave the following formula for Roundness ($R$):
+
+$$R = \frac{4\pi A}{P^2}$$
 ```{r roundness_boxplot, echo = F}
 # separately mark outliers
 outliers <-
@@ -420,10 +443,15 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Roundnesses')
 ```
+**Figure 10: Normalized distribution of Roundness values among the seven bean varieties.**
 
 The ranking of median Roundness values are similar to that of that of Solidity, but with the lowest three (Cali, Barnunya, Horoz) switched. Less overlaps exist than in Solidity (except for heavy overlap Horoz and Barbunya), but many outliers outside the whiskers exist for all varieties, and are biased towards the low end of the range for all groups except Bombay.
 
 #### Compactness
+
+Compactness ($CO$) is another metric for bean roundness, and was given by Koklu and Ozkan (2020) as:
+
+$$CO = \frac{Ed}{L}$$
 
 ```{r Compactness_boxplot, echo = F}
 # separately mark outliers
@@ -444,10 +472,17 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Compactness Values')
 ```
+**Figure 11: Normalized distribution of Compactness values among the seven bean varieties.**
 
 The distributions of Compactness values have heavy overlaps between Bombay, Sira, Barbunya, and Dermason. Seker has the highest range of Compactness, while Horoz has the lowest. All varieties have many outliers, mostly on the high ends of the distributions. Seker has most of its outliers on the low end of its range; the opposite was true for Bombay, Cali, and Horoz.
 
 #### Shape Factor 1
+
+In addition to the metrics described above, Koklu and Ozkan (2020) also made use of four "Shape Factors", from another machine learning article by [Pazoki et al. (2014).](https://www.scinapse.io/papers/345887372)
+
+Shape Factor 1 ($SF1$) was defined as follows:
+
+$$SF1 = \frac{L}{A}$$
 
 ```{r ShapeFactor1_boxplot, echo = F}
 # separately mark outliers
@@ -468,10 +503,15 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Shape Factor 1')
 ```
+**Figure 12: Normalized distribution of SF1 values among the seven bean varieties.**
 
 The distributions of Shape Factor 1 values feature heavy overlap between Barbunya/Cali, and relatively less overlap between Seker/Sira/Horoz. Dermason has the highest range of Shape Factor 1, and Bombay the lowest. All groups have more outliers on the top ends of their ranges except for Seker (more on the low end) and Bombay (two outliers on the low end only).
 
 #### Shape Factor 2
+
+Shape Factor 2 ($SF2$) was derived with the formula:
+
+$$SF2 = \frac{l}{A}$$
 
 ```{r ShapeFactor2_boxplot, echo = F}
 # separately mark outliers
@@ -492,10 +532,15 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Shape Factor 2')
 ```
+**Figure 13: Normalized distribution of SF2 values among the seven bean varieties.**
 
 The distributions of Shape Factor 2 values have relatively less IQR overlap compared to most other variables examined, with the 4 highest Shape Factor 2 ranges (Seker, Dermason, Sira, Barbunya) all having non-overlapping IRRs. Horoz and Cali have a large IQR overlap, but neither has overlapping IQRs with Bombay. However, outliers on the high ends of the ranges are common. With the exception of Seker, all groups have more outliers on the top ends of their ranges.
 
 #### Shape Factor 3
+
+Shape Factor 3 ($SF3$) was derived from the formula:
+
+$$SF3 = \frac{A}{({\frac{L}{2}})^2\pi}$$
 
 ```{r ShapeFactor3_boxplot, echo = F}
 # separately mark outliers
@@ -516,10 +561,15 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Shape Factor 3')
 ```
+**Figure 14: Normalized distribution of SF3 values among the seven bean varieties.**
 
 The distributions of Shape Factor 3 values have heavy overlaps in Bombay, Sira, Barbunya, and Dermason. Seker had a distinctively higher IQR than the other varieties but also many low outliers; the opposite was true for Horoz. Except for Seker, all groups have more outliers on the low ends of their ranges.
 
 #### Shape Factor 4
+
+Shape Factor 4 ($SF4$) was derived from the formula:
+
+$$SF3 = \frac{A}{({\frac{L}{2}})(\frac{l}{2})\pi}$$
 
 ```{r ShapeFactor4_boxplot, echo = F}
 # separately mark outliers
@@ -540,6 +590,7 @@ beans %>%
   xlab('Class') +
   ggtitle('Distribution of Shape Factor 4')
 ```
+**Figure 15: Normalized distribution of SF4 values among the seven bean varieties.**
 
 The distributions for Shape Factor 4 exhibit heavy overlaps between nearly all varieties, with the possible exception of Seker. In addition, every variety has many outliers on the low ends of their respective distributions. All groups have outliers on the low ends of their distributions; Horoz has an exceptionally long range of outlier values.
 
@@ -585,6 +636,7 @@ beans %>%
   ylab('Aspect Ratio (Normalized)') +
   ggtitle('Normalized Perimeter and Aspect Ratio Combinations on a Cartesian Plane')
 ```
+**Figure 16: Scatterplot of Normalized Perimeter and Aspect Ratio values, color-coded by bean varieties.**
 
 ```{r Perim_Comp, echo = F}
 beans %>%
@@ -601,6 +653,7 @@ beans %>%
   ylab('Compactness (Normalized)') +
   ggtitle('Normalized Perimeter and Compactness Combinations on a Cartesian Plane')
 ```
+**Figure 17: Scatterplot of Normalized Perimeter and Compactness values, color-coded by bean varieties.**
 
 ```{r Perim_SF2, echo = F}
 beans %>%
@@ -617,7 +670,7 @@ beans %>%
   ylab('Shape Factor 2 (Normalized)') +
   ggtitle('Normalized Perimeter and Shape Factor 2 Combinations on a Cartesian Plane')
 ```
-
+**Figure 18: Scatterplot of Normalized Perimeter and Shape Factor 2 values, color-coded by bean varieties.**
 
 ```{r Perim_SF3, echo = F}
 beans %>%
@@ -634,6 +687,7 @@ beans %>%
   ylab('Shape Factor 3 (Normalized)') +
   ggtitle('Normalized Perimeter and Shape Factor 3 Combinations on a Cartesian Plane')
 ```
+**Figure 19: Scatterplot of Normalized Perimeter and Shape Factor 3 values, color-coded by bean varieties.**
 
 ```{r ED_AR, echo = F}
 beans %>%
@@ -650,6 +704,7 @@ beans %>%
   ylab('Aspect Ratio (Normalized)') +
   ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations on a Cartesian Plane')
 ```
+**Figure 20: Scatterplot of Normalized Equivalent Diameter and Aspect Ratio values, color-coded by bean varieties.**
 
 In all 5 scatterplots, adding another variable improved separation of the bean Class clusters that were poorly resolved in the group 1 variables (Barbunya/Cali, Sira/Seker, Seker/Dermason). However, large overlaps could still observed, especially in Dermason/Sira and Barbunya/Cali. Although the separation between Barbunya and Cali had improved from the near complete overlap in Perimeter and Equivalent Diameter boxplots, the scatterplots still revealed that a sizeable portion of the Barbunya cluster had been covered by the Cali cluster. Cluster visualization would be useful for further determination of which variable combination had the least amounts of overlap, but such a procedure would involve visualizing already tuned clustering algorithms and defeat the purpose of exploratory analysis. As a result, all five variable combinations were chosen for model building.
 
