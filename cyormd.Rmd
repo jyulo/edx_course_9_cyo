@@ -730,7 +730,7 @@ beans_x <- as.matrix(beans_x)
 head(beans_x, 3)
 ```
 
-As previously done in the scatterplots (see Introduction - Exploratory Analysis - Distribution of Potential Predictor Variables Among Classes), the predictor variables must be normalized for algorithms such as KNN to work effectively. Since the variables vary greatly in scale, using them unaltered would lead to biased models that favor variables that exist over larger scales, [regardless of their actual importance](https://towardsai.net/p/data-science/how-when-and-why-should-you-normalize-standardize-rescale-your-data-3f083def38ff) in relation to the outcome variable.
+As previously done in the scatterplots (see Introduction section), the predictor variables must be normalized for algorithms such as KNN to work effectively. Since the variables vary greatly in scale, using them unaltered would lead to biased models that favor variables that exist over larger scales, [regardless of their actual importance](https://towardsai.net/p/data-science/how-when-and-why-should-you-normalize-standardize-rescale-your-data-3f083def38ff) in relation to the outcome variable.
 
 ```{r x_normalization}
 # for every column, apply the range formula onto each cell value:
@@ -810,10 +810,9 @@ With 2726 observations in the validation set and 10885 in the training set, the 
 
 ## Accuracy Metric
 
-The structure of the Dry Beans Dataset (multiple predictors coupled to a categorical outcome variable) lends itself to a classification problem; indeed, the original study by Koklu and Ozkan (2020) generated the dataset for the purpose of classifying Turkish bean varieties.
+For a classification model, some [commonly used performance metrics](https://www.analyticsvidhya.com/blog/2021/07/metrics-to-evaluate-your-classification-model-to-take-the-right-decisions/) include accuracy, confusion matrix, and F1 score. Due to the class imbalance within the Dry Bean Dataset (see Introduction section), training models on accuracy could lead to misleading results where high accuracy scores are produced through predictions that favor more common classes within the dataset at the expense of rarer ones; such a situation is known as the accuracy paradox, and is caused by the model making predictions based on the imbalanced data distribution alone rather than any connections to the predictors. 
 
-You are running a classification model, so it's either accuracy, confusion matrix, or F1 score (I guess...)
--F1 chosen over accuracy due to imbalance in data (despite the original paper's claims of even class dist.)
+[Common ways to combat the accuracy paradox](https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/) include taking larger samples, using a different performance metric, and resampling the dataset. The use of a different performance metric (namely, F1) was chosen for this project for two reasons: it does not involve alterations of the data through resampling techniques, and it is robust against class imbalances.
 
 -Tune with multiclass F1, then examine tuned results more closely with multi-class confusion matrix
 -> will need to do a custom function under trainControl
