@@ -730,7 +730,7 @@ beans_x <- as.matrix(beans_x)
 head(beans_x, 3)
 ```
 
-As previously done in the scatterplots (see Introduction - Exploratory Analysis - Distribution of Potential Predictor Variables Among Classes), the predictor variables must be normalized for algorithms such as KNN to work effectively. Since the variables vary greatly in scale, using them unaltered would lead to...
+As previously done in the scatterplots (see Introduction - Exploratory Analysis - Distribution of Potential Predictor Variables Among Classes), the predictor variables must be normalized for algorithms such as KNN to work effectively. Since the variables vary greatly in scale, using them unaltered would lead to biased models that favor variables that exist over larger scales, [regardless of their actual importance](https://towardsai.net/p/data-science/how-when-and-why-should-you-normalize-standardize-rescale-your-data-3f083def38ff) in relation to the outcome variable.
 
 ```{r x_normalization}
 # for every column, apply the range formula onto each cell value:
@@ -758,11 +758,14 @@ as.data.frame(beans_x) %>%
 ```
 
 ## Training and Validation
-Consider a 80-20 split for train/val
 
-Explain that 1) it's a common split and 2) one source listed it as a good ratio for your data size
+Simply using the entire dataset to train models incurs the risk of [overtraining](https://blog.roboflow.com/train-test-split/), where the model is well-fitted to the particular dataset used for training but generalizes poorly to new data of the same type. As such, the Dry Beans Dataset (both the predictor and outcome subsets) was split into two portions: a training set to train the models on, and a validation set simulating new data to evaluate the "real" performance of each model after training is complete.
 
-Note that in most online sources outside EdX, the comparison dataset used to gauge final model performance is called the "training set", and the comparison dataset used for tuning is the "vaidation set"; in short, the two terms are switched between EdX and outside sources. For the sake of consistency, this project will use the EdX naming conventions.
+Many different training:validation ratios have been proposed by machine learning resources online, with 90:10, 80:20, and 70:30 being especially common. Note that a trade-off exists between the sizes of training and validation sets due to the original dataset's finite size. While having a large pool of data for training is certainly beneficial as it reduces variance in the predicted outcomes, the validation dataset cannot get so small as to cause imprecise performance evaluation due to high variance in the [performance statistics](https://www.v7labs.com/blog/train-validation-test-set). 
+
+With 13611 observations/beans, the Dry Bean Dataset is fairly large and allows for a somewhat more generous allocation of data to the validation set; [Baeldung CS](https://www.baeldung.com/cs/train-test-datasets-ratio) suggests a 70:30 split for small datasets containing less than 10000 observations, with a 80:20 split being applicable for most cases. As such, a training:validation split of 80:20 was selected for this project.
+
+Note that in most online sources outside EdX, the comparison dataset used to gauge final model performance is called the "training set", and the comparison dataset used for tuning is the "vaidation set"; in short, the two terms are switched between EdX and outside sources. For the sake of consistency, this project uses the EdX naming conventions.
 
 ```{r data_split}
 # arbitrary seed for reproducibility
@@ -781,7 +784,7 @@ beans_y_train <- beans_y[-val_index,]
 beans_x_val <- beans_x[val_index,]
 beans_y_val <- beans_y[val_index,]
 ```
-Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not reply on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set. However, we must still make sure that both sets have all 7 bean classes.
+Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not rely on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set. However, we must still make sure that both sets have all 7 bean classes.
 
 ```{r val_set_dim}
 dim(beans_x_val)
@@ -791,6 +794,7 @@ as.data.frame(beans_y_val) %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
+**Table 3: Distribution of bean varieties within the validation subset, split from the original Dry Beans Dataset.**
 
 ```{r train_set_rows}
 dim(beans_x_train)
@@ -800,12 +804,14 @@ as.data.frame(beans_y_train) %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
-The dimensions (specifically the number of rows) add up, and both sets have all 7 bean classes.
+**Table 4: Distribution of bean varieties within the training subset, split from the original Dry Beans Dataset.**
 
-To facilitate the use of algorithms under caret's train function, the predictors and outcomes will be split
-
+With 2726 observations in the validation set and 10885 in the training set, the two portions add up to 13611 and no observations were lost during the split. Also, both sets have all 7 bean classes.
 
 ## Accuracy Metric
+
+The structure of the Dry Beans Dataset (multiple predictors coupled to a categorical outcome variable) lends itself to a classification problem; indeed, the original study by Koklu and Ozkan (2020) generated the dataset for the purpose of classifying Turkish bean varieties.
+
 You are running a classification model, so it's either accuracy, confusion matrix, or F1 score (I guess...)
 -F1 chosen over accuracy due to imbalance in data (despite the original paper's claims of even class dist.)
 
