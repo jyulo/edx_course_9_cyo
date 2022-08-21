@@ -821,20 +821,22 @@ The formula for precision is written as:
 $$Precision = \frac{TP}{TP + FP}$$
 Where $TP$ stands for True Positive predictions and $FP$ stands for False Positive predictions (actually negative, predicted as positive).
 
-And the forumla for recall is written as:
+And the formula for recall is written as:
 
 $$Recall = \frac{TP}{TP + FN}$$
 
 Where $FN$ stands for False Negatives, data instances that are actually positive but incorrectly predicted as negative.
 
-Since the Dry Beans Dataset contains more than two outcome classes, a simple positive/negative distinction must be expanded upon to derive [multiclass F1 scores](https://www.baeldung.com/cs/multi-class-f1-score)
+The F1 score formula then computes the harmonic mean as written below:
 
--Tune with multiclass F1, then examine tuned results more closely with multi-class confusion matrix
--> will need to do a custom function under trainControl
--> or set metric = F and set summary function = pr summary under traincontrol?
--> address issue of precision and recall: in the context of classifying beans, unless if large differences in value exist between bean varieties, false positives vs false negatives should not make too much of a difference
+$$F1 = 2\frac{(Precision)(Recall)}{Precision + Recall}$$
 
-(read paper, how to calc F1, and setting custom performance metric funcs in caret later)
+For a binary classification problem, one outcome class could be arbitrarily defined as the positive and the other, the negative. However, since the Dry Beans Dataset contains more than two outcome classes, the simple positive/negative distinction must be expanded upon to derive [multiclass F1 scores](https://www.baeldung.com/cs/multi-class-f1-score). Multiclass F1 is computed by averaging the F1 score for each outcome category; when computing the F1 score of each class, the class in question is considered a "positive" and all other classes "negatives". Both macro F1 (unweighted average) and micro F1 (average F1 weighted by the size of each class) are used as accuracy metrics; as the goal of choosing F1 scores in this project is to avoid biases favoring larger classes, macro F1 was chosen for turning the models. For the Dry Beans Dataset, the macro F1 formula is thus:
+
+$$mF1 = \frac{\Sigma_{class = 1}^7 F1_{class}}{7}$$
+Where there are 7 classes, each denoted as $class$ in the formula.
+
+Two functions, `macro_f1` and `f1`, were written; the former was designed to be a custom summary function under `caret::trainControl` and the later, a helper function for calculating individual F1 scores that together make up the macro F1.
 
 ```{r custom_multiclass_f1}
 # this func should take same args as a function called defaultSummary()
@@ -854,23 +856,24 @@ f1 <- function(predicted, actual) {
                       2 * (precision * recall) / (precision + recall))
   return(f1)
 }
-
 ```
 
-```{r test_matrix}
+As seen above, `macro_f1` (and all custom summary functions written for `caret::trainControl`) accepts a dataframe `data` with two columns: `obs` for observed outcomes, and `pred` for predicted outcomes. `f1` converts the dataframe into a [confusion matrix](https://machinelearningmastery.com/confusion-matrix-machine-learning/) tallying correct and incorrect predictions, where rows represent predicted outcomes and columns represent actual or observed outcomes. In such a matrix, a row sum is equal to the total predicted instances of a class, while a column sum represents the total actual instances of a class; the diagonal vector is then a series of correct predictions or True Positives.
+
+```{r test_matrix, include = F}
 test_table <- data.table(obs = c(1, 1, 2, 2, 2, 3, 4),
            pred = c(1, 1, 2, 2, 1, 3, 4))
 
 test_table
 ```
 
-```{r table_test}
+```{r table_test, include = F}
 as.matrix(table(test_table$pred, test_table$obs))
 ```
-```{r f1_test}
+```{r f1_test, include = F}
 f1(test_table$pred, test_table$obs) # okay so the f1 function returns something... and the right answers to boot!
 ```
-```{r macro_f1_test}
+```{r macro_f1_test, include = F}
 macro_f1(test_table) # the macro_f1 func as a whole works
 ```
 
