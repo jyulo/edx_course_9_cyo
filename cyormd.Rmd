@@ -878,7 +878,12 @@ macro_f1(test_table) # the macro_f1 func as a whole works
 ```
 
 ## Cross-Validation
-Consider 10-fold to minimize variance in accuracy metric... Holdout not used, as setting aside enough test data would shrink the already reduced train set too much. Note that with 10-fold, each fold would be 8 % (10 % of 80 %) of the full beans dataset
+
+Regardless of the algorithm used, [machine learning contains some randomness](https://machinelearningmastery.com/randomness-in-machine-learning/) on several levels. Sampling and splitting the dataset are random processes, as are the ordering of data instances fed into an algorithm and the iterative building of a predictive model using the algorithm. Setting random seeds before running each model imparts reproducibility, but the reality that each performance metric from a trained model is effectively a sampling statistic with variance attached remains.
+
+One common way to reduce variance in machine learning is [k-folds cross-validation](https://machinelearningmastery.com/k-fold-cross-validation/), a resampling technique that divides the training set into $k$ folds. For each fold, the remaining data (outside the fold) is used to build a model, with the model accuracy tested using the data within the fold. The performance metrics of all $k$ folds are then averaged to give a metric with lower variance; this is done for each hyperparameter (or combination of hyperparameters) tested during model tuning and training. [Common values](https://machinelearningmastery.com/how-to-configure-k-fold-cross-validation/) of $k$ include 3, 5, and 10; while higher values of $k$ are possible, 10 was chosen for this project as a compromise between reducing variance and avoiding overly long computational times.
+
+Note that with 10-fold cross-validation, each fold would be 8 % (10 % of 80 %) of the full beans dataset.
 
 ```{r xval_method}
 # 10-fold cross-validation
