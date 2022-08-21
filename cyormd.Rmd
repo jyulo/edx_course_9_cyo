@@ -812,7 +812,22 @@ With 2726 observations in the validation set and 10885 in the training set, the 
 
 For a classification model, some [commonly used performance metrics](https://www.analyticsvidhya.com/blog/2021/07/metrics-to-evaluate-your-classification-model-to-take-the-right-decisions/) include accuracy, confusion matrix, and F1 score. Due to the class imbalance within the Dry Bean Dataset (see Introduction section), training models on accuracy could lead to misleading results where high accuracy scores are produced through predictions that favor more common classes within the dataset at the expense of rarer ones; such a situation is known as the accuracy paradox, and is caused by the model making predictions based on the imbalanced data distribution alone rather than any connections to the predictors. 
 
-[Common ways to combat the accuracy paradox](https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/) include taking larger samples, using a different performance metric, and resampling the dataset. The use of a different performance metric (namely, F1) was chosen for this project for two reasons: it does not involve alterations of the data through resampling techniques, and it is robust against class imbalances.
+[Common ways to combat the accuracy paradox](https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/) include taking larger samples, using a different performance metric, and resampling the dataset. For the choice of accuracy metric, the F1 score was chosen for this project for two reasons: it does not involve alterations of the data through resampling techniques, and it is robust against class imbalances.
+
+The F1 score is the [harmonic mean](https://www.investopedia.com/terms/h/harmonicaverage.asp) of two metrics: precision (percentage of true positive predictions among all positive predictions) and recall (percentage of true positive predictions among actual positives).
+
+The formula for precision is written as:
+
+$$Precision = \frac{TP}{TP + FP}$$
+Where $TP$ stands for True Positive predictions and $FP$ stands for False Positive predictions (actually negative, predicted as positive).
+
+And the forumla for recall is written as:
+
+$$Recall = \frac{TP}{TP + FN}$$
+
+Where $FN$ stands for False Negatives, data instances that are actually positive but incorrectly predicted as negative.
+
+Since the Dry Beans Dataset contains more than two outcome classes, a simple positive/negative distinction must be expanded upon to derive [multiclass F1 scores](https://www.baeldung.com/cs/multi-class-f1-score)
 
 -Tune with multiclass F1, then examine tuned results more closely with multi-class confusion matrix
 -> will need to do a custom function under trainControl
