@@ -614,7 +614,7 @@ To identify promising combinations, the variables were roughly grouped into six 
 
 * Group 5 ("Seker high, Bombay low"): Shape Factor 2 was the only variable assigned under this group.
 
-Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both have relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter has large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter has large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (Equivalent Diameter divided by Major Axis length), Shape Factor 2 (Minimum Axis length divided by Area), and Shape Factor 3 (which is derived from Area and Major Axis length). Meanwhile, Perimeter is compatible with Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3. Included below are five scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
+To conserve memory, Group 0 variables were removed via the following code:
 
 ```{r trim_group0}
 # trim off group 0 ("don't bother") variables, which will not be considered further
@@ -622,6 +622,7 @@ beans <-
   subset(beans, select = -c(Extent, Solidity, ShapeFactor4))
 head(beans, 3)
 ```
+Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both have relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter has large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter has large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (Equivalent Diameter divided by Major Axis length), Shape Factor 2 (Minimum Axis length divided by Area), and Shape Factor 3 (which is derived from Area and Major Axis length). Meanwhile, Perimeter is compatible with Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3. Included below are five scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
 
 ```{r Perim_AR}
 beans %>%
@@ -902,7 +903,13 @@ Many algorithms are available in the `caret` package for multiclass classificati
 
 ### Logistic Regression
 
+[Logistic regression](https://machinelearningmastery.com/logistic-regression-for-machine-learning/) is a type of regression model used to find predictor-outcome correlations (and make predictions from them) in cases where the outcome/dependent variable is discrete rather than continuous. 
 
+$$$$
+
+$$$$
+
+Since the `glm` method in `caret::train` (the usual method for training logistic regression models) is suited for binary classification only, the method `multinom` was used instead. `multinom` allows for the tuning of decay, [a regularization term](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/) that penalizes variables with less contributions to the model. As only pairs of variables were selected and fed into the logistic regression algorithm, decay was set to 0.
 
 ### K-Nearest Neighbors (KNN)
 
@@ -926,6 +933,10 @@ Many algorithms are available in the `caret` package for multiclass classificati
 -log reg, KNN, DT, RF (4 models) then...
 
 -For DT, RF: use a mix of 3 predictors (Perim, EQ, one more out of AR/Comp/SF3/SF2, depending on which one performed best in KNN)
+
+### Plans to Streamline the Testing Process
+
+
 
 # Results
 
