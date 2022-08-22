@@ -931,27 +931,6 @@ Like in Logistic regression, the five pairs of predictors form figures 16-20 wer
 
 ### Random Forest
 
-
--models for categorical classification (KNN, SVD, kmeans DT, RF?) -> might just end up with all 5 models being tuned for the first three
--> you don't have all year; just do log. reg for model 1 and one of the above for model 2, then maybe one more if you realy want.
-
--problem types: multiclass classification (assigning instances into three or more classes), supervised (dataset already labeled with classes)
--kmeans is unsupervised, so probably not using that
--KNN sounds ideal for your purposes
-
--three models: log reg, KNN, SVD (last one is like a bonus) -> finish first two quick so that you have time to do the third
--SVD is unsupervised... Maybe use SVM?
--Or have Decision Trees/Random Forests be the third model?
--If tree-based, will need multiple (non-redundant) predictors (the 5 categories would still help with variable combination; will exclude things from group 0 when choosing)
-
--log reg, KNN, DT, RF (4 models) then...
-
--For DT, RF: use a mix of 3 predictors (Perim, EQ, one more out of AR/Comp/SF3/SF2, depending on which one performed best in KNN)
-
-### Plans to Streamline the Testing Process
-
-
-
 # Results
 
 ## Model 1: Logistic Regression
