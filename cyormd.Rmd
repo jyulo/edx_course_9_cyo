@@ -903,11 +903,12 @@ Many algorithms are available in the `caret` package for multiclass classificati
 
 ### Logistic Regression
 
-[Logistic regression](https://machinelearningmastery.com/logistic-regression-for-machine-learning/) is a type of regression model used to find predictor-outcome correlations (and make predictions from them) in cases where the outcome/dependent variable is discrete rather than continuous. 
+Logistic regression is a type of regression model used to find predictor-outcome correlations (and make predictions from them) in cases where the outcome/dependent variable is discrete rather than continuous. As its name suggests, logistic regression differs from linear regression in its [use of the logistic function]((https://machinelearningmastery.com/logistic-regression-for-machine-learning/), the basic form of which is written below:
 
-$$$$
+$$f(x) = \frac{L}{1 + e^{-k(x-x_0)}}$$
+This basic logistic function creates a sigmoid curve whose $f(x)$ value goes from approaching 0 to approaching $L$, with an inflection point at $x = x_0$. When applied to regression, the formula becomes this:
 
-$$$$
+$$y = \frac{}{}$$
 
 Since the `glm` method in `caret::train` (the usual method for training logistic regression models) is suited for binary classification only, the method `multinom` was used instead. `multinom` allows for the tuning of decay, [a regularization term](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/) that penalizes variables with less contributions to the model. As only pairs of variables were selected and fed into the logistic regression algorithm, decay was set to 0.
 
