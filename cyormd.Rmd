@@ -1191,7 +1191,7 @@ KNN performed better than logistic regression in all 5 factor combinations, but 
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0, 0.1, 0.01)
+cps <- seq(0.01, 0.1, 0.01)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3a <-
@@ -1211,7 +1211,7 @@ model_3a$results
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0, 0.1, 0.01)
+cps <- seq(0.01, 0.1, 0.01)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3b <-
@@ -1229,7 +1229,7 @@ model_3b$results
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0, 0.1, 0.01)
+cps <- seq(0.01, 0.1, 0.01)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3c <-
@@ -1247,7 +1247,7 @@ model_3c$results
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0, 0.1, 0.01)
+cps <- seq(0.01, 0.1, 0.01)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3d <-
