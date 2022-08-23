@@ -965,6 +965,9 @@ model_1a <-
 
 model_1a$results
 ```
+**Table 4: Macro F1 score of Model 1a (Logistic Regression from Perimeter and Aspect Ratio).**
+
+Logistic Regression using Perimeter and Aspect Ratio returned a macro F1 score of `0.8857739`, with a standard deviation of `0.01525563`.
 
 ```{r model1_Perimeter_Compactness}
 # arbitrary seed for reproducibility
@@ -983,7 +986,12 @@ model_1b <-
         metric = 'mF1') # my custom metric
 
 model_1b$results
+
 ```
+**Table 5: Macro F1 score of Model 1b (Logistic Regression from Perimeter and Compactness).**
+
+Logistic Regression using Perimeter and Compactness returned a macro F1 score of `0.8903862	`, with a standard deviation of `0.01538134`.
+
 ```{r model1_Perimeter_ShapeFactor2}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
@@ -1002,6 +1010,10 @@ model_1c <-
 
 model_1c$results
 ```
+**Table 6: Macro F1 score of Model 1c (Logistic Regression from Perimeter and Shape Factor 2).**
+
+Logistic Regression using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8974943`, with a standard deviation of `0.009579192`.
+
 ```{r model1_Perimeter_ShapeFactor3}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
@@ -1020,6 +1032,10 @@ model_1d <-
 
 model_1d$results
 ```
+**Table 7: Macro F1 score of Model 1d (Logistic Regression from Perimeter and Shape Factor 3).**
+
+Logistic Regression using Perimeter and Shape Factor 2 returned a macro F1 score of `0.890064`, with a standard deviation of `0.01603693`.
+
 ```{r model1_EquivDiameter_AspectRation}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
@@ -1038,6 +1054,11 @@ model_1e <-
 
 model_1e$results
 ```
+**Table 8: Macro F1 score of Model 1e (Logistic Regression from Perimeter and Shape Factor 3).**
+
+Logistic Regression using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8820995`, with a standard deviation of `0.01410419`.
+
+Out of all the 5 training results, Model 1c (Perimeter and Shape Factor 2) returned the highest macro F1 score for Logistic Regression; it was thus chosen as the representative model for the Logistic Regression algorithm for further comparisons.
 
 ## Model 2: K-Nearest Neighbors (KNN)
 
@@ -1062,10 +1083,17 @@ model_2a <-
 # -> using the names() func to name the output object of macro_f1 did the trick
 ggplot(model_2a, highlight = T)
 ```
+**Figure 21: Training macro F1 scores for Model 2a (Perimeter and Aspect Ratio) with 10-fold cross validation, over a range of k from 0 to 100.**
+
+`k = 90` (within the diamon label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1.
+
 ```{r model_2a_besttune}
 model_2a$bestTune # k = 90 is best for this one
 model_2a$results[90,]
 ```
+**Table 9: Macro F1 score of Model 2a (KNN from Perimeter and Aspect Ratio).**
+
+KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8820995`, with a standard deviation of `0.01410419`.
 
 ```{r model2_Perimeter_Compactness}
 # arbitrary seed for reproducibility
@@ -1268,7 +1296,7 @@ model_3d$results
 ```
 ```{r four_factor_tree}
 plot(model_3d$finalModel)
-text(model_3d$finalModel, srt = 60, cex = 0.5)
+text(model_3d$finalModel, cex = 0.5)
 ```
 
 
