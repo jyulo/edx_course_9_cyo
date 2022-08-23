@@ -986,7 +986,6 @@ model_1b <-
         metric = 'mF1') # my custom metric
 
 model_1b$results
-
 ```
 **Table 5: Macro F1 score of Model 1b (Logistic Regression from Perimeter and Compactness).**
 
@@ -1034,7 +1033,7 @@ model_1d$results
 ```
 **Table 7: Macro F1 score of Model 1d (Logistic Regression from Perimeter and Shape Factor 3).**
 
-Logistic Regression using Perimeter and Shape Factor 2 returned a macro F1 score of `0.890064`, with a standard deviation of `0.01603693`.
+Logistic Regression using Perimeter and Shape Factor 3 returned a macro F1 score of `0.890064`, with a standard deviation of `0.01603693`.
 
 ```{r model1_EquivDiameter_AspectRation}
 # arbitrary seed for reproducibility
@@ -1054,11 +1053,9 @@ model_1e <-
 
 model_1e$results
 ```
-**Table 8: Macro F1 score of Model 1e (Logistic Regression from Perimeter and Shape Factor 3).**
+**Table 8: Macro F1 score of Model 1e (Logistic Regression from Equivalent Diameter and Aspect Ratio).**
 
-Logistic Regression using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8820995`, with a standard deviation of `0.01410419`.
-
-Out of all the 5 training results, Model 1c (Perimeter and Shape Factor 2) returned the highest macro F1 score for Logistic Regression; it was thus chosen as the representative model for the Logistic Regression algorithm for further comparisons.
+Logistic Regression using Equivalent Diameter and Aspect Ratio returned a macro F1 score of `0.8820995`, with a standard deviation of `0.01410419`.
 
 ## Model 2: K-Nearest Neighbors (KNN)
 
@@ -1085,7 +1082,7 @@ ggplot(model_2a, highlight = T)
 ```
 **Figure 21: Training macro F1 scores for Model 2a (Perimeter and Aspect Ratio) with 10-fold cross validation, over a range of k from 0 to 100.**
 
-`k = 90` (within the diamon label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1.
+`k = 90` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1.
 
 ```{r model_2a_besttune}
 model_2a$bestTune # k = 90 is best for this one
@@ -1113,12 +1110,17 @@ model_2b <-
 
 ggplot(model_2b, highlight = T)
 ```
+**Figure 22: Training macro F1 scores for Model 2b (Perimeter and Compactness) with 10-fold cross validation, over a range of k from 0 to 100.**
+
+`k = 86` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1.
 
 ```{r model_2b_besttune}
 model_2b$bestTune # k=86
 model_2b$results[86,]
 ```
+**Table 10: Macro F1 score of Model 2b (KNN from Perimeter and Compactness).**
 
+KNN using Perimeter and Compactness returned a macro F1 score of `0.8908325`, with a standard deviation of `0.01170298`.
 
 ```{r model2_Perimeter_ShapeFactor2}
 # arbitrary seed for reproducibility
@@ -1138,11 +1140,17 @@ model_2c <-
 
 ggplot(model_2c, highlight = T)
 ```
+**Figure 23: Training macro F1 scores for Model 2c (Perimeter and Shape Factor 2) with 10-fold cross validation, over a range of k from 0 to 100.**
+
+`k = 49` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1. Unlike with the previous two KNN models, mF1 scores exhibited a slight and gradula decrease after `k = 49`.
 
 ```{r model_2c_besttune}
 model_2c$bestTune # k = 49
 model_2c$results[49,]
 ```
+**Table 11: Macro F1 score of Model 2c (KNN from Perimeter and Shape Factor 2).**
+
+KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.9000603`, with a standard deviation of `0.009347538`.
 
 ```{r model2_Perimeter_ShapeFactor3}
 # arbitrary seed for reproducibility
@@ -1162,11 +1170,17 @@ model_2d <-
 
 ggplot(model_2d, highlight = T)
 ```
+**Figure 24: Training macro F1 scores for Model 2d (Perimeter and Shape Factor 3) with 10-fold cross validation, over a range of k from 0 to 100.**
+
+`k = 79` (within the diamond label) resulted in the highest macro F1 score. Unlike with the previous KNN models, the plateauing of mF1 values occurred slightly later at a `k` value of 30-40.
 
 ```{r model_2d_besttune}
 model_2d$bestTune # k=79
 model_2d$results[79,]
 ```
+**Table 12: Macro F1 score of Model 2d (KNN from Perimeter and Shape Factor 3).**
+
+KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8907138`, with a standard deviation of `0.01205434`.
 
 ```{r model2_EquivDiameter_AspectRation}
 # arbitrary seed for reproducibility
@@ -1186,11 +1200,17 @@ model_2e <-
 
 ggplot(model_2e, highlight = T)
 ```
+**Figure 25: Training macro F1 scores for Model 2e (Equivalent Diameter and Aspect Ratio) with 10-fold cross validation, over a range of k from 0 to 100.**
+
+`k = 74` (within the diamond label) resulted in the highest macro F1 score, although most mF1 values after `k = 25` are similarly high.
 
 ```{r model_2e_besttune}
 model_2e$bestTune # k=74
 model_2e$results[74,]
 ```
+**Table 13: Macro F1 score of Model 2e (KNN from Equivalent Diameter and Aspect Ratio).**
+
+KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.884044`, with a standard deviation of `0.01043572`.
 
 ## Comparing Two-Variable Model Results
 
@@ -1214,11 +1234,13 @@ models_1_2 <-
              k = c(90, 86, 49, 79, 74))
 models_1_2
 ```
-KNN performed better than logistic regression in all 5 factor combinations, but not by much. In both models, Perimeter and Shape Factor 2 produced the best macro F1 scores at `models_1_2[3,3]`. For the next models, more variables will be included on top of those two to see if the macro F1 score can be improved further...
+**Table 14: A summary of macro F1 values from all five of the predictor pairs tested for both Logistic Regression and KNN, plus the k value used to obtain the KNN results.**
+
+KNN performed better than logistic regression in all 5 factor combinations, but not by much. In both models, Perimeter and Shape Factor 2 produced the best macro F1 scores (`0.9000603` for KNN, `0.8974943` for Logistic Regression). For the Decision Tree models, more variables will be included on top of those two to see if the macro F1 score can be improved further.
 
 ## Model 3: Decision Trees
 
--Start with Peri, SF2 (from models 1, 2)
+To start off the Decision Tree models, the predictor combination of Perimeter and Shape Factor 2 (which performed optimal results with Logistic Regression and KNN) was used to tune and build a Decision Tree model.
 
 ```{r model3_Perimeter_ShapeFactor2}
 # arbitrary seed for reproducibility
@@ -1238,8 +1260,11 @@ model_3a <-
 
 model_3a$results
 ```
+**Table 15: Tuning results for Model 3a (Decision Tree from Perimeter and Shape Factor 2), with Complexity Parameters, macro F1 values, and standard deviations.**
 
--Then add more variables (on paper, make a compatibility matrix of all non-group-0 variables based on formulae) -> choose good ones that are also compatible
+For Model 3a (Decision Tree using Perimeter and Shape Factor 2), a CP of `0.01` produced the highest macro F1 (`0.8380341`) with a standard deviation of `0.016059859	`.
+
+
 ```{r model3_Perimeter_ShapeFactor2_MajorAxisLength}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
