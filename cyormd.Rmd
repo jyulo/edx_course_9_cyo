@@ -919,13 +919,15 @@ The logistic regression function is made linear again, as shown below:
 $$g(y) = g(Pr(y = + | X = x)) = b_0 + b_1$$
 Where $g(y)$ is the natural log of the [odds ratio](https://psychscenehub.com/psychpedia/odds-ratio-2/), for the probability of $y$ being class $+$ given $X = x$.
 
-For this project, five pairs of predictors (the ones visualized on the scatterplots from figures 16-20, in the Introduction section) will be used build models using logistic regression, with the highest-performing one being the representative for the algorithm. As mentioned in the introduction section, the five pairs were chosen due to their ability to complement each others' lack of variance among certain classes, and lack of any redundancy in their derivation which would result in multicollinearity.
+For this project, five pairs of predictors (the ones visualized on the scatterplots from figures 16-20, in the Introduction section) will be used build models using logistic regression to circumvent the curse of dimensionality, with the highest-performing one being the representative for the algorithm. As mentioned in the introduction section, the five pairs were chosen due to their ability to complement each others' lack of variance among certain classes, and lack of any redundancy in their derivation which would result in multicollinearity.
 
 Since the `glm` method in `caret::train` (the usual method for training logistic regression models) is suited for binary classification only, the method `multinom` was used instead. `multinom` allows for the tuning of decay, [a regularization term](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/) that penalizes variables with less contributions to the model. As only pairs of variables were selected and fed into the logistic regression algorithm, decay was set to 0.
 
 ### K-Nearest Neighbors (KNN)
 
-Like in Logistic regression, the five pairs of predictors form figures 16-20 were used to build KNN models for similar reasons.
+[The KNN algorithm](https://learn.g2.com/k-nearest-neighbor) is a classification technique based on processes that are intuitive to understand. For each unclassified data point, the algorithm examines a set amount (the namesake $k$; not to be confused with the one from k-folds cross-validation) of nearest classified data points, before classifying the data point into the most represented class among the $k$ nearest neighbors; for instance, if $k = 10$ and Seker makes up 7 of the 10 neighbors, the new data point would be classified as Seker. [Euclidean distance](https://www.cuemath.com/euclidean-distance-formula/) is the default metric for neighbor "nearness" (and the one used in this project), although other distance metrics exist.
+
+For this project, the method `knn` under `caret::train` was used to train all KNN-based models. Like in Logistic regression, the five pairs of predictors from figures 16-20 were used to avoid the curse of dimensionality. $k$ itself was the only hyperparameter to be tuned, and an arbitrary range of 1 to 100 was used in an attempt to capture the optimal $k$ over a large span of possible values.
 
 ### Decision Tree
 
