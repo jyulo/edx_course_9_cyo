@@ -931,6 +931,10 @@ For this project, the method `knn` under `caret::train` was used to train all KN
 
 ### Decision Tree
 
+[The Decision Tree algorithm](https://www.kdnuggets.com/2020/01/decision-tree-algorithm-explained.html) works by randomly selecting a series of thresholds (for instance, "is normalized perimeter greater than 0.5?") to partition data by, selecting the split (called a node) that leads to maximum homogeneity (uniformity of outcome class) among the branches, and recursively split the data with more sub-nodes and branches until no more sub-nodes could be made (either because some constraint is met or the sub-node has only one data point left). 
+
+For this project, the method `rpart` under `caret::train` was used. [The only allowed tuning parameter](https://topepo.github.io/caret/available-models.html) under the `caret` version of `rpart` is [Complexity Parameter](https://www.learnbymarketing.com/tutorials/rpart-decision-trees-in-r/) (CP), a measure of how much improvement (in terms of reducing incorrect classifications) must be achieved for a node to be made. An arbitrary CP range of 0.01 to 0.1 (in intervals of 0.01) was used in an attempt to capture the optimal CP over a large span; CP = 0 was avoided to avoid overfitting caused by unrestrained node splitting, while 0.01 was selected as the low end of the range since it is the [default CP value](https://www.rdocumentation.org/packages/rpart/versions/4.1.16/topics/rpart.control) for the standalone `rpart` function.
+
 ### Random Forest
 
 # Results
