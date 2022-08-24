@@ -1300,7 +1300,7 @@ cps <- seq(0.01, 0.1, 0.01)
 # using the y ~ x formula seems to keep throwing errors
 model_3c <-
   train(y = beans_y_train$Class,
-        x =  beans_x_train[,c(2,12,6)], # col 2 for perimeter, 12 for SF2, 3 for Eccentricity
+        x =  beans_x_train[,c(2,12,6)], # col 2 for perimeter, 12 for SF2, 6 for Eccentricity
         method = 'rpart',
         tuneGrid = data.frame(cp = cps),
         trControl = tenfold_xval, # use your 10-fold X-val 
