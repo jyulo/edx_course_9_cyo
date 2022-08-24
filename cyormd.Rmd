@@ -933,7 +933,7 @@ For this project, the method `knn` under `caret::train` was used to train all KN
 
 [The Decision Tree algorithm](https://www.kdnuggets.com/2020/01/decision-tree-algorithm-explained.html) works by randomly selecting a series of thresholds (for instance, "is normalized perimeter greater than 0.5?") to partition data by, selecting the split (called a node) that leads to maximum homogeneity (uniformity of outcome class) within each branch, and recursively split the data with more sub-nodes and branches until no more sub-nodes could be made (either because some constraint is met or the sub-node has only one data point left). 
 
-For this project, the method `rpart` under `caret::train` was used. [The only allowed tuning parameter](https://topepo.github.io/caret/available-models.html) under the `caret` version of `rpart` is [Complexity Parameter](https://www.learnbymarketing.com/tutorials/rpart-decision-trees-in-r/) (CP), a measure of how much improvement (in terms of reducing incorrect classifications) must be achieved for a node to be made. An arbitrary CP range of 0.01 to 0.1 (in intervals of 0.01) was used in an attempt to capture the optimal CP over a large span; CP = 0 was avoided to avoid overfitting caused by unrestrained node splitting, while 0.01 was selected as the low end of the range since it is the [default CP value](https://www.rdocumentation.org/packages/rpart/versions/4.1.16/topics/rpart.control) for the standalone `rpart` function. Unlike with logistic regression and KNN, additional compatible variables were added on top of the best-performing pair from the previous two algorithms to examine the performance of higher-dimensional models.
+For this project, the method `rpart` under `caret::train` was used. [The only allowed tuning parameter](https://topepo.github.io/caret/available-models.html) under the `caret` version of `rpart` is [Complexity Parameter](https://www.learnbymarketing.com/tutorials/rpart-decision-trees-in-r/) (CP), a measure of how much improvement (in terms of reducing incorrect classifications) must be achieved for a node to be made. An arbitrary CP range of 0.001 to 0.050 (in intervals of 0.001) was used to explore smaller CP values after initial test runs found that results were suboptimal at higher CP values; CP = 0 was avoided to avoid overfitting caused by unrestrained node splitting, while 0.01 was selected as the low end of the range since it is the [default CP value](https://www.rdocumentation.org/packages/rpart/versions/4.1.16/topics/rpart.control) for the standalone `rpart` function. Unlike with logistic regression and KNN, additional compatible variables were added on top of the best-performing pair from the previous two algorithms to examine the performance of higher-dimensional models.
 
 ### Random Forest
 
@@ -941,7 +941,7 @@ Since decision trees often fit the training data rather closely, they are natura
 
 For this project, [the method](https://cran.r-project.org/web/packages/ranger/ranger.pdf) `ranger` under `caret::train` was used for a faster creation of random forests. The tuning hyperparameters consist of `mtry` (how many features to consider at each split; this project tried a range from 1 to all the predictors available), `splitrule` (the homogeneity metric to evaluate goodness of split; [Gini impurity](https://www.analyticsvidhya.com/blog/2020/06/4-ways-split-decision-tree/) was chosen as the classification standard for `ranger`), and `min.node.size` (the minimal number of data points each node must have; an arbitrary range of 1-40 was chosen for wide coverage).
 
-Despite being designed to run random forests faster than most other algorithms, `ranger` still consumed large amounts of time due to the 10-fold cross-validation and large amount of trees making the computational volume extremely large for the laptop used in this project. Due to practical reasons, a threshold of 2 hours (considered the maximum acceptable wait time, given the situation of this project's author at the time of its creation) was set for running all lines code up to and including the Random Forest. Only one combination (the best-performing one from the Decision Tree algorithm) of predictors were used, and the number of independent trees set to 250 (more trees were attempted, but resulted in run times exceeding 2 hours unless if the ranges of tuning hyperparameters were narrowed at the risk of possibly omitting optimal combinations).
+Despite being designed to run random forests faster than most other algorithms, `ranger` still consumed large amounts of time due to the 10-fold cross-validation and large amount of trees making the computational volume extremely large for the laptop used in this project. Due to practical reasons, a threshold of 2 hours (considered the maximum acceptable wait time, given the situation of this project's author at the time of its creation) was set for the Random Forest. Only one combination (the best-performing one from the Decision Tree algorithm) of predictors were used, and the number of independent trees set to 250 (more trees were attempted, but resulted in run times exceeding 2 hours unless if the ranges of tuning hyperparameters were narrowed at the risk of possibly omitting optimal combinations).
 
 # Results
 
@@ -969,7 +969,7 @@ model_1a$results
 
 Logistic Regression using Perimeter and Aspect Ratio returned a macro F1 score of `0.8857739`, with a standard deviation of `0.01525563`.
 
-```{r model1_Perimeter_Compactness}
+```{r model1_Perimeter_Compactness, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -991,7 +991,7 @@ model_1b$results
 
 Logistic Regression using Perimeter and Compactness returned a macro F1 score of `0.8903862	`, with a standard deviation of `0.01538134`.
 
-```{r model1_Perimeter_ShapeFactor2}
+```{r model1_Perimeter_ShapeFactor2, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1013,7 +1013,7 @@ model_1c$results
 
 Logistic Regression using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8974943`, with a standard deviation of `0.009579192`.
 
-```{r model1_Perimeter_ShapeFactor3}
+```{r model1_Perimeter_ShapeFactor3, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1035,7 +1035,7 @@ model_1d$results
 
 Logistic Regression using Perimeter and Shape Factor 3 returned a macro F1 score of `0.890064`, with a standard deviation of `0.01603693`.
 
-```{r model1_EquivDiameter_AspectRation}
+```{r model1_EquivDiameter_AspectRation, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1092,7 +1092,7 @@ model_2a$results[90,]
 
 KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8820995`, with a standard deviation of `0.01410419`.
 
-```{r model2_Perimeter_Compactness}
+```{r model2_Perimeter_Compactness, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1114,7 +1114,7 @@ ggplot(model_2b, highlight = T)
 
 `k = 86` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1.
 
-```{r model_2b_besttune}
+```{r model_2b_besttune, echo = F}
 model_2b$bestTune # k=86
 model_2b$results[86,]
 ```
@@ -1122,7 +1122,7 @@ model_2b$results[86,]
 
 KNN using Perimeter and Compactness returned a macro F1 score of `0.8908325`, with a standard deviation of `0.01170298`.
 
-```{r model2_Perimeter_ShapeFactor2}
+```{r model2_Perimeter_ShapeFactor2, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1144,7 +1144,7 @@ ggplot(model_2c, highlight = T)
 
 `k = 49` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1. Unlike with the previous two KNN models, mF1 scores exhibited a slight and gradula decrease after `k = 49`.
 
-```{r model_2c_besttune}
+```{r model_2c_besttune, echo = F}
 model_2c$bestTune # k = 49
 model_2c$results[49,]
 ```
@@ -1152,7 +1152,7 @@ model_2c$results[49,]
 
 KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.9000603`, with a standard deviation of `0.009347538`.
 
-```{r model2_Perimeter_ShapeFactor3}
+```{r model2_Perimeter_ShapeFactor3, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1174,7 +1174,7 @@ ggplot(model_2d, highlight = T)
 
 `k = 79` (within the diamond label) resulted in the highest macro F1 score. Unlike with the previous KNN models, the plateauing of mF1 values occurred slightly later at a `k` value of 30-40.
 
-```{r model_2d_besttune}
+```{r model_2d_besttune, echo = F}
 model_2d$bestTune # k=79
 model_2d$results[79,]
 ```
@@ -1182,7 +1182,7 @@ model_2d$results[79,]
 
 KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8907138`, with a standard deviation of `0.01205434`.
 
-```{r model2_EquivDiameter_AspectRation}
+```{r model2_EquivDiameter_AspectRation, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1204,7 +1204,7 @@ ggplot(model_2e, highlight = T)
 
 `k = 74` (within the diamond label) resulted in the highest macro F1 score, although most mF1 values after `k = 25` are similarly high.
 
-```{r model_2e_besttune}
+```{r model_2e_besttune, echo = F}
 model_2e$bestTune # k=74
 model_2e$results[74,]
 ```
@@ -1247,7 +1247,7 @@ To start off the Decision Tree models, the predictor combination of Perimeter an
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.01, 0.1, 0.01)
+cps <- seq(0.001, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3a <-
@@ -1268,12 +1268,12 @@ The subsequent Decision Trees were run with additional predictors included on to
 
 Below are three more Decision trees; two of them have one additional predictor (Major Axis Length or Eccentricity), while the third one has four (both Major Axis Length and Eccentricity on top of Perimeter and SF2).
 
-```{r model3_Perimeter_ShapeFactor2_MajorAxisLength}
+```{r model3_Perimeter_ShapeFactor2_MajorAxisLength, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.01, 0.1, 0.01)
+cps <- seq(0.001, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3b <-
@@ -1290,12 +1290,12 @@ model_3b$results
 
 For Model 3b, a CP of `0.01` produced the highest macro F1 (`0.8338241`) with a standard deviation of `0.01406433`.
 
-```{r model3_Perimeter_ShapeFactor2_Eccentricity}
+```{r model3_Perimeter_ShapeFactor2_Eccentricity, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.01, 0.1, 0.01)
+cps <- seq(0.001, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3c <-
@@ -1312,12 +1312,12 @@ model_3c$results
 
 For Model 3c, CPs from `0.01` to `0.04` produced the highest macro F1 (`0.8652256`) with a standard deviation of `0.009236266`. Running the code `'model_3c$bestTune'` revealed that R selected `cp = 0.04` as the optimal Complexity Parameter.
 
-```{r model3_Perimeter_ShapeFactor2_MajorAxisLEngth_Eccentricity}
+```{r model3_Perimeter_ShapeFactor2_MajorAxisLEngth_Eccentricity, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.01, 0.1, 0.01)
+cps <- seq(0.001, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3d <-
@@ -1336,7 +1336,7 @@ For Model 3d, CPs from `0.01` to `0.06` produced the highest macro F1 (`0.854930
 
 The trained Decision Tree with the best performance was thus Model 3c with a CP of `0.01`. Below is a visualization of the tree:
 
-```{r four_factor_tree}
+```{r three_factor_tree}
 rpart.plot(model_3c$finalModel)
 ```
 
