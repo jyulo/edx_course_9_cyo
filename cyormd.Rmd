@@ -933,7 +933,7 @@ For this project, the method `knn` under `caret::train` was used to train all KN
 
 [The Decision Tree algorithm](https://www.kdnuggets.com/2020/01/decision-tree-algorithm-explained.html) works by randomly selecting a series of thresholds (for instance, "is normalized perimeter greater than 0.5?") to partition data by, selecting the split (called a node) that leads to maximum homogeneity (uniformity of outcome class) within each branch, and recursively split the data with more sub-nodes and branches until no more sub-nodes could be made (either because some constraint is met or the sub-node has only one data point left). 
 
-For this project, the method `rpart` under `caret::train` was used. [The only allowed tuning parameter](https://topepo.github.io/caret/available-models.html) under the `caret` version of `rpart` is [Complexity Parameter](https://www.learnbymarketing.com/tutorials/rpart-decision-trees-in-r/) (CP), a measure of how much improvement (in terms of reducing incorrect classifications) must be achieved for a node to be made. An arbitrary CP range of 0.001 to 0.050 (in intervals of 0.001) was used to explore smaller CP values (the [default CP value](https://www.rdocumentation.org/packages/rpart/versions/4.1.16/topics/rpart.control) is 0.01) for the standalone `rpart` function) after initial test runs found that results were suboptimal at higher CP values; CP = 0 was avoided to avoid overfitting caused by unrestrained node splitting. Unlike with logistic regression and KNN, additional compatible variables were added on top of the best-performing pair from the previous two algorithms to examine the performance of higher-dimensional models.
+For this project, the method `rpart` under `caret::train` was used. [The only allowed tuning parameter](https://topepo.github.io/caret/available-models.html) under the `caret` version of `rpart` is [Complexity Parameter](https://www.learnbymarketing.com/tutorials/rpart-decision-trees-in-r/) (CP), a measure of how much improvement (in terms of reducing incorrect classifications) must be achieved for a node to be made. A CP range of 0.005 to 0.050 (in intervals of 0.001) was used to explore smaller CP values (the [default CP value](https://www.rdocumentation.org/packages/rpart/versions/4.1.16/topics/rpart.control) is 0.01) for the standalone `rpart` function) after initial test runs found that results were suboptimal at higher CP values; CP values below 0.005 were avoided to avoid overfitting (and overplotted trees too dense for R to visualize) caused by unrestrained node splitting. Unlike with logistic regression and KNN, additional compatible variables were added on top of the best-performing pair from the previous two algorithms to examine the performance of higher-dimensional models.
 
 ### Random Forest
 
@@ -1247,7 +1247,7 @@ To start off the Decision Tree models, the predictor combination of Perimeter an
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.001, 0.050, 0.001)
+cps <- seq(0.005, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3a <-
@@ -1262,7 +1262,7 @@ model_3a$results
 ```
 **Table 15: Tuning results for Model 3a (Decision Tree from Perimeter and Shape Factor 2), with Complexity Parameters, macro F1 values, and standard deviations.**
 
-For Model 3a (Decision Tree using Perimeter and Shape Factor 2), a CP of `0.01` produced the highest macro F1 (`0.8380341`) with a standard deviation of `0.016059859	`.
+For Model 3a (Decision Tree using Perimeter and Shape Factor 2), a CP of `0.005` produced the highest macro F1 (`0.8559795`) with a standard deviation of `0.013672321	`.
 
 The subsequent Decision Trees were run with additional predictors included on top of Perimeter and Shape Factor 2. As mentioned in the Introduction section, perdictors whose formulae involve $P$ (Perimeter), $l$ (Minor Axis Length), and $A$ (Area) will cause multicollinearity when used with Perimeter and Shape Factor 2 (SF2 being derived from dividing $l$ by $A$). Referring back to the original paper by Koklu and Ozkan (2020), only Major Axis Length ($L$) and Eccentricity were compatible as additional predictors. Compactness is derived from Equivalent Diameter which contains Area, while Convex Area is defined in relation to Area despite having no formula listed; the remaining perdictors all contained either one or multiple of $P$, $l$, and $A$.
 
@@ -1273,7 +1273,7 @@ Below are three more Decision trees; two of them have one additional predictor (
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.001, 0.050, 0.001)
+cps <- seq(0.005, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3b <-
@@ -1288,14 +1288,14 @@ model_3b$results
 ```
 **Table 16: Tuning results for Model 3b (Decision Tree from Perimeter, Shape Factor 2, and Major Axis Length), with Complexity Parameters, macro F1 values, and standard deviations.**
 
-For Model 3b, a CP of `0.01` produced the highest macro F1 (`0.8338241`) with a standard deviation of `0.01406433`.
+For Model 3b, a CP of `0.005` produced the highest macro F1 (`0.8658147`) with a standard deviation of `0.01590596`.
 
 ```{r model3_Perimeter_ShapeFactor2_Eccentricity, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.001, 0.050, 0.001)
+cps <- seq(0.005, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3c <-
@@ -1310,14 +1310,14 @@ model_3c$results
 ```
 **Table 17: Tuning results for Model 3c (Decision Tree from Perimeter, Shape Factor 2, and Eccentricity), with Complexity Parameters, macro F1 values, and standard deviations.**
 
-For Model 3c, CPs from `0.01` to `0.04` produced the highest macro F1 (`0.8652256`) with a standard deviation of `0.009236266`. Running the code `'model_3c$bestTune'` revealed that R selected `cp = 0.04` as the optimal Complexity Parameter.
+For Model 3c, a CP of `0.005` produced the highest macro F1 (`0.8674779`) with a standard deviation of `0.008666564`. CPs from `0.006` to `0.041` all returned a mF1 of `0.8652256	`.
 
 ```{r model3_Perimeter_ShapeFactor2_MajorAxisLEngth_Eccentricity, echo = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
 # Trying various Complexity Parameters
-cps <- seq(0.001, 0.050, 0.001)
+cps <- seq(0.005, 0.050, 0.001)
 
 # using the y ~ x formula seems to keep throwing errors
 model_3d <-
@@ -1332,11 +1332,11 @@ model_3d$results
 ```
 **Table 18: Tuning results for Model 3d (Decision Tree from Perimeter, Shape Factor 2, Major Axis Length, and Eccentricity), with Complexity Parameters, macro F1 values, and standard deviations.**
 
-For Model 3d, CPs from `0.01` to `0.06` produced the highest macro F1 (`0.8549304`) with a standard deviation of `0.01066342`. Running the code `'model_3d$bestTune'` revealed that R selected `cp = 0.06` as the optimal Complexity Parameter.
+For Model 3d, a CP of `0.005` produced the highest macro F1 (`0.8673091`) with a standard deviation of `0.009915875`. CPs from `0.008` to `0.050` all returned a mF1 of `0.8549304`.
 
-The trained Decision Tree with the best performance was thus Model 3c with a CP of `0.01`. Below is a visualization of the tree:
+The trained Decision Tree with the best performance was thus Model 3c with a CP of `0.005`. Below is a visualization of the tree:
 
-```{r three_factor_tree}
+```{r Perimeter_ShapeFactor2_Eccentricity}
 rpart.plot(model_3c$finalModel)
 ```
 
