@@ -1443,10 +1443,10 @@ validation_preds_2DT <- predict(model_3a$finalModel, data.frame(beans_x_val), ty
 confusionMatrix(validation_preds_2DT, beans_y_val$Class)
 ```
 
-```{r validation_4_factor_DT}
-validation_preds_4DT <- predict(model_3d$finalModel, data.frame(beans_x_val), type = 'class')
+```{r validation_3_factor_DT}
+validation_preds_3DT <- predict(model_3c$finalModel, data.frame(beans_x_val), type = 'class')
 
-confusionMatrix(validation_preds_4DT, beans_y_val$Class)
+confusionMatrix(validation_preds_3DT, beans_y_val$Class)
 ```
 
 ```{r validation_RF}
