@@ -1383,19 +1383,9 @@ The optimal Model 4 tuning hyperparameters were `mtry = 3` and `min.node.size = 
 
 ```{r model4_final_model}
 model_4$bestTune
-# with 100 trees per run, best tune is mtry = 2 (1-4) and min.node.size = 18 (1-50); mF1 = 0.9155445 +/- 0.009949667
-# with 500 trees per run, best tune is mtry = 2 (no longer given option) and min.node.size = 12 (from 8 to 28); mF1 = 0.9155580 +/- 0.008680129
-# with 1000 trees per run, best tune is mtry 2 (again, no choice) and min.node.size = 16 (2 to 20); mF1 = 0.9148272	+/- 0.009596302
-# 1000 trees, opening min node to 1:50 but keeping mtry at 2: min = 21, mF1 = 0.9150073, mF1 = 0.010558968
-
-# 600 trees, mtry 1:4, min nodes 10:30 -> best is mtry = 1, min node = 14; mF1 = 0.9153586 and mF1SD = 0.009217610
-# 550 trees, mtry 1:4, min nodes 5:35 -> best is mtry = 1, min node = 18, mF1 = 0.9154987 +/- 0.009896242
-# 500 trees, mtry 1:4, min nodes 1:40 -> best is mtry = 2, min node = 20, mF1 = 0.9154909	+/- 0.010352430
-# 250 trees, mtry 1:4, min nodes 1:40 -> best is mtry = 2, min node = 16, mF1 = 0.9153936	 +/- 0.010256291; time is roughly 1 h 45 mins
-# 200 trees, mtry 1:4, min nodes 1:40 -> best mtry = 2, min node = 24, mF1 = 0.9155035	+/- 0.009571362; time is roughly 1 h 25 mins
-# there is a diminishing return thing going on for sure
-# in the end, reducing # trees doesn't really make the model do better; it just makes the results more variable (plot more jagged; see below)
 ```
+**Table 20: Optimized Random Forest tuning parameters.**
+
 ```{r model_4_plot}
 plot(model_4) 
 # when holding mtry at 2 and expanding range of nodes to 1:50, you see that the peak region is 10-30
@@ -1405,7 +1395,14 @@ plot(model_4)
 
 # eh, 200 trees isn't much more jagged than 500
 ```
+**Figure 22: mF1 values over different minimal node sizes for mtry = 1 (blue), mtry = 2 (magenta), and mtry = 3 (green).**
+
+The trend lines for Random Forest mf1 values over minimal node sizes were rather jagged (indicating high variance); however, growing more trees would result in an unacceptably long run time.
+
 ## Validation Run
+
+While model 4 (the sole Random Forests model) returned the highest training mF1 score, it would be worthwhile to perform validation runs on the representatives of all algorithm used not just to check for overfitting, but build confusion matrices to compare class-specific prediction weaknesses (if any are present) in each model. For Decision Trees, the basic 2-variable model was also validated alongside the optimized 3-variable model to compare their performances.
+
 ```{r validation_setup}
 # convert beans_y_val$Class to class: Factor
 beans_y_val$Class <- as.factor(beans_y_val$Class) # convert to factor class
@@ -1417,6 +1414,7 @@ validation_preds_LR <- predict(model_1c$finalModel, beans_x_val)
 
 confusionMatrix(validation_preds_LR, beans_y_val$Class)
 ```
+**Table 21: Validation run results for the representative Logistic Regression model (1c; Perimeter and Shape Factor 2).**
 
 ```{r validation_KNN}
 # KNN in R is not like the others, in that it fits and evaluates in one function
@@ -1434,30 +1432,32 @@ validation_preds_KNN <- knn(train = beans_x_train[,c(2,12)],
 confusionMatrix(validation_preds_KNN, beans_y_val$Class)
 ```
 
+**Table 22: Validation run results for the representative KNN model (2c; Perimeter and Shape Factor 2).**
+
 ```{r validation_2_factor_DT}
 # DT preds take dataframes...
 validation_preds_2DT <- predict(model_3a$finalModel, data.frame(beans_x_val), type = 'class')
 
 confusionMatrix(validation_preds_2DT, beans_y_val$Class)
 ```
+**Table 23: Validation run results for the 2-variable Decision Tree model (3a; Perimeter and Shape Factor 2).**
 
 ```{r validation_3_factor_DT}
 validation_preds_3DT <- predict(model_3c$finalModel, data.frame(beans_x_val), type = 'class')
 
 confusionMatrix(validation_preds_3DT, beans_y_val$Class)
 ```
+**Table 24: Validation run results for the 3-variable Decision Tree model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
 
 ```{r validation_RF}
 validation_preds_RF <- predict(model_4$finalModel, beans_x_val)
 
 confusionMatrix(validation_preds_RF$predictions, beans_y_val$Class)
 ```
+**Table 25: Validation run results for the Random Forest model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
 
--pick ultimate model, use it to predict validation set
-
--confusion matrix func comes with (balanced) accuracies; does not seem to have macro F1 and you don't know how to access the matrix values
-
--However, could always calc by hand and hide the code chunks if you really want mF1 for final results... The matrix is right there.
+```{r F1_tabulation}
+```
 
 # Discussion
 
