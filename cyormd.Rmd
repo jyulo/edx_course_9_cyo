@@ -1476,36 +1476,36 @@ confusionMatrix(validation_preds_KNN, beans_y_val$Class)
 
 ```{r KNN F1s, include = F}
 # manual calculation of precision and recall values from confusion matrix
-LR_precision_BAR <- 216 / (216 + 18 + 1 + 2)
-LR_recall_BAR <- 216 / (216 + 41 + 3 + 5)
-LR_precision_BOM <- 105 / 105
-LR_recall_BOM <- 105 / 105
-LR_precision_CAL <- 300 / (300 + 41 + 20 + 1)
-LR_recall_CAL <- 300 / (300 + 18 + 5 + 3)
-LR_precision_DER <- 648 / (648 + 7 + 12 + 43)
-LR_recall_DER <- 648 / (648 + 1 + 12 + 49)
-LR_precision_HOR <- 352 / (352 + 5 + 1 + 17)
-LR_recall_HOR <- 352 / (352 + 1 + 20 + 7 + 6)
-LR_precision_SEK <- 377 / (377 + 3 + 12 + 11)
-LR_recall_SEK <- 377 / (377 + 12 + 17)
-LR_precision_SIR <- 454 / (454 + 5 + 3 + 49 + 6 + 17)
-LR_recall_SIR <- 454 / (454 + 2 + 1 + 43 + 17 + 11)
+KNN_precision_BAR <- 219 / (219 + 22 + 2)
+KNN_recall_BAR <- 219 / (219 + 39 + 3 + 4)
+KNN_precision_BOM <- 105 / 105
+KNN_recall_BOM <- 105 / 105
+KNN_precision_CAL <- 299 / (299 + 39 + 16 + 1)
+KNN_recall_CAL <- 299 / (299 + 22 + 3 + 2)
+KNN_precision_DER <- 648 / (648 + 7 + 7 + 15)
+KNN_recall_DER <- 648 / (648 + 2 + 19 + 11)
+KNN_precision_HOR <- 350 / (350 + 3 + 2 + 7)
+KNN_recall_HOR <- 350 / (350 + 2 + 16 + 7 + 11)
+KNN_precision_SEK <- 381 / (381 + 3 + 19 + 8)
+KNN_recall_SEK <- 381 / (381 + 7 + 18)
+KNN_precision_SIR <- 457 / (457 + 4 + 2 + 41 + 11 + 18)
+KNN_recall_SIR <- 457 / (457 + 1 + 55 + 7 + 8)
 
 # F1 values
-LR_F1_BAR <- f1_from_matrix(LR_precision_BAR, LR_recall_BAR)
-LR_F1_BOM <- f1_from_matrix(LR_precision_BOM, LR_recall_BOM)
-LR_F1_CAL <- f1_from_matrix(LR_precision_CAL, LR_recall_CAL)
-LR_F1_DER <- f1_from_matrix(LR_precision_DER, LR_recall_DER)
-LR_F1_HOR <- f1_from_matrix(LR_precision_HOR, LR_recall_HOR)
-LR_F1_SEK <- f1_from_matrix(LR_precision_SEK, LR_recall_SEK)
-LR_F1_SIR <- f1_from_matrix(LR_precision_SIR, LR_recall_SIR)
-LR_F1_MACRO <- mean(c(LR_F1_BAR,
-                      LR_F1_BOM,
-                      LR_F1_CAL,
-                      LR_F1_DER,
-                      LR_F1_HOR,
-                      LR_F1_SEK,
-                      LR_F1_SIR))
+KNN_F1_BAR <- f1_from_matrix(KNN_precision_BAR, KNN_recall_BAR)
+KNN_F1_BOM <- f1_from_matrix(KNN_precision_BOM, KNN_recall_BOM)
+KNN_F1_CAL <- f1_from_matrix(KNN_precision_CAL, KNN_recall_CAL)
+KNN_F1_DER <- f1_from_matrix(KNN_precision_DER, KNN_recall_DER)
+KNN_F1_HOR <- f1_from_matrix(KNN_precision_HOR, KNN_recall_HOR)
+KNN_F1_SEK <- f1_from_matrix(KNN_precision_SEK, KNN_recall_SEK)
+KNN_F1_SIR <- f1_from_matrix(KNN_precision_SIR, KNN_recall_SIR)
+KNN_F1_MACRO <- mean(c(KNN_F1_BAR,
+                      KNN_F1_BOM,
+                      KNN_F1_CAL,
+                      KNN_F1_DER,
+                      KNN_F1_HOR,
+                      KNN_F1_SEK,
+                      KNN_F1_SIR))
 ```
 
 ```{r validation_2_factor_DT}
@@ -1516,12 +1516,80 @@ confusionMatrix(validation_preds_2DT, beans_y_val$Class)
 ```
 **Table 23: Validation run results for the 2-variable Decision Tree model (3a; Perimeter and Shape Factor 2).**
 
+```{r DT2 F1s, include = F}
+# manual calculation of precision and recall values from confusion matrix
+DT2_precision_BAR <- 202 / (202 + 46 + 3 + 1 + 2)
+DT2_recall_BAR <- 202 / (202 + 48 + 6 + 1 + 8)
+DT2_precision_BOM <- 105 / 105
+DT2_recall_BOM <- 105 / 105
+DT2_precision_CAL <- 250 / (250 + 48 + 16)
+DT2_recall_CAL <- 250 / (250 + 46 + 27 + 3)
+DT2_precision_DER <- 661 / (661 + 7 + 23 + 58)
+DT2_recall_DER <- 661 / (661 + 17 + 32)
+DT2_precision_HOR <- 347 / (347 + 6 + 27 + 9)
+DT2_recall_HOR <- 347 / (347 + 3 + 16 + 7 + 13)
+DT2_precision_SEK <- 363 / (363 + 1 + 17 + 7)
+DT2_recall_SEK <- 363 / (363 + 1 + 23 + 19)
+DT2_precision_SIR <- 452 / (452 + 8 + 3 + 32 + 13 + 19)
+DT2_recall_SIR <- 452 / (452 + 2 + 58 + 9 + 7)
+
+# F1 values
+DT2_F1_BAR <- f1_from_matrix(DT2_precision_BAR, DT2_recall_BAR)
+DT2_F1_BOM <- f1_from_matrix(DT2_precision_BOM, DT2_recall_BOM)
+DT2_F1_CAL <- f1_from_matrix(DT2_precision_CAL, DT2_recall_CAL)
+DT2_F1_DER <- f1_from_matrix(DT2_precision_DER, DT2_recall_DER)
+DT2_F1_HOR <- f1_from_matrix(DT2_precision_HOR, DT2_recall_HOR)
+DT2_F1_SEK <- f1_from_matrix(DT2_precision_SEK, DT2_recall_SEK)
+DT2_F1_SIR <- f1_from_matrix(DT2_precision_SIR, DT2_recall_SIR)
+DT2_F1_MACRO <- mean(c(DT2_F1_BAR,
+                      DT2_F1_BOM,
+                      DT2_F1_CAL,
+                      DT2_F1_DER,
+                      DT2_F1_HOR,
+                      DT2_F1_SEK,
+                      DT2_F1_SIR))
+```
+
 ```{r validation_3_factor_DT}
 validation_preds_3DT <- predict(model_3c$finalModel, data.frame(beans_x_val), type = 'class')
 
 confusionMatrix(validation_preds_3DT, beans_y_val$Class)
 ```
 **Table 24: Validation run results for the 3-variable Decision Tree model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
+
+```{r DT3 F1s, include = F}
+# manual calculation of precision and recall values from confusion matrix
+DT3_precision_BAR <- 184 / (184 + 23 + 1 + 1)
+DT3_recall_BAR <- 184 / (184 + 76 + 3 + 2)
+DT3_precision_BOM <- 105 / 105
+DT3_recall_BOM <- 105 / 105
+DT3_precision_CAL <- 294 / (294 + 76 + 34 + 4)
+DT3_recall_CAL <- 294 / (294 + 23 + 8 + 1)
+DT3_precision_DER <- 645 / (645 + 7 + 19 + 61)
+DT3_recall_DER <- 645 / (645 + 33 + 32)
+DT3_precision_HOR <- 329 / (329 + 8 + 1)
+DT3_recall_HOR <- 329 / (367 + 1 + 34 + 7 + 15)
+DT3_precision_SEK <- 367 / (367 + 3 + 33 + 5)
+DT3_recall_SEK <- 367 / (367 + 1 + 19 + 19)
+DT3_precision_SIR <- 457 / (457 + 2 + 1 + 32 + 15 + 19)
+DT3_recall_SIR <- 457 / (457 + 4 + 61 + 1 + 5)
+
+# F1 values
+DT3_F1_BAR <- f1_from_matrix(DT3_precision_BAR, DT3_recall_BAR)
+DT3_F1_BOM <- f1_from_matrix(DT3_precision_BOM, DT3_recall_BOM)
+DT3_F1_CAL <- f1_from_matrix(DT3_precision_CAL, DT3_recall_CAL)
+DT3_F1_DER <- f1_from_matrix(DT3_precision_DER, DT3_recall_DER)
+DT3_F1_HOR <- f1_from_matrix(DT3_precision_HOR, DT3_recall_HOR)
+DT3_F1_SEK <- f1_from_matrix(DT3_precision_SEK, DT3_recall_SEK)
+DT3_F1_SIR <- f1_from_matrix(DT3_precision_SIR, DT3_recall_SIR)
+DT3_F1_MACRO <- mean(c(DT3_F1_BAR,
+                      DT3_F1_BOM,
+                      DT3_F1_CAL,
+                      DT3_F1_DER,
+                      DT3_F1_HOR,
+                      DT3_F1_SEK,
+                      DT3_F1_SIR))
+```
 
 ```{r validation_RF}
 validation_preds_RF <- predict(model_4$finalModel, beans_x_val)
@@ -1530,8 +1598,97 @@ confusionMatrix(validation_preds_RF$predictions, beans_y_val$Class)
 ```
 **Table 25: Validation run results for the Random Forest model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
 
-```{r F1_tabulation}
+```{r DRF F1s, include = F}
+# manual calculation of precision and recall values from confusion matrix
+RF_precision_BAR <- 236 / (236 + 1 + 15 + 2 + 2)
+RF_recall_BAR <- 236 / (236 + 23 + 3 + 3)
+RF_precision_BOM <- 104 / 104
+RF_recall_BOM <- 104 / 105
+RF_precision_CAL <- 301 / (301 + 23 + 11)
+RF_recall_CAL <- 301 / (301 + 15 + 7 + 3)
+RF_precision_DER <- 656 / (656 + 6 + 9 + 55)
+RF_recall_DER <- 656 / (656 + 3 + 16 + 35)
+RF_precision_HOR <- 355 / (355 + 7 + 3 + 7)
+RF_recall_HOR <- 355 / (355 + 2 + 11 + 6 + 12)
+RF_precision_SEK <- 383 / (383 + 3 + 16 + 11)
+RF_recall_SEK <- 383 / (383 + 9 + 14)
+RF_precision_SIR <- 453 / (453 + 3 + 3 + 35 + 12 + 14)
+RF_recall_SIR <- 453 / (453 + 2 + 55 + 7 + 11)
+
+# F1 values
+RF_F1_BAR <- f1_from_matrix(RF_precision_BAR, RF_recall_BAR)
+RF_F1_BOM <- f1_from_matrix(RF_precision_BOM, RF_recall_BOM)
+RF_F1_CAL <- f1_from_matrix(RF_precision_CAL, RF_recall_CAL)
+RF_F1_DER <- f1_from_matrix(RF_precision_DER, RF_recall_DER)
+RF_F1_HOR <- f1_from_matrix(RF_precision_HOR, RF_recall_HOR)
+RF_F1_SEK <- f1_from_matrix(RF_precision_SEK, RF_recall_SEK)
+RF_F1_SIR <- f1_from_matrix(RF_precision_SIR, RF_recall_SIR)
+RF_F1_MACRO <- mean(c(RF_F1_BAR,
+                      RF_F1_BOM,
+                      RF_F1_CAL,
+                      RF_F1_DER,
+                      RF_F1_HOR,
+                      RF_F1_SEK,
+                      RF_F1_SIR))
 ```
+
+## Final Tabulation of F1 Scores
+
+```{r F1_tabulation, echo = F}
+F1_table <-
+  data.table(model = c('Logistic Regression',
+                       'KNN',
+                       'Decision Tree (2 Variables)',
+                       'Decision Tree (3 variables)',
+                       'Random Forest'),
+             Barbunya = c(LR_F1_BAR,
+                          KNN_F1_BAR,
+                          DT2_F1_BAR,
+                          DT3_F1_BAR,
+                          RF_F1_BAR),
+             Bombay = c(LR_F1_BOM,
+                        KNN_F1_BOM,
+                        DT2_F1_BOM,
+                        DT3_F1_BOM,
+                        RF_F1_BOM),
+             Cali = c(LR_F1_CAL,
+                      KNN_F1_CAL,
+                      DT2_F1_CAL,
+                      DT3_F1_CAL,
+                      RF_F1_CAL),
+             Dermason = c(LR_F1_DER,
+                          KNN_F1_DER,
+                          DT2_F1_DER,
+                          DT3_F1_DER,
+                          RF_F1_DER),
+             Horoz = c(LR_F1_HOR,
+                       KNN_F1_HOR,
+                       DT2_F1_HOR,
+                       DT3_F1_HOR,
+                       RF_F1_HOR),
+             Seker = c(LR_F1_SEK,
+                       KNN_F1_SEK,
+                       DT2_F1_SEK,
+                       DT3_F1_SEK,
+                       RF_F1_SEK),
+             Sira = c(LR_F1_SIR,
+                      KNN_F1_SIR,
+                      DT2_F1_SIR,
+                      DT3_F1_SIR,
+                      RF_F1_SIR),
+             Macro = c(LR_F1_MACRO,
+                       KNN_F1_MACRO,
+                       DT2_F1_MACRO,
+                       DT3_F1_MACRO,
+                       RF_F1_MACRO)
+  )
+F1_table
+```
+**Table 26: Tabulated F1 scores (by bean class and macro) of Logistic Regression, KNN, 2-variable Decision Tree (Perimeter and Shape Factor 2), 3-variable Decision Tree (Perimeter, SF2, Eccentricity), and Random Forest (ditto).**
+
+Interestingly, Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 3-variable Decision Tree, then 2-variable Decision Tree.
+
+For Logistic Regression, KNN, and Random Forest, the weakest points were in Barbunya and Sira. Meanehile, the two weakest predictions in the two Decision Trees are in Barbunya and Cali. This is in line with discoveries from the exploratory analysis, where the starting variable pairs had large overlaps in Barbunya/Cali and Sira/Seker.
 
 # Discussion
 
