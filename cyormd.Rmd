@@ -1686,7 +1686,7 @@ F1_table
 ```
 **Table 26: Tabulated validation F1 scores (by bean class and macro) of Logistic Regression, KNN, 2-variable Decision Tree (Perimeter and Shape Factor 2), 3-variable Decision Tree (Perimeter, SF2, Eccentricity), and Random Forest (ditto).**
 
-Interestingly, the 3-variable Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 3-variable Decision Tree, then 2-variable Decision Tree.
+Interestingly, the 3-variable Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 2-variable Decision Tree, then 3-variable Decision Tree.
 
 For Logistic Regression, KNN, and Random Forest, the weakest points were in Barbunya and Sira. Meanehile, the two weakest predictions in the two Decision Trees are in Barbunya and Cali. This is in line with discoveries from the exploratory analysis, where scatterplots generated from the starting variable pairs had large overlaps in Barbunya/Cali and Sira/Seker. As expected from the scatterplots (where Bombay consistently formed a cluster distant from all other classes), Bombay had the best predictions in all models tabulated.
 
@@ -1694,15 +1694,35 @@ For Logistic Regression, KNN, and Random Forest, the weakest points were in Barb
 
 ## Summary of results
 
-Both the training and validation runs revealed that Random Forest (with predictors Perimeter, Shape Factor 2, and Eccentricity) produced the highest F1 scores, followed by KNN, Logistic Regression, then Decision Tree. The addition of a third predictor (Eccentricity)
+The training runs revealed that Random Forest (with predictors Perimeter, Shape Factor 2, and Eccentricity) produced the highest F1 scores, followed by KNN, Logistic Regression, then Decision Tree. The addition of Eccentricity in the Decision Tree as a third predictor resulted in a higher training macro F1 score than just two predictors, adding Major Axis Length, or adding both Eccentricity and Major Axis Length; however, in validation the Decision Tree with two variables returned a higher macro F1 score than the 3-variable tree, implying that the 3-variable tree's superior performance during training might have been caused by overfitting.
+
+The choice of the initial predictor pairs (a "group 1" variable paired with another variable outside the project-assigned group) during exploratory analysis influenced the performance of all machine learning models built in this project. Although 
+
+-talk about the choice of initial predictors and how that impacted the models; also mention that due to the shared terms in their derivation, many of the predictors in the data exhibit multicollinearity and that narrowed down the actual options for a multi-dimensional model
 
 ## Practical Implications
 
+-Improved crop classification techniques = quick sorting of crop varieties
+
 ## Limitations and Future Directions
+
+-Talk about the standard deviations implying lack of statistic significance in most models' performances in training
+
+-Talk about limitation by computational time and tree count for RF
+
+-Talk about experimenting with different perimeter combos
+
+-Talk about experimenting with more folds for validation
+
+-Talk about more models for future tests
 
 # Concluding Summary
 
--TBD
+-selection of best perimeters, ranking of different models tested, best and weakest predictions, possible statistical insignificance
+
+-practical implications, but in less words
+
+-improve by stuff mentioned in the limitations section
 
 # Citation
 
