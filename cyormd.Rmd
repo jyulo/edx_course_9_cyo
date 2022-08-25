@@ -1640,7 +1640,7 @@ F1_table <-
                        'KNN',
                        'Decision Tree (2 Variables)',
                        'Decision Tree (3 variables)',
-                       'Random Forest'),
+                       'Random Forest (2 variables)'),
              Barbunya = c(LR_F1_BAR,
                           KNN_F1_BAR,
                           DT2_F1_BAR,
@@ -1684,17 +1684,23 @@ F1_table <-
   )
 F1_table
 ```
-**Table 26: Tabulated F1 scores (by bean class and macro) of Logistic Regression, KNN, 2-variable Decision Tree (Perimeter and Shape Factor 2), 3-variable Decision Tree (Perimeter, SF2, Eccentricity), and Random Forest (ditto).**
+**Table 26: Tabulated validation F1 scores (by bean class and macro) of Logistic Regression, KNN, 2-variable Decision Tree (Perimeter and Shape Factor 2), 3-variable Decision Tree (Perimeter, SF2, Eccentricity), and Random Forest (ditto).**
 
-Interestingly, Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 3-variable Decision Tree, then 2-variable Decision Tree.
+Interestingly, the 3-variable Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 3-variable Decision Tree, then 2-variable Decision Tree.
 
-For Logistic Regression, KNN, and Random Forest, the weakest points were in Barbunya and Sira. Meanehile, the two weakest predictions in the two Decision Trees are in Barbunya and Cali. This is in line with discoveries from the exploratory analysis, where the starting variable pairs had large overlaps in Barbunya/Cali and Sira/Seker. As expected from the scatterplots (where Bombay consistently formed a cluster distant from all other classes), Bombay had the best predictions in all models tabulated.
+For Logistic Regression, KNN, and Random Forest, the weakest points were in Barbunya and Sira. Meanehile, the two weakest predictions in the two Decision Trees are in Barbunya and Cali. This is in line with discoveries from the exploratory analysis, where scatterplots generated from the starting variable pairs had large overlaps in Barbunya/Cali and Sira/Seker. As expected from the scatterplots (where Bombay consistently formed a cluster distant from all other classes), Bombay had the best predictions in all models tabulated.
 
 # Discussion
 
+## Summary of results
 
+Both the training and validation runs revealed that Random Forest (with predictors Perimeter, Shape Factor 2, and Eccentricity) produced the highest F1 scores, followed by KNN, Logistic Regression, then Decision Tree. The addition of a third predictor (Eccentricity)
 
-# Conslusion
+## Practical Implications
+
+## Limitations and Future Directions
+
+# Concluding Summary
 
 -TBD
 
