@@ -939,7 +939,7 @@ For this project, the method `rpart` under `caret::train` was used. [The only al
 
 Since decision trees often fit the training data rather closely, they are naturally prone to overfitting. [A random forest](https://www.ibm.com/cloud/learn/random-forest) mitigates this issue by building multiple independent decision trees, each using a randomly selected subset of the predictor features. The trees are then averaged to provide predictions.
 
-For this project, [the method](https://cran.r-project.org/web/packages/ranger/ranger.pdf) `ranger` under `caret::train` was used for a faster creation of random forests. The tuning hyperparameters consist of `mtry` (how many features to consider at each split; this project tried a range from 1 to all the predictors available), `splitrule` (the homogeneity metric to evaluate goodness of split; [Gini impurity](https://www.analyticsvidhya.com/blog/2020/06/4-ways-split-decision-tree/) was chosen as the classification standard for `ranger`), and `min.node.size` (the minimal number of data points each node must have; an arbitrary range of 1-40 was chosen for wide coverage).
+For this project, [the method](https://cran.r-project.org/web/packages/ranger/ranger.pdf) `ranger` under `caret::train` was used for a faster creation of random forests. The tuning hyperparameters consist of `mtry` (how many features to consider at each split; this project tried a range from 1 to all the predictors available), `splitrule` (the homogeneity metric to evaluate goodness of split; [Gini impurity](https://www.analyticsvidhya.com/blog/2020/06/4-ways-split-decision-tree/) was chosen as the classification standard for `ranger`), and `min.node.size` (the minimal number of data points each node must have; an arbitrary range of 1-40 was chosen for coverage of the performance peak region after test runs).
 
 Despite being designed to run random forests faster than most other algorithms, `ranger` still consumed large amounts of time due to the 10-fold cross-validation and large amount of trees making the computational volume extremely large for the laptop used in this project. Due to practical reasons, a threshold of 2 hours (considered the maximum acceptable wait time, given the situation of this project's author at the time of its creation) was set for the Random Forest. Only one combination (the best-performing one from the Decision Tree algorithm) of predictors were used, and the number of independent trees set to 250 (more trees were attempted, but resulted in run times exceeding 2 hours unless if the ranges of tuning hyperparameters were narrowed at the risk of possibly omitting optimal combinations).
 
@@ -1339,11 +1339,13 @@ The trained Decision Tree with the best performance was thus Model 3c with a CP 
 ```{r Perimeter_ShapeFactor2_Eccentricity}
 rpart.plot(model_3c$finalModel)
 ```
+**Figure 21: The trained Decision Tree (Model 3c) using variables Perimeter, Shape Factor 2, and Eccentricity with CP = 0.05.**
 
+Using `rpart.plot` to generating a diagram of the Model 3c tree, the criteria for splitting (bold inequality statements under the non-terminal nodes), the percentage of total training data accounted for (the percentage at the bottom of each node), and the probabilities of different bean classes under each node (the series of decimals on the middle, between the bean class names and data percentage). The order of classes for the decimal probabilities are: Barbunya, Bombay, Cali, Dermason, Horoz, Seker, and Sira. The left branch to each non-terminal node represents data points that return `TRUE` for the splitting criteria, and the right branch represents data returning `FALSE` to the same statement. For example, the left-most terminal (Perimeter >= 0.66 AND Eccentricity < 0.9) predicted bean variety Bombay (which accounts for 4 % of the training data) with 100 % acuracy (probability of Bombay = 1.00). Bombay, Horoz, and Seker had the highest accuracies, while Cali had the lowest.
 
 ## Model 4: Random Forests
 
--Take the variables from the best DT, and run one (1) RF using ranger
+With the optimal combination of Decision Tree input predictors found, the following Random Forest was tuned:
 
 ```{r model4}
 # arbitrary seed for reproducibility
@@ -1353,15 +1355,8 @@ set.seed(1, sample.kind = 'Rounding')
 forest_grid <-
   expand.grid(
     mtry = 1:3, # how many variables to use for splitting at each tree?
-    # mtry = 2, # best mtry seems to be consistently 2 when adjusting min.node.size using 100 trees
-    # let's go back to 1:4, see how it goes
     splitrule = 'gini', # for classification. Not changing this
-    # min.node.size = 1:50 # for 100 trees; how many instances minimum in a node? Range rather arbitrary
-    # min.node.size = 8:28 # for 500 trees; narrowed down from the 100-tree run
-    # min.node.size = 1:50 # for 1K trees; readjusted from the 500-tree run
-    # min.node.size = 10:30 # from the big 1K run; peak region is 10-30
-    # min.node.size = 5:35 # expand a little to avoid cutting off max range for mtry = 1:4
-    min.node.size = 1:40 # peak range could be a little more obvious
+    min.node.size = 1:40 
   )
 
 # using the y ~ x formula seems to keep throwing errors
@@ -1382,6 +1377,9 @@ model_4 <-
 
 model_4$results
 ```
+**Table 19: Random Forest (Model 4) tuning results using Ranger, with predictors Perimeter, Shape Factor 2, and Eccentricity.**
+
+The optimal Model 4 tuning hyperparameters were `mtry = 3` and `min.node.size = 10`. The resulting macro F1 was `0.9110494` with a standard deviation of `0.009791189`.
 
 ```{r model4_final_model}
 model_4$bestTune
