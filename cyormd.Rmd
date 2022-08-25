@@ -1416,6 +1416,15 @@ confusionMatrix(validation_preds_LR, beans_y_val$Class)
 ```
 **Table 21: Validation run results for the representative Logistic Regression model (1c; Perimeter and Shape Factor 2).**
 
+```{r LR F1s, include = F}
+# manual calculation of F1 values from confusion matrix
+LR_precision_BAR <- 216 / (216 + 18 + 1 + 2)
+LR_recall_BAR <- 216 / (216 + 41 + 3 + 5)
+LR_precision_BOM <- 105 / 105
+LR_recall_BOM <- 105 / 105
+LR_precision_CAL <- 
+```
+
 ```{r validation_KNN}
 # KNN in R is not like the others, in that it fits and evaluates in one function
 # Thus, a second training is done with the pre-tuned k value
