@@ -1417,12 +1417,43 @@ confusionMatrix(validation_preds_LR, beans_y_val$Class)
 **Table 21: Validation run results for the representative Logistic Regression model (1c; Perimeter and Shape Factor 2).**
 
 ```{r LR F1s, include = F}
-# manual calculation of F1 values from confusion matrix
+# manual calculation of precision and recall values from confusion matrix
 LR_precision_BAR <- 216 / (216 + 18 + 1 + 2)
 LR_recall_BAR <- 216 / (216 + 41 + 3 + 5)
 LR_precision_BOM <- 105 / 105
 LR_recall_BOM <- 105 / 105
-LR_precision_CAL <- 
+LR_precision_CAL <- 300 / (300 + 41 + 20 + 1)
+LR_recall_CAL <- 300 / (300 + 18 + 5 + 3)
+LR_precision_DER <- 648 / (648 + 7 + 12 + 43)
+LR_recall_DER <- 648 / (648 + 1 + 12 + 49)
+LR_precision_HOR <- 352 / (352 + 5 + 1 + 17)
+LR_recall_HOR <- 352 / (352 + 1 + 20 + 7 + 6)
+LR_precision_SEK <- 377 / (377 + 3 + 12 + 11)
+LR_recall_SEK <- 377 / (377 + 12 + 17)
+LR_precision_SIR <- 454 / (454 + 5 + 3 + 49 + 6 + 17)
+LR_recall_SIR <- 454 / (454 + 2 + 1 + 43 + 17 + 11)
+
+# F1 func from matrix
+f1_from_matrix <- function(precision, recall) {
+  score <- 2 * (precision * recall) / (precision + recall)
+  return(score)
+}
+
+# F1 values
+LR_F1_BAR <- f1_from_matrix(LR_precision_BAR, LR_recall_BAR)
+LR_F1_BOM <- f1_from_matrix(LR_precision_BOM, LR_recall_BOM)
+LR_F1_CAL <- f1_from_matrix(LR_precision_CAL, LR_recall_CAL)
+LR_F1_DER <- f1_from_matrix(LR_precision_DER, LR_recall_DER)
+LR_F1_HOR <- f1_from_matrix(LR_precision_HOR, LR_recall_HOR)
+LR_F1_SEK <- f1_from_matrix(LR_precision_SEK, LR_recall_SEK)
+LR_F1_SIR <- f1_from_matrix(LR_precision_SIR, LR_recall_SIR)
+LR_F1_MACRO <- mean(c(LR_F1_BAR,
+                      LR_F1_BOM,
+                      LR_F1_CAL,
+                      LR_F1_DER,
+                      LR_F1_HOR,
+                      LR_F1_SEK,
+                      LR_F1_SIR))
 ```
 
 ```{r validation_KNN}
@@ -1442,6 +1473,40 @@ confusionMatrix(validation_preds_KNN, beans_y_val$Class)
 ```
 
 **Table 22: Validation run results for the representative KNN model (2c; Perimeter and Shape Factor 2).**
+
+```{r KNN F1s, include = F}
+# manual calculation of precision and recall values from confusion matrix
+LR_precision_BAR <- 216 / (216 + 18 + 1 + 2)
+LR_recall_BAR <- 216 / (216 + 41 + 3 + 5)
+LR_precision_BOM <- 105 / 105
+LR_recall_BOM <- 105 / 105
+LR_precision_CAL <- 300 / (300 + 41 + 20 + 1)
+LR_recall_CAL <- 300 / (300 + 18 + 5 + 3)
+LR_precision_DER <- 648 / (648 + 7 + 12 + 43)
+LR_recall_DER <- 648 / (648 + 1 + 12 + 49)
+LR_precision_HOR <- 352 / (352 + 5 + 1 + 17)
+LR_recall_HOR <- 352 / (352 + 1 + 20 + 7 + 6)
+LR_precision_SEK <- 377 / (377 + 3 + 12 + 11)
+LR_recall_SEK <- 377 / (377 + 12 + 17)
+LR_precision_SIR <- 454 / (454 + 5 + 3 + 49 + 6 + 17)
+LR_recall_SIR <- 454 / (454 + 2 + 1 + 43 + 17 + 11)
+
+# F1 values
+LR_F1_BAR <- f1_from_matrix(LR_precision_BAR, LR_recall_BAR)
+LR_F1_BOM <- f1_from_matrix(LR_precision_BOM, LR_recall_BOM)
+LR_F1_CAL <- f1_from_matrix(LR_precision_CAL, LR_recall_CAL)
+LR_F1_DER <- f1_from_matrix(LR_precision_DER, LR_recall_DER)
+LR_F1_HOR <- f1_from_matrix(LR_precision_HOR, LR_recall_HOR)
+LR_F1_SEK <- f1_from_matrix(LR_precision_SEK, LR_recall_SEK)
+LR_F1_SIR <- f1_from_matrix(LR_precision_SIR, LR_recall_SIR)
+LR_F1_MACRO <- mean(c(LR_F1_BAR,
+                      LR_F1_BOM,
+                      LR_F1_CAL,
+                      LR_F1_DER,
+                      LR_F1_HOR,
+                      LR_F1_SEK,
+                      LR_F1_SIR))
+```
 
 ```{r validation_2_factor_DT}
 # DT preds take dataframes...
