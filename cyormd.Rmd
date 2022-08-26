@@ -1692,29 +1692,41 @@ For Logistic Regression, KNN, and Random Forest, the weakest points were in Barb
 
 # Discussion
 
-## Summary of results
+## Summary of Results
 
 The training runs revealed that Random Forest (with predictors Perimeter, Shape Factor 2, and Eccentricity) produced the highest F1 scores, followed by KNN, Logistic Regression, then Decision Tree. The addition of Eccentricity in the Decision Tree as a third predictor resulted in a higher training macro F1 score than just two predictors, adding Major Axis Length, or adding both Eccentricity and Major Axis Length; however, in validation the Decision Tree with two variables returned a higher macro F1 score than the 3-variable tree, implying that the 3-variable tree's superior performance during training might have been caused by overfitting.
 
-The choice of the initial predictor pairs (a "group 1" variable paired with another variable outside the project-assigned group) during exploratory analysis influenced the performance of all machine learning models built in this project. Although 
-
--talk about the choice of initial predictors and how that impacted the models; also mention that due to the shared terms in their derivation, many of the predictors in the data exhibit multicollinearity and that narrowed down the actual options for a multi-dimensional model
-
-## Practical Implications
-
--Improved crop classification techniques = quick sorting of crop varieties
+The choice of the initial predictor pairs (a "group 1" variable paired with another variable outside the project-assigned group) during exploratory analysis influenced the performance of all machine learning models built in this project. Although the two "group 1" predictors chosen (Perimeter and Equivalent Diameter) had separate IQRs for most classes with less outliers than most other predictors (see boxplots from Introduction section), both of them had poor resolution between Barbunya/Cali (through the IQRs) and Sira/Seker (through the outliers). Combining those "group 1" predictors with other predictors that have better resolution between those classes (such as Shape Factor 2) mitigated the weakness somewhat, but still resulted in the class-specific lowered performances seen in Table 26.
 
 ## Limitations and Future Directions
+
+### Statistical Significance of the Performance Evaluations
 
 -Talk about the standard deviations implying lack of statistic significance in most models' performances in training
 
 -Talk about limitation by computational time and tree count for RF
 
--Talk about experimenting with different perimeter combos
-
 -Talk about experimenting with more folds for validation
 
--Talk about more models for future tests
+-Talk about more generous train-val splits in favor of training data; training uses sampling averages to eval variance, but eval is one-off
+
+### Perimeter Combinations
+
+The choice of the initial predictor pair not only influenced model performance directly, but also determined what additional predictors could be added for higher-dimensional algorithms since many of the predictors in the dataset have shared terms in their derivation and therefore exhibit multicollinearity. With each predictor chosen, the list of allowed additional predictors for model-building narrowed; this was especially true for Shape Factor 2 (Minor Axis Length divided by Area), as many other dataset predictors were derived in relation to the area of each bean (see Introduction section and original peper by Koklu and Ozkan (2020) for formulae).
+
+### Alternative Algorithms
+
+-Talk about more models for future tests (don't name them all, just a few; start with the ones from the paper)
+
+## Practical Implications of Results
+
+-Improved crop classification techniques = quick sorting of crop varieties
+
+-Look up more implications -> can adapt algorithms to analyze environmental effects on crop phenotypes; see what happens to different varieties of beans in diff. growing conditions?
+
+-> Inspection of label truthfulness in the market?
+
+-> look for correlations between bean varieties grown and regions?
 
 # Concluding Summary
 
