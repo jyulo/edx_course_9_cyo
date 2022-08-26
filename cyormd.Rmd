@@ -1702,7 +1702,10 @@ The choice of the initial predictor pairs (a "group 1" variable paired with anot
 
 ### Statistical Significance of the Performance Evaluations
 
--Talk about the standard deviations implying lack of statistic significance in most models' performances in training
+During algorithm training, it was found that many of the models (Random Forest/KNN, KNN/Logistic Regression, and the 2/3 variable Decision Trees) had standard deviations large enough for the training mF1s to overlap by adding and subtracting by their standard deviations (see Results section; not tabulated, but individual mF1s and SDs available). With such standard deviation values, it goes without calculating 95 % confidence intervals (which is +/- $1.96 / \sqrt{10}$ times the standard deviation, with $n = 10$ due to there being 10 folds and therefore 10 results to average) that statistically significant performance differences could not be determined from the training phase alone.
+
+
+
 
 -Talk about limitation by computational time and tree count for RF
 
@@ -1712,7 +1715,7 @@ The choice of the initial predictor pairs (a "group 1" variable paired with anot
 
 ### Perimeter Combinations
 
-The choice of the initial predictor pair not only influenced model performance directly, but also determined what additional predictors could be added for higher-dimensional algorithms since many of the predictors in the dataset have shared terms in their derivation and therefore exhibit multicollinearity. With each predictor chosen, the list of allowed additional predictors for model-building narrowed; this was especially true for Shape Factor 2 (Minor Axis Length divided by Area), as many other dataset predictors were derived in relation to the area of each bean (see Introduction section and original peper by Koklu and Ozkan (2020) for formulae).
+The choice of the initial predictor pair not only influenced model performance directly, but also determined what additional predictors could be added for higher-dimensional algorithms since many of the predictors in the dataset have shared terms in their derivation and therefore exhibit multicollinearity. With each predictor chosen, the list of allowed additional predictors for model-building narrowed; this was especially true for Shape Factor 2 (Minor Axis Length divided by Area), as many other dataset predictors were derived in relation to the area of each bean (see Introduction section and original peper by Koklu and Ozkan (2020) for formulae). If time permits, future attempts at similar problems could experiment with more variable combinations; however, depending on the dataset the amount of suitable predictor combinations (no multicollinearity and capable of resolving all outcome classes) may be similarly limited as the one used in this project.
 
 ### Alternative Algorithms
 
