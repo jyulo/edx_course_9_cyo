@@ -1,7 +1,7 @@
 ---
 title: "R Data Science Course 9: Choose Your Own Project"
 author: "James Lo"
-date: '2022-08-27'
+date: '2022-08-30'
 output: 
   pdf_document:
     latex_engine: xelatex
@@ -1694,32 +1694,28 @@ For Logistic Regression, KNN, and Random Forest, the weakest points were in Barb
 
 ## Summary of Results
 
-The training runs revealed that Random Forest (with predictors Perimeter, Shape Factor 2, and Eccentricity) produced the highest F1 scores, followed by KNN, Logistic Regression, then Decision Tree. The addition of Eccentricity in the Decision Tree as a third predictor resulted in a higher training macro F1 score than just two predictors, adding Major Axis Length, or adding both Eccentricity and Major Axis Length; however, in validation the Decision Tree with two variables returned a higher macro F1 score than the 3-variable tree, implying that the 3-variable tree's superior performance during training might have been caused by overfitting.
+The training and validation runs both revealed that Random Forest (with predictors Perimeter, Shape Factor 2, and Eccentricity) produced the highest F1 scores, followed by KNN, Logistic Regression, then Decision Tree. The addition of Eccentricity in the Decision Tree as a third predictor resulted in a higher training macro F1 score than just two predictors, adding Major Axis Length, or adding both Eccentricity and Major Axis Length; however, in validation the Decision Tree with two variables returned a higher macro F1 score than the 3-variable tree, implying that the 3-variable tree's superior performance during training might have been caused by overfitting.
 
 The choice of the initial predictor pairs (a "group 1" variable paired with another variable outside the project-assigned group) during exploratory analysis influenced the performance of all machine learning models built in this project. Although the two "group 1" predictors chosen (Perimeter and Equivalent Diameter) had separate IQRs for most classes with less outliers than most other predictors (see boxplots from Introduction section), both of them had poor resolution between Barbunya/Cali (through the IQRs) and Sira/Seker (through the outliers). Combining those "group 1" predictors with other predictors that have better resolution between those classes (such as Shape Factor 2) mitigated the weakness somewhat, but still resulted in the class-specific lowered performances seen in Table 26.
 
 ## Limitations and Future Directions
 
-### Statistical Significance of the Performance Evaluations
-
-During algorithm training, it was found that many of the models (Random Forest/KNN, KNN/Logistic Regression, and the 2/3 variable Decision Trees) had standard deviations large enough for the training mF1s to overlap by adding and subtracting by their standard deviations (see Results section; not tabulated, but individual mF1s and SDs available). With such standard deviation values, it goes without calculating 95 % confidence intervals (which is +/- $1.96 / \sqrt{10}$ times the standard deviation, with $n = 10$ due to there being 10 folds and therefore 10 results to average) that statistically significant performance differences could not be determined from the training phase alone.
-
-
-
-
--Talk about limitation by computational time and tree count for RF
-
--Talk about experimenting with more folds for validation
-
--Talk about more generous train-val splits in favor of training data; training uses sampling averages to eval variance, but eval is one-off
-
 ### Perimeter Combinations
 
 The choice of the initial predictor pair not only influenced model performance directly, but also determined what additional predictors could be added for higher-dimensional algorithms since many of the predictors in the dataset have shared terms in their derivation and therefore exhibit multicollinearity. With each predictor chosen, the list of allowed additional predictors for model-building narrowed; this was especially true for Shape Factor 2 (Minor Axis Length divided by Area), as many other dataset predictors were derived in relation to the area of each bean (see Introduction section and original peper by Koklu and Ozkan (2020) for formulae). If time permits, future attempts at similar problems could experiment with more variable combinations; however, depending on the dataset the amount of suitable predictor combinations (no multicollinearity and capable of resolving all outcome classes) may be similarly limited as the one used in this project.
 
-### Alternative Algorithms
 
--Talk about more models for future tests (don't name them all, just a few; start with the ones from the paper)
+### Statistical Significance of the Performance Evaluations
+
+During algorithm training, it was found that many of the models (Random Forest/KNN, KNN/Logistic Regression, and the 2/3 variable Decision Trees) had standard deviations large enough for the training mF1s to overlap by adding and subtracting by their standard deviations (see Results section; not tabulated, but individual mF1s and SDs available). With such standard deviation values, it goes without calculating 95 % confidence intervals (which is +/- $1.96 / \sqrt{10}$ times the standard deviation, with $n = 10$ due to there being 10 folds and therefore 10 results to average) that statistically significant performance differences could not be determined from the training phase alone.
+
+-> more generous training data allocation -> but sacrifices validation
+-> cross-validation for validation runs?
+-> higher folds in training?
+-> (RF only) more trees
+
+-> quick intro to more algorithms (start with ones from paper)
+
 
 ## Practical Implications of Results
 
@@ -1735,9 +1731,9 @@ The choice of the initial predictor pair not only influenced model performance d
 
 -selection of best perimeters, ranking of different models tested, best and weakest predictions, possible statistical insignificance
 
--practical implications, but in less words
-
 -improve by stuff mentioned in the limitations section
+
+-practical implications, but in less words
 
 # Citation
 
