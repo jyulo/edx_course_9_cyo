@@ -1709,12 +1709,9 @@ The choice of the initial predictor pair not only influenced model performance d
 
 During algorithm training, it was found that many of the models (Random Forest/KNN, KNN/Logistic Regression, and the 2/3 variable Decision Trees) had standard deviations large enough for the training mF1s to overlap by adding and subtracting by their standard deviations (see Results section; not tabulated, but individual mF1s and SDs available). With such standard deviation values, it goes without calculating 95 % confidence intervals (which is +/- $1.96 / \sqrt{10}$ times the standard deviation, with $n = 10$ due to there being 10 folds and therefore 10 results to average) that statistically significant performance differences could not be determined from the training phase alone.
 
-To increase model quality and decrease prediction variance during training, the most obvious solution would be a more generous training/validation dataset split in favor of the training set, using a ratio of 90:10 or perhaps even higher. However, as mentioned in the Methods section, overly high training/validation ratios would increase the variance of validation performance metrics instead, also hindering a proper assessment of model performances. To ensure a balance between training and validation precisions by examining them both, future machine learning projects could use `caret::train` or an equivalent function to perform another k-fold cross-validation for each validation, but with the tuning hyperparameters fixed at the combinations optimized from the training phase. Increasing the number of folds for cross-validation is another way to reduce variance while also improving model quality, although [some tuning of the optimal fold number](https://cran.r-project.org/web/packages/cvms/vignettes/picking_the_number_of_folds_for_cross-validation.html) would have to be done to avoid selecting very large, computationally expensive fold numbers with diminished returns. Finally, for the Random Forests algorithm in particular, more trees could be grown during training, but this is a computationally costly decision that could only feasibly be made if subsequent projects make use of computers with more memory and higher processing speeds.
+To increase model quality and decrease prediction variance during training, the most obvious solution would be a more generous training/validation dataset split in favor of the training set, using a ratio of 90:10 or perhaps even higher. However, as mentioned in the Methods section, overly high training/validation ratios would increase the variance of validation performance metrics instead, also hindering a proper assessment of model performances. To ensure a balance between training and validation precisions by examining them both, future machine learning projects could use `caret::train` or an equivalent function to perform another k-fold cross-validation for each validation, but with the tuning hyperparameters fixed at the combinations optimized from the training phase. Increasing the number of folds for cross-validation is another way to reduce variance while also improving model quality, although [some experimentation on the optimal fold number](https://cran.r-project.org/web/packages/cvms/vignettes/picking_the_number_of_folds_for_cross-validation.html) would have to be done as increasing fold numbers has diminishing returns. Finally, for the Random Forests algorithm in particular, more trees could be grown during training, but this is a computationally costly decision that could only be feasible if subsequent projects make use of computers with more memory and higher processing speeds.
 
-
-
--> quick intro to more algorithms (start with ones from paper)
-
+Finally, the above options for decreasing variance and improving performance could be combined with other algorithms...
 
 ## Practical Implications of Results
 
@@ -1722,15 +1719,18 @@ To increase model quality and decrease prediction variance during training, the 
 
 -Look up more implications -> can adapt algorithms to analyze environmental effects on crop phenotypes; see what happens to different varieties of beans in diff. growing conditions?
 
--> Inspection of label truthfulness in the market?
+-> original paper said classification of bean variety and quality assessment for price determination of products
 
--> look for correlations between bean varieties grown and regions?
+-> Inspection of label truthfulness in the market? That would be the nearest application to the ones proposed by the authors
+
+-> look for correlations between bean varieties grown and regions? 
+-> when combined with other data, can model relationship between phenotype and environmental factors, genotypes, etc. (cite at least a paper each for env and gen)
 
 # Concluding Summary
 
 -selection of best perimeters, ranking of different models tested, best and weakest predictions, possible statistical insignificance
 
--improve by stuff mentioned in the limitations section
+-improve by stuff mentioned in the limitations section -> adjusting train/val splits, performing cross-validation on validation runs too, increasing fold number for cross-val; also, trying other models
 
 -practical implications, but in less words
 
