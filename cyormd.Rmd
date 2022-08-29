@@ -105,7 +105,7 @@ Before models could be trained and evaluated, the dataset itself was examined to
 # overview of the data's size and format
 str(beans)
 ```
-The dataset contains 13,611 entries, each representing a scanned bean. There are 12 metrics describing the geometric features of each bean, plus four 'shape factors' which are derived from a [previous machine learning article on rice grains](https://www.scinapse.io/papers/345887372) (Pazoki et al., 2014). All metrics except for `Class` (the outcome variable for this classification problem) are numeric, with `Class` being of class character.
+The dataset contains 13,611 entries, each representing a scanned bean. There are 12 metrics describing the geometric features of each bean, plus four 'shape factors' which are derived from an [earlier machine learning article on rice grains](https://www.scinapse.io/papers/345887372) (Pazoki et al., 2014). All metrics except for `Class` (the outcome variable for this classification problem) are numeric, with `Class` being of class character.
 
 A quick glance at the magnitudes of each numeric metric revealed large differences in scale; normalization will be needed for plotting and model fitting.
 
@@ -785,7 +785,7 @@ beans_y_train <- beans_y[-val_index,]
 beans_x_val <- beans_x[val_index,]
 beans_y_val <- beans_y[val_index,]
 ```
-Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not rely on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set. However, we must still make sure that both sets have all 7 bean classes.
+Unlike with the previous project (MovieLens Rating Prediction), the models used in this project should not rely on the same titles being present in the training and validation (or testing) sets. As such, the `semi_join` function will not be used to ensure that everything in the validation set being present in the training set. However, it must still be confirmed that both sets have all 7 bean classes.
 
 ```{r val_set_dim}
 dim(beans_x_val)
@@ -901,7 +901,7 @@ Many algorithms are available in the `caret` package for multiclass classificati
 
 ### Logistic Regression
 
-Logistic regression is a type of regression model used to find predictor-outcome correlations (and make predictions from them) in cases where the outcome/dependent variable is discrete rather than continuous. As its name suggests, logistic regression differs from linear regression in its [use of the logistic function]((https://machinelearningmastery.com/logistic-regression-for-machine-learning/), the basic form of which is written below:
+Logistic regression is a type of regression model used to find predictor-outcome correlations (and make predictions from them) in cases where the outcome/dependent variable is discrete rather than continuous. As its name suggests, logistic regression differs from linear regression in its [use of the logistic function](https://machinelearningmastery.com/logistic-regression-for-machine-learning/), the basic form of which is written below:
 
 $$f(x) = \frac{L}{1 + e^{-k(x-x_0)}}$$
 This basic logistic function creates a sigmoid curve whose $f(x)$ value goes from approaching 0 to approaching $L$, with an inflection point at $x = x_0$. When applied to regression, the formula becomes this:
@@ -974,7 +974,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_1b <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,10)], # col 2 for perimeter, 10 for compactness
@@ -996,7 +995,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_1c <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,12)], # col 2 for perimeter, 12 for SF2
@@ -1018,7 +1016,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_1d <-
   train(y = beans_y_train$Class,
                 x =  beans_x_train[,c(2,13)], # col 2 for perimeter, 13 for SF3
@@ -1040,7 +1037,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_1e <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(8,5)], # col 8 for equiv. diam., 5 for aspect ratio
@@ -1064,7 +1060,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_2a <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,5)], # col 2 for perimeter, 5 for aspect ratio
@@ -1073,9 +1068,6 @@ model_2a <-
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
-# Warning in train.default(y = beans_y_train$Class, x = beans_x_train[, c(2,  :
-#   The metric "mF1" was not in the result set.  will be used instead.
-# -> using the names() func to name the output object of macro_f1 did the trick
 ggplot(model_2a, highlight = T)
 ```
 **Figure 21: Training macro F1 scores for Model 2a (Perimeter and Aspect Ratio) with 10-fold cross validation, over a range of k from 0 to 100.**
@@ -1097,7 +1089,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_2b <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,10)], # col 2 for perimeter, 10 for compactness
@@ -1127,7 +1118,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_2c <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,12)], # col 2 for perimeter, 12 for SF2
@@ -1157,7 +1147,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_2d <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,13)], # col 2 for perimeter, 13 for SF3
@@ -1187,7 +1176,6 @@ set.seed(1, sample.kind = 'Rounding')
  # trying various k values (# nearest neighbors)
 nearest_neighbors <- seq(1, 100, 1)
 
-# using the y ~ x formula seems to keep throwing errors
 model_2e <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(8,5)], # col 8 for equiv. diam., 5 for aspect ratio
@@ -1247,7 +1235,6 @@ set.seed(1, sample.kind = 'Rounding')
 # Trying various Complexity Parameters
 cps <- seq(0.005, 0.050, 0.001)
 
-# using the y ~ x formula seems to keep throwing errors
 model_3a <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,12)], # col 2 for perimeter, 12 for SF2
@@ -1273,7 +1260,6 @@ set.seed(1, sample.kind = 'Rounding')
 # Trying various Complexity Parameters
 cps <- seq(0.005, 0.050, 0.001)
 
-# using the y ~ x formula seems to keep throwing errors
 model_3b <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,12,3)], # col 2 for perimeter, 12 for SF2, 3 for maj ax
@@ -1295,7 +1281,6 @@ set.seed(1, sample.kind = 'Rounding')
 # Trying various Complexity Parameters
 cps <- seq(0.005, 0.050, 0.001)
 
-# using the y ~ x formula seems to keep throwing errors
 model_3c <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,12,6)], # col 2 for perimeter, 12 for SF2, 6 for Eccentricity
@@ -1317,7 +1302,6 @@ set.seed(1, sample.kind = 'Rounding')
 # Trying various Complexity Parameters
 cps <- seq(0.005, 0.050, 0.001)
 
-# using the y ~ x formula seems to keep throwing errors
 model_3d <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,12,3,6)],
@@ -1357,19 +1341,12 @@ forest_grid <-
     min.node.size = 1:40 
   )
 
-# using the y ~ x formula seems to keep throwing errors
 model_4 <-
   train(y = beans_y_train$Class,
         x =  beans_x_train[,c(2,12,6)],
         method = 'ranger',
         tuneGrid = forest_grid,
-        # num.trees = 100, # arbitrary; will change with literature search
-        # num.trees = 500, # progressively increasing...
-        # num.trees = 1000, # too much
-        # num.trees = 600, # try this one. If no better, try more or less...
-        # num.trees = 550, # try to shrink back towards 500
-        # num.trees = 500, # return to 500
-        num.trees = 250, # 1K is too much; new goal is to find out how FEW trees you can get away with and still have similar performance qualities
+        num.trees = 250, # rough runtime of 2 hrs
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
@@ -1386,12 +1363,6 @@ model_4$bestTune
 
 ```{r model_4_plot}
 plot(model_4) 
-# when holding mtry at 2 and expanding range of nodes to 1:50, you see that the peak region is 10-30
-# not so sure when mtry is 1:4 and num.trees is 600...
-# note that with lower ntrees, the plot gets more jagged
-# so how much do the numbers mean, really?
-
-# eh, 200 trees isn't much more jagged than 500
 ```
 **Figure 22: mF1 values over different minimal node sizes for mtry = 1 (blue), mtry = 2 (magenta), and mtry = 3 (green).**
 
@@ -1716,6 +1687,31 @@ Finally, the above options for decreasing variance and improving performance cou
 Refining means to classify large volumes of crops has many applications both on the marketing and agricultural side of the food economy. Koklu and Ozkan (2020) stated in their original paper that their models would be useful as a method of high-throughput quality assessment for planting and marketing alike. Beyond those applications, further improvements on projects such as this one could also be adapted with additional types of predictors and/or other crops for [identifying new traits or metrics that are more efficient for crop yield prediction](https://www.frontiersin.org/articles/10.3389/fpls.2020.624273/full), [more effective phenotyping of various crop cultivars for selective breeding purposes](https://www.frontiersin.org/articles/10.3389/fpls.2016.01864/full), and [envirotyping](https://link.springer.com/article/10.1007/s00122-016-2691-5) crops by modeling interactions between genotype, phenotype, and growing conditions both biotic and abiotic over time. As world population density grows and climate change continues to cause degradation of existing arable land, all of the above applications will prove important for farmers of the present and future.
 
 
-# Citation
+# Citations
 
--TBD
+All referenced sources have been enclosed in links within the report document, and listed below:
+
+[Machine Learning: How a Game of Checkers is Changing Agriculture](https://www.bayer.com/en/agriculture/article/machine-learning-uses-agriculture) from Bayer Global.
+
+[The Professional Certificate in Data Science Program](https://www.edx.org/professional-certificate/harvardx-data-science) by Harvard on EdX, taught by Dr. Rafael Irizarry.
+
+[The UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/index.php) - Main Page.
+
+[The UCI Repository Page for the Dry Beans Dataset](https://archive.ics.uci.edu/ml/datasets/Dry+Bean+Dataset)
+
+[Multiclass Classification of Dry Beans Using Computer Vision and Machine Learning Techniques](https://www.sciencedirect.com/science/article/pii/S0168169919311573?via%3Dihub), scientific article by Murat Koklu and Ilker Ali Ozkan (2020).
+
+[Classification of Rice Grain Varieties Using Two Artificial Neural Networks (MLP and neuro-fuzzy)](https://www.scinapse.io/papers/345887372), scientific article by Alireza Pazoki et al. (2014).
+
+[Definition of Eccentricity](https://www.cuemath.com/geometry/eccentricity/) from Cuemath.
+
+[Definition of Conic Sections](https://www.cuemath.com/geometry/conic-sections/) from Cuemath.
+
+[Moment of Inertia of an Ellipse](https://byjus.com/jee/moment-of-inertia-of-ellipse/) from BYJU's.
+
+[Eccentricity of Ellipse](https://www.cuemath.com/geometry/eccentricity-of-ellipse/) from Cuemath.
+
+[Foci of Ellipse](https://www.cuemath.com/geometry/foci-of-ellipse/) from Cuemath.
+
+[Directrix of Ellipse](https://www.cuemath.com/geometry/directrix-of-ellipse/) from Cuemath.
+
