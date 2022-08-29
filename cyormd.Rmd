@@ -1686,7 +1686,7 @@ F1_table
 ```
 **Table 26: Tabulated validation F1 scores (by bean class and macro) of Logistic Regression, KNN, 2-variable Decision Tree (Perimeter and Shape Factor 2), 3-variable Decision Tree (Perimeter, SF2, Eccentricity), and Random Forest (ditto).**
 
-Interestingly, the 3-variable Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 2-variable Decision Tree, then 3-variable Decision Tree.
+Validating the highest-performing models (plus the two-variable Decision Tree for comparison), Random Forest with Perimeter, Shape Factor 2, and Eccentricity produced the best predictive performance in terms of macro F1 score. Interestingly, the 3-variable Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 2-variable Decision Tree, then 3-variable Decision Tree.
 
 For Logistic Regression, KNN, and Random Forest, the weakest points were in Barbunya and Sira. Meanehile, the two weakest predictions in the two Decision Trees are in Barbunya and Cali. This is in line with discoveries from the exploratory analysis, where scatterplots generated from the starting variable pairs had large overlaps in Barbunya/Cali and Sira/Seker. As expected from the scatterplots (where Bombay consistently formed a cluster distant from all other classes), Bombay had the best predictions in all models tabulated.
 
@@ -1698,7 +1698,7 @@ The training and validation runs both revealed that Random Forest (with predicto
 
 The choice of the initial predictor pairs (a "group 1" variable paired with another variable outside the project-assigned group) during exploratory analysis influenced the performance of all machine learning models built in this project. Although the two "group 1" predictors chosen (Perimeter and Equivalent Diameter) had separate IQRs for most classes with less outliers than most other predictors (see boxplots from Introduction section), both of them had poor resolution between Barbunya/Cali (through the IQRs) and Sira/Seker (through the outliers). Combining those "group 1" predictors with other predictors that have better resolution between those classes (such as Shape Factor 2) mitigated the weakness somewhat, but still resulted in the class-specific lowered performances seen in Table 26.
 
-## Limitations and Future Directions
+## Limitations and Potential Future Solutions
 
 ### Perimeter Combinations
 
@@ -1711,28 +1711,12 @@ During algorithm training, it was found that many of the models (Random Forest/K
 
 To increase model quality and decrease prediction variance during training, the most obvious solution would be a more generous training/validation dataset split in favor of the training set, using a ratio of 90:10 or perhaps even higher. However, as mentioned in the Methods section, overly high training/validation ratios would increase the variance of validation performance metrics instead, also hindering a proper assessment of model performances. To ensure a balance between training and validation precisions by examining them both, future machine learning projects could use `caret::train` or an equivalent function to perform another k-fold cross-validation for each validation, but with the tuning hyperparameters fixed at the combinations optimized from the training phase. Increasing the number of folds for cross-validation is another way to reduce variance while also improving model quality, although [some experimentation on the optimal fold number](https://cran.r-project.org/web/packages/cvms/vignettes/picking_the_number_of_folds_for_cross-validation.html) would have to be done as increasing fold numbers has diminishing returns. Finally, for the Random Forests algorithm in particular, more trees could be grown during training, but this is a computationally costly decision that could only be feasible if subsequent projects make use of computers with more memory and higher processing speeds.
 
-Finally, the above options for decreasing variance and improving performance could be combined with other algorithms. The Support Vector Machine (SVM), used in the original paper by Koklu and Ozkan (2020), is a classification algorithm that [searches for optimal hyperplanes that can divide the data into groups, corresponding to different outcome classes](https://www.kdnuggets.com/2016/07/support-vector-machines-simple-explanation.html). Meanwhile, Single Vector Decomposition (SVD)
+Finally, the above options for decreasing variance and improving performance could be combined with other algorithms. The Support Vector Machine (SVM), used in the original paper by Koklu and Ozkan (2020), is a classification algorithm that [searches for optimal hyperplanes that can divide the data into groups, corresponding to different outcome classes](https://www.kdnuggets.com/2016/07/support-vector-machines-simple-explanation.html). Meanwhile, Singular Vector Decomposition (SVD) is a matrix factorization technique that uses linear algebra to [break down a data matrix into three simpler matrices](https://gregorygundersen.com/blog/2018/12/10/svd/) to [reveal latent features](https://pantelis.github.io/cs301/docs/common/lectures/recommenders/netflix/) that are then combined to make predictions. Principle Component Analysis (PCA), another matrix factorization technique, analyzes predictor covariances and [reduces high-dimensional data down to a smaller selection of principle components](https://builtin.com/data-science/step-step-explanation-principal-component-analysis) that explain the maximum possible variance in the original data.
 
-## Practical Implications of Results
+## Practical Implications of Results and Possible Future Directions
 
--Improved crop classification techniques = quick sorting of crop varieties
+Refining means to classify large volumes of crops has many applications both on the marketing and agricultural side of the food economy. Koklu and Ozkan (2020) stated in their original paper that their models would be useful as a method of high-throughput quality assessment for planting and marketing alike. Beyond those applications, further improvements on projects such as this one could also be adapted for [identifying new traits or metrics that are more efficient for crop yield prediction](https://www.frontiersin.org/articles/10.3389/fpls.2020.624273/full), [more effective phenotyping of various crop cultivars for selective breeding purposes](https://www.frontiersin.org/articles/10.3389/fpls.2016.01864/full), and [envirotyping](https://link.springer.com/article/10.1007/s00122-016-2691-5) crops by modeling interactions between genotype, phenotype, and growing conditions both biotic and abiotic over time. As world population density grows and climate change continues to cause degradation of existing arable land, all of the above applications will prove important for farmers of the present and future.
 
--Look up more implications -> can adapt algorithms to analyze environmental effects on crop phenotypes; see what happens to different varieties of beans in diff. growing conditions?
-
--> original paper said classification of bean variety and quality assessment for price determination of products
-
--> Inspection of label truthfulness in the market? That would be the nearest application to the ones proposed by the authors
-
--> look for correlations between bean varieties grown and regions? 
--> when combined with other data, can model relationship between phenotype and environmental factors, genotypes, etc. (cite at least a paper each for env and gen)
-
-# Concluding Summary
-
--selection of best perimeters, ranking of different models tested, best and weakest predictions, possible statistical insignificance
-
--improve by stuff mentioned in the limitations section -> adjusting train/val splits, performing cross-validation on validation runs too, increasing fold number for cross-val; also, trying other models
-
--practical implications, but in less words
 
 # Citation
 
