@@ -1715,3 +1715,15 @@ All referenced sources have been enclosed in links within the report document, a
 
 [Directrix of Ellipse](https://www.cuemath.com/geometry/directrix-of-ellipse/) from Cuemath.
 
+[Circumscribed Rectangle, or Bounding Box](https://www.mathopenref.com/coordbounds.html) from Math Open Reference.
+
+[Convex Hull](https://mathworld.wolfram.com/ConvexHull.html) from Wolfram Mathworld
+
+[The Curse of Dimensionality in Classification](https://www.visiondummy.com/2014/04/curse-dimensionality-affect-classification/) by Vincent Spruyt, for Computer Vision for Dummies.
+
+[32.10.1 - The Curse of Dimensionality](https://rafalab.github.io/dsbook/examples-of-algorithms.html#the-curse-of-dimensionality) by Dr. Irizarry.
+
+[Linear Regression Analysis – 3 Common Causes of Multicollinearity and What Do to About Them](https://www.theanalysisfactor.com/linear-regression-analysis-3-common-causes-of-multicollinearity-and-what-do-to-about-them/) by Karen Grace-Martin from The Analysis Factor.
+
+[The caret::train documentation](https://www.rdocumentation.org/packages/caret/versions/4.47/topics/train) from RDocumentation.org.
+
