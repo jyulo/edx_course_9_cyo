@@ -1,7 +1,7 @@
 ---
 title: "R Data Science Course 9: Choose Your Own Project"
 author: "James Lo"
-date: '2022-08-29'
+date: '2022-08-30'
 output: 
   pdf_document:
     latex_engine: xelatex
@@ -614,10 +614,11 @@ To identify promising combinations, the variables were roughly grouped into six 
 
 To conserve memory, Group 0 variables were removed via the following code:
 
-```{r trim_group0}
+```{r trim_group0, echo = F}
 # trim off group 0 ("don't bother") variables, which will not be considered further
 beans <-
   subset(beans, select = -c(Extent, Solidity, ShapeFactor4))
+# checking for right deletion
 head(beans, 3)
 ```
 Among group 1 variables, Perimeter and Equivalent Diameter appeared to be the most suitable choices, as they both have relatively less overlaps between the "middle groups" representing varieties other than Bombay and Dermason. Perimeter has large overlaps in Cali/Barbunya and Seker/Dermason, while Equivalent Diameter has large overlaps in Cali/Barbunya and Sira/Seker. Observing the boxplots, Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3 were selected as the best complements due to having higher variances lacking in the group 1 choices, in addition to relatively less numerous and skewed outliers. Equivalent Diameter is incompatible with Compactness (Equivalent Diameter divided by Major Axis length), Shape Factor 2 (Minimum Axis length divided by Area), and Shape Factor 3 (which is derived from Area and Major Axis length). Meanwhile, Perimeter is compatible with Aspect Ratio, Compactness, Shape Factor 2, and Shape Factor 3. Included below are five scatterplots to further visualize the variables' ability to model bean varieties as distinct clusters of data points.
@@ -635,7 +636,7 @@ beans %>%
   scale_color_viridis(discrete = T) +
   xlab('Perimeter (Normalized)') +
   ylab('Aspect Ratio (Normalized)') +
-  ggtitle('Normalized Perimeter and Aspect Ratio Combinations on a Cartesian Plane')
+  ggtitle('Normalized Perimeter and Aspect Ratio Combinations')
 ```
 **Figure 16: Scatterplot of Normalized Perimeter and Aspect Ratio values, color-coded by bean varieties.**
 
@@ -652,7 +653,7 @@ beans %>%
   scale_color_viridis(discrete = T) +
   xlab('Perimeter (Normalized)') +
   ylab('Compactness (Normalized)') +
-  ggtitle('Normalized Perimeter and Compactness Combinations on a Cartesian Plane')
+  ggtitle('Normalized Perimeter and Compactness Combinations')
 ```
 **Figure 17: Scatterplot of Normalized Perimeter and Compactness values, color-coded by bean varieties.**
 
@@ -669,7 +670,7 @@ beans %>%
   scale_color_viridis(discrete = T) +
   xlab('Perimeter (Normalized)') +
   ylab('Shape Factor 2 (Normalized)') +
-  ggtitle('Normalized Perimeter and Shape Factor 2 Combinations on a Cartesian Plane')
+  ggtitle('Normalized Perimeter and Shape Factor 2 Combinations')
 ```
 **Figure 18: Scatterplot of Normalized Perimeter and Shape Factor 2 values, color-coded by bean varieties.**
 
@@ -686,7 +687,7 @@ beans %>%
   scale_color_viridis(discrete = T) +
   xlab('Perimeter (Normalized)') +
   ylab('Shape Factor 3 (Normalized)') +
-  ggtitle('Normalized Perimeter and Shape Factor 3 Combinations on a Cartesian Plane')
+  ggtitle('Normalized Perimeter and Shape Factor 3 Combinations')
 ```
 **Figure 19: Scatterplot of Normalized Perimeter and Shape Factor 3 values, color-coded by bean varieties.**
 
@@ -703,7 +704,7 @@ beans %>%
   scale_color_viridis(discrete = T) +
   xlab('Equivalent Diameter (Normalized)') +
   ylab('Aspect Ratio (Normalized)') +
-  ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations on a Cartesian Plane')
+  ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations')
 ```
 **Figure 20: Scatterplot of Normalized Equivalent Diameter and Aspect Ratio values, color-coded by bean varieties.**
 
@@ -720,15 +721,12 @@ Before training any algorithms, the data was first split into two parts: a set c
 ```{r x_y_split}
 beans_x <- subset(beans, select = -c(Class))
 beans_y <- subset(beans, select = c(Class))
-head(beans_y, 3)
 ```
-**Table 2: A very small sample of the beans_y dataset, as proof that the correct subset was selected.**
 
 While `caret::train` is capable of processing predictor data in the dataframe format using the [formula](https://www.rdocumentation.org/packages/caret/versions/4.47/topics/train) `y ~ x1 + x2 + ...`, attempts to train algorithms using this input method resulted in repeated errors. As such, an alternative input method was chosen with the predictor entered in matrix format; `beans_x` was converted into matrix form to enable this decision.
 
 ```{r x_as_matrix}
 beans_x <- as.matrix(beans_x)
-head(beans_x, 3)
 ```
 
 As previously done in the scatterplots (see Introduction section), the predictor variables must be normalized for algorithms such as KNN to work effectively. Since the variables vary greatly in scale, using them unaltered would lead to biased models that favor variables that exist over larger scales, [regardless of their actual importance](https://towardsai.net/p/data-science/how-when-and-why-should-you-normalize-standardize-rescale-your-data-3f083def38ff) in relation to the outcome variable.
@@ -741,8 +739,6 @@ min_predictors <- apply(beans_x, 2, min) # column minima
 colranges <- max_predictors - min_predictors # column ranges
 beans_x <- sweep(beans_x, 2, STAT = min_predictors, FUN = '-') # subtract minima
 beans_x <- sweep(beans_x, 2, STAT = colranges, FUN = '/') # divide by col ranges
-# x is each matrix cell value, y is each entry in colranges
-head(beans_x, 3)
 ```
 ```{r testing_matrix_norm_ED_AR, include = F}
 # reconstitute the data table
@@ -755,7 +751,7 @@ as.data.frame(beans_x) %>%
   scale_color_viridis(discrete = T) +
   xlab('Equivalent Diameter (Normalized)') +
   ylab('Aspect Ratio (Normalized)') +
-  ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations on a Cartesian Plane')
+  ggtitle('Normalized Equivalent Diameter and Aspect Ratio Combinations')
 ```
 
 ## Training and Validation
@@ -795,7 +791,7 @@ as.data.frame(beans_y_val) %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
-**Table 3: Distribution of bean varieties within the validation subset, split from the original Dry Beans Dataset.**
+**Table 2: Distribution of bean varieties within the validation subset, split from the original Dry Beans Dataset.**
 
 ```{r train_set_rows}
 dim(beans_x_train)
@@ -805,7 +801,7 @@ as.data.frame(beans_y_train) %>%
   group_by(Class) %>%
   summarize(counts = n())
 ```
-**Table 4: Distribution of bean varieties within the training subset, split from the original Dry Beans Dataset.**
+**Table 3: Distribution of bean varieties within the training subset, split from the original Dry Beans Dataset.**
 
 With 2726 observations in the validation set and 10885 in the training set, the two portions add up to 13611 and no observations were lost during the split. Also, both sets have all 7 bean classes.
 
@@ -945,7 +941,7 @@ Despite being designed to run random forests faster than most other algorithms, 
 
 ## Model 1: Logistic Regression
 
-```{r model1_Perimeter_AspectRation}
+```{r model1_Perimeter_AspectRation, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -967,7 +963,7 @@ model_1a$results
 
 Logistic Regression using Perimeter and Aspect Ratio returned a macro F1 score of `0.8857739`, with a standard deviation of `0.01525563`.
 
-```{r model1_Perimeter_Compactness, echo = F}
+```{r model1_Perimeter_Compactness, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -988,7 +984,7 @@ model_1b$results
 
 Logistic Regression using Perimeter and Compactness returned a macro F1 score of `0.8903862	`, with a standard deviation of `0.01538134`.
 
-```{r model1_Perimeter_ShapeFactor2, echo = F}
+```{r model1_Perimeter_ShapeFactor2, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1009,7 +1005,7 @@ model_1c$results
 
 Logistic Regression using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8974943`, with a standard deviation of `0.009579192`.
 
-```{r model1_Perimeter_ShapeFactor3, echo = F}
+```{r model1_Perimeter_ShapeFactor3, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1030,7 +1026,7 @@ model_1d$results
 
 Logistic Regression using Perimeter and Shape Factor 3 returned a macro F1 score of `0.890064`, with a standard deviation of `0.01603693`.
 
-```{r model1_EquivDiameter_AspectRation, echo = F}
+```{r model1_EquivDiameter_AspectRation, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1053,7 +1049,7 @@ Logistic Regression using Equivalent Diameter and Aspect Ratio returned a macro 
 
 ## Model 2: K-Nearest Neighbors (KNN)
 
-```{r model2_Perimeter_AspectRation}
+```{r model2_Perimeter_AspectRation, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1075,14 +1071,14 @@ ggplot(model_2a, highlight = T)
 `k = 90` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1.
 
 ```{r model_2a_besttune}
-model_2a$bestTune # k = 90 is best for this one
+# model_2a$bestTune # k = 90 is best for this one
 model_2a$results[90,]
 ```
 **Table 9: Macro F1 score of Model 2a (KNN from Perimeter and Aspect Ratio).**
 
 KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8820995`, with a standard deviation of `0.01410419`.
 
-```{r model2_Perimeter_Compactness, echo = F}
+```{r model2_Perimeter_Compactness, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1104,14 +1100,14 @@ ggplot(model_2b, highlight = T)
 `k = 86` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1.
 
 ```{r model_2b_besttune, echo = F}
-model_2b$bestTune # k=86
+# model_2b$bestTune # k=86
 model_2b$results[86,]
 ```
 **Table 10: Macro F1 score of Model 2b (KNN from Perimeter and Compactness).**
 
 KNN using Perimeter and Compactness returned a macro F1 score of `0.8908325`, with a standard deviation of `0.01170298`.
 
-```{r model2_Perimeter_ShapeFactor2, echo = F}
+```{r model2_Perimeter_ShapeFactor2, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1133,14 +1129,14 @@ ggplot(model_2c, highlight = T)
 `k = 49` (within the diamond label) resulted in the highest macro F1 score, although all results from `k = 25` onwards are similarly high in macro F1. Unlike with the previous two KNN models, mF1 scores exhibited a slight and gradula decrease after `k = 49`.
 
 ```{r model_2c_besttune, echo = F}
-model_2c$bestTune # k = 49
+# model_2c$bestTune # k = 49
 model_2c$results[49,]
 ```
 **Table 11: Macro F1 score of Model 2c (KNN from Perimeter and Shape Factor 2).**
 
 KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.9000603`, with a standard deviation of `0.009347538`.
 
-```{r model2_Perimeter_ShapeFactor3, echo = F}
+```{r model2_Perimeter_ShapeFactor3, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1162,14 +1158,14 @@ ggplot(model_2d, highlight = T)
 `k = 79` (within the diamond label) resulted in the highest macro F1 score. Unlike with the previous KNN models, the plateauing of mF1 values occurred slightly later at a `k` value of 30-40.
 
 ```{r model_2d_besttune, echo = F}
-model_2d$bestTune # k=79
+# model_2d$bestTune # k=79
 model_2d$results[79,]
 ```
 **Table 12: Macro F1 score of Model 2d (KNN from Perimeter and Shape Factor 3).**
 
 KNN using Perimeter and Shape Factor 2 returned a macro F1 score of `0.8907138`, with a standard deviation of `0.01205434`.
 
-```{r model2_EquivDiameter_AspectRation, echo = F}
+```{r model2_EquivDiameter_AspectRation, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1191,7 +1187,7 @@ ggplot(model_2e, highlight = T)
 `k = 74` (within the diamond label) resulted in the highest macro F1 score, although most mF1 values after `k = 25` are similarly high.
 
 ```{r model_2e_besttune, echo = F}
-model_2e$bestTune # k=74
+# model_2e$bestTune # k=74
 model_2e$results[74,]
 ```
 **Table 13: Macro F1 score of Model 2e (KNN from Equivalent Diameter and Aspect Ratio).**
@@ -1228,7 +1224,7 @@ KNN performed better than logistic regression in all 5 factor combinations, but 
 
 To start off the Decision Tree models, the predictor combination of Perimeter and Shape Factor 2 (which performed optimal results with Logistic Regression and KNN) was used to tune and build a Decision Tree model.
 
-```{r model3_Perimeter_ShapeFactor2}
+```{r model3_Perimeter_ShapeFactor2, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1243,7 +1239,7 @@ model_3a <-
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
-model_3a$results
+head(model_3a$results, 10)
 ```
 **Table 15: Tuning results for Model 3a (Decision Tree from Perimeter and Shape Factor 2), with Complexity Parameters, macro F1 values, and standard deviations.**
 
@@ -1253,7 +1249,7 @@ The subsequent Decision Trees were run with additional predictors included on to
 
 Below are three more Decision trees; two of them have one additional predictor (Major Axis Length or Eccentricity), while the third one has four (both Major Axis Length and Eccentricity on top of Perimeter and SF2).
 
-```{r model3_Perimeter_ShapeFactor2_MajorAxisLength, echo = F}
+```{r model3_Perimeter_ShapeFactor2_MajorAxisLength, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1268,13 +1264,13 @@ model_3b <-
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
-model_3b$results
+head(model_3b$results, 10)
 ```
 **Table 16: Tuning results for Model 3b (Decision Tree from Perimeter, Shape Factor 2, and Major Axis Length), with Complexity Parameters, macro F1 values, and standard deviations.**
 
 For Model 3b, a CP of `0.005` produced the highest macro F1 (`0.8658147`) with a standard deviation of `0.01590596`.
 
-```{r model3_Perimeter_ShapeFactor2_Eccentricity, echo = F}
+```{r model3_Perimeter_ShapeFactor2_Eccentricity, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1289,13 +1285,13 @@ model_3c <-
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
-model_3c$results
+head(model_3c$results, 10)
 ```
 **Table 17: Tuning results for Model 3c (Decision Tree from Perimeter, Shape Factor 2, and Eccentricity), with Complexity Parameters, macro F1 values, and standard deviations.**
 
 For Model 3c, a CP of `0.005` produced the highest macro F1 (`0.8674779`) with a standard deviation of `0.008666564`. CPs from `0.006` to `0.041` all returned a mF1 of `0.8652256	`.
 
-```{r model3_Perimeter_ShapeFactor2_MajorAxisLEngth_Eccentricity, echo = F}
+```{r model3_Perimeter_ShapeFactor2_MajorAxisLEngth_Eccentricity, echo = F, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1310,7 +1306,7 @@ model_3d <-
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
-model_3d$results
+head(model_3d$results, 10)
 ```
 **Table 18: Tuning results for Model 3d (Decision Tree from Perimeter, Shape Factor 2, Major Axis Length, and Eccentricity), with Complexity Parameters, macro F1 values, and standard deviations.**
 
@@ -1329,7 +1325,7 @@ Using `rpart.plot` to generating a diagram of the Model 3c tree, the criteria fo
 
 With the optimal combination of Decision Tree input predictors found, the following Random Forest was tuned:
 
-```{r model4}
+```{r model4, message = F}
 # arbitrary seed for reproducibility
 set.seed(1, sample.kind = 'Rounding')
 
@@ -1350,16 +1346,15 @@ model_4 <-
         trControl = tenfold_xval, # use your 10-fold X-val 
         metric = 'mF1') # my custom metric
 
-model_4$results
+model_4$results[85:95,]
 ```
-**Table 19: Random Forest (Model 4) tuning results using Ranger, with predictors Perimeter, Shape Factor 2, and Eccentricity.**
+**Table 19: Truncated Random Forest (Model 4) tuning results using Ranger, with predictors Perimeter, Shape Factor 2, and Eccentricity.**
 
 The optimal Model 4 tuning hyperparameters were `mtry = 3` and `min.node.size = 10`. The resulting macro F1 was `0.9110494` with a standard deviation of `0.009791189`.
 
-```{r model4_final_model}
+```{r model4_final_model, include = F}
 model_4$bestTune
 ```
-**Table 20: Optimized Random Forest tuning parameters.**
 
 ```{r model_4_plot}
 plot(model_4) 
@@ -1383,7 +1378,7 @@ validation_preds_LR <- predict(model_1c$finalModel, beans_x_val)
 
 confusionMatrix(validation_preds_LR, beans_y_val$Class)
 ```
-**Table 21: Validation run results for the representative Logistic Regression model (1c; Perimeter and Shape Factor 2).**
+**Table 20: Validation run results for the representative Logistic Regression model (1c; Perimeter and Shape Factor 2).**
 
 ```{r LR F1s, include = F}
 # manual calculation of precision and recall values from confusion matrix
@@ -1441,7 +1436,7 @@ validation_preds_KNN <- knn(train = beans_x_train[,c(2,12)],
 confusionMatrix(validation_preds_KNN, beans_y_val$Class)
 ```
 
-**Table 22: Validation run results for the representative KNN model (2c; Perimeter and Shape Factor 2).**
+**Table 21: Validation run results for the representative KNN model (2c; Perimeter and Shape Factor 2).**
 
 ```{r KNN F1s, include = F}
 # manual calculation of precision and recall values from confusion matrix
@@ -1483,7 +1478,7 @@ validation_preds_2DT <- predict(model_3a$finalModel, data.frame(beans_x_val), ty
 
 confusionMatrix(validation_preds_2DT, beans_y_val$Class)
 ```
-**Table 23: Validation run results for the 2-variable Decision Tree model (3a; Perimeter and Shape Factor 2).**
+**Table 22: Validation run results for the 2-variable Decision Tree model (3a; Perimeter and Shape Factor 2).**
 
 ```{r DT2 F1s, include = F}
 # manual calculation of precision and recall values from confusion matrix
@@ -1524,7 +1519,7 @@ validation_preds_3DT <- predict(model_3c$finalModel, data.frame(beans_x_val), ty
 
 confusionMatrix(validation_preds_3DT, beans_y_val$Class)
 ```
-**Table 24: Validation run results for the 3-variable Decision Tree model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
+**Table 23: Validation run results for the 3-variable Decision Tree model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
 
 ```{r DT3 F1s, include = F}
 # manual calculation of precision and recall values from confusion matrix
@@ -1565,7 +1560,7 @@ validation_preds_RF <- predict(model_4$finalModel, beans_x_val)
 
 confusionMatrix(validation_preds_RF$predictions, beans_y_val$Class)
 ```
-**Table 25: Validation run results for the Random Forest model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
+**Table 24: Validation run results for the Random Forest model (3c; Perimeter, Shape Factor 2, and Eccentricity).**
 
 ```{r DRF F1s, include = F}
 # manual calculation of precision and recall values from confusion matrix
@@ -1653,7 +1648,7 @@ F1_table <-
   )
 F1_table
 ```
-**Table 26: Tabulated validation F1 scores (by bean class and macro) of Logistic Regression, KNN, 2-variable Decision Tree (Perimeter and Shape Factor 2), 3-variable Decision Tree (Perimeter, SF2, Eccentricity), and Random Forest (ditto).**
+**Table 25: Tabulated validation F1 scores (by bean class and macro) of Logistic Regression, KNN, 2-variable Decision Tree (Perimeter and Shape Factor 2), 3-variable Decision Tree (Perimeter, SF2, Eccentricity), and Random Forest (ditto).**
 
 Validating the highest-performing models (plus the two-variable Decision Tree for comparison), Random Forest with Perimeter, Shape Factor 2, and Eccentricity produced the best predictive performance in terms of macro F1 score. Interestingly, the 3-variable Random Forest was the only model that did not have perfect prediction for Bombay despite being the highest-performing model overall (in terms of macro F1) and in all bean varieties except Bombay and Sira. KNN provided the second best overall performance, followed by Logistic Regression, 2-variable Decision Tree, then 3-variable Decision Tree.
 
@@ -1665,7 +1660,7 @@ For Logistic Regression, KNN, and Random Forest, the weakest points were in Barb
 
 The training and validation runs both revealed that Random Forest (with predictors Perimeter, Shape Factor 2, and Eccentricity) produced the highest F1 scores, followed by KNN, Logistic Regression, then Decision Tree. The addition of Eccentricity in the Decision Tree as a third predictor resulted in a higher training macro F1 score than just two predictors, adding Major Axis Length, or adding both Eccentricity and Major Axis Length; however, in validation the Decision Tree with two variables returned a higher macro F1 score than the 3-variable tree, implying that the 3-variable tree's superior performance during training might have been caused by overfitting.
 
-The choice of the initial predictor pairs (a "group 1" variable paired with another variable outside the project-assigned group) during exploratory analysis influenced the performance of all machine learning models built in this project. Although the two "group 1" predictors chosen (Perimeter and Equivalent Diameter) had separate IQRs for most classes with less outliers than most other predictors (see boxplots from Introduction section), both of them had poor resolution between Barbunya/Cali (through the IQRs) and Sira/Seker (through the outliers). Combining those "group 1" predictors with other predictors that have better resolution between those classes (such as Shape Factor 2) mitigated the weakness somewhat, but still resulted in the class-specific lowered performances seen in Table 26.
+The choice of the initial predictor pairs (a "group 1" variable paired with another variable outside the project-assigned group) during exploratory analysis influenced the performance of all machine learning models built in this project. Although the two "group 1" predictors chosen (Perimeter and Equivalent Diameter) had separate IQRs for most classes with less outliers than most other predictors (see boxplots from Introduction section), both of them had poor resolution between Barbunya/Cali (through the IQRs) and Sira/Seker (through the outliers). Combining those "group 1" predictors with other predictors that have better resolution between those classes (such as Shape Factor 2) mitigated the weakness somewhat, but still resulted in the class-specific lowered performances seen in Table 25.
 
 ## Limitations and Potential Future Solutions
 
