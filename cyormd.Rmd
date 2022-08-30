@@ -980,7 +980,7 @@ model_1b <-
         tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
         metric = 'mF1') # my custom metric
 ```
-```{r model_1b_results}
+```{r model_1b_results, echo = F}
 model_1b$results
 ```
 **Table 5: Macro F1 score of Model 1b (Logistic Regression from Perimeter and Compactness).**
@@ -1002,7 +1002,7 @@ model_1c <-
         tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
         metric = 'mF1') # my custom metric
 ```
-```{r model_1c_results}
+```{r model_1c_results, echo = F}
 model_1c$results
 ```
 **Table 6: Macro F1 score of Model 1c (Logistic Regression from Perimeter and Shape Factor 2).**
@@ -1024,7 +1024,7 @@ model_1d <-
         tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
         metric = 'mF1') # my custom metric
 ```
-```{r model_1d_results}
+```{r model_1d_results, echo = F}
 model_1d$results
 ```
 **Table 7: Macro F1 score of Model 1d (Logistic Regression from Perimeter and Shape Factor 3).**
@@ -1046,7 +1046,7 @@ model_1e <-
         tuneGrid = data.frame(decay = 0), # no need for regularized variable weights
         metric = 'mF1') # my custom metric
 ```
-```{r model_1e_results}
+```{r model_1e_results, echo = F}
 model_1e$results
 ```
 **Table 8: Macro F1 score of Model 1e (Logistic Regression from Equivalent Diameter and Aspect Ratio).**
@@ -1655,7 +1655,7 @@ Validating the highest-performing models (plus the two-variable Decision Tree fo
 
 For Logistic Regression, KNN, and Random Forest, the weakest points were in Barbunya and Sira. Meanehile, the two weakest predictions in the two Decision Trees are in Barbunya and Cali. This is in line with discoveries from the exploratory analysis, where scatterplots generated from the starting variable pairs had large overlaps in Barbunya/Cali and Sira/Seker. As expected from the scatterplots (where Bombay consistently formed a cluster distant from all other classes), Bombay had the best predictions in all models tabulated.
 
-*Note: individual confusion matrices were computed for each model, but are not included in the report PDF file to save space.**
+*Individual confusion matrices were computed for each model, but are not included in the report PDF file to save space.*
 
 # Discussion
 
