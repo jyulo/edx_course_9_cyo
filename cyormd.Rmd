@@ -1727,3 +1727,62 @@ All referenced sources have been enclosed in links within the report document, a
 
 [The caret::train documentation](https://www.rdocumentation.org/packages/caret/versions/4.47/topics/train) from RDocumentation.org.
 
+[How, When, and Why Should You Normalize / Standardize / Rescale Your Data?](https://towardsai.net/p/data-science/how-when-and-why-should-you-normalize-standardize-rescale-your-data-3f083def38ff), blog post by the Editorial Team at Towards AI
+
+[Train, Validation, Test Split for Machine Learning](https://blog.roboflow.com/train-test-split/) by Jacob Solawetz for Roboflow.
+
+[Train Test Validation Split: How To & Best Practices 2022](https://www.v7labs.com/blog/train-validation-test-set) by Pragati Baheti for V7.
+
+[Splitting a Dataset into Train and Test Sets](https://www.baeldung.com/cs/train-test-datasets-ratio) by A. Aylin Tokuç for Baeldung CS.
+
+[Metrics to Evaluate Your Classification Model to Take the Right Decisions](https://www.analyticsvidhya.com/blog/2021/07/metrics-to-evaluate-your-classification-model-to-take-the-right-decisions/) by Sumeet Kumar Argawal for Analytics Vidhya.
+
+[8 Tactics to Combat Imbalanced Classes in Your Machine Learning Dataset](https://machinelearningmastery.com/tactics-to-combat-imbalanced-classes-in-your-machine-learning-dataset/) by Jason Brownlee for Machine Learning Mastery.
+
+[Harmonic Mean](https://www.investopedia.com/terms/h/harmonicaverage.asp) by Adam Hayes, reviewed by Khadija Khartit, and fact checked by Amanda Jackson for Investopedia.
+
+[F-1 Score for Multiclass Classification](https://www.baeldung.com/cs/multi-class-f1-score) from Baeldung CS.
+
+[What is a Confusion Matrix in Machine Learning](https://machinelearningmastery.com/confusion-matrix-machine-learning/) by Jason Brownlee for Machine Learning Mastery.
+
+[Embrace Randomness in Machine Learning](https://machinelearningmastery.com/randomness-in-machine-learning/) by Jason Brownlee for Machine Learning Mastery.
+
+[A Gentle Introduction to k-fold Cross-Validation](https://machinelearningmastery.com/k-fold-cross-validation/) by Jason Brownlee for Machine Learning Mastery.
+
+[How to Configure k-Fold Cross-Validation](https://machinelearningmastery.com/how-to-configure-k-fold-cross-validation/) by Jason Brownlee for Machine Learning Mastery.
+
+[Logistic Regression for Machine Learning](https://machinelearningmastery.com/logistic-regression-for-machine-learning/) by Jason Brownlee for Machine Learning Mastery.
+
+[Odds Ratio](https://psychscenehub.com/psychpedia/odds-ratio-2/) on Psych Scene Hub.
+
+[Penalized Logistic Regression Essentials in R: Ridge, Lasso and Elastic Net](http://www.sthda.com/english/articles/36-classification-methods-essentials/149-penalized-logistic-regression-essentials-in-r-ridge-lasso-and-elastic-net/) by kassambara on STHDA.
+
+[What Is K-Nearest Neighbor? An ML Algorithm to Classify Data](https://learn.g2.com/k-nearest-neighbor) by Amal Joby for Learn Hub.
+
+[Euclidean Distance Formula](https://www.cuemath.com/euclidean-distance-formula/) from Cuemath.
+
+[Decision Tree Algorithm, Explained](https://www.kdnuggets.com/2020/01/decision-tree-algorithm-explained.html) by Nagesh Singh Chauhan for KDnuggets.
+
+[List of Available caret Models](https://topepo.github.io/caret/available-models.html) by Max Kuhn.
+
+[Decision Tree Tutorial](https://www.learnbymarketing.com/tutorials/rpart-decision-trees-in-r/) from Learn by Marketing.
+
+[Documentation for rpart.control](https://www.rdocumentation.org/packages/rpart/versions/4.1.16/topics/rpart.control) from RDocumentation.org.
+
+[Random Forest](https://www.ibm.com/cloud/learn/random-forest) explanation from IBM Cloud Education.
+
+[PDF of the ranger Documentation](https://cran.r-project.org/web/packages/ranger/ranger.pdf) by Marvin N. Wright, Stefan Wager, and Philipp Probst.
+
+[Multiple-k: Picking the Number of Folds for Cross-Validation](https://cran.r-project.org/web/packages/cvms/vignettes/picking_the_number_of_folds_for_cross-validation.html) by Ludvig Renbo Olsen on cran.r-project.org.
+
+[Support Vector Machines: A Simple Explanation](https://www.kdnuggets.com/2016/07/support-vector-machines-simple-explanation.html) by Noel Bambrick for KDnuggets.
+
+[The Netflix Prize and Singular Value Decomposition](https://pantelis.github.io/cs301/docs/common/lectures/recommenders/netflix/), course material for the New Jersey Institute of Technology.
+
+[A Step-by-Step Explanation of Principal Component Analysis (PCA)](https://builtin.com/data-science/step-step-explanation-principal-component-analysis) by Zakaria Jaadi for Built In.
+
+[Application of Machine Learning Algorithms in Plant Breeding: Predicting Yield From Hyperspectral Reflectance in Soybean](https://www.frontiersin.org/articles/10.3389/fpls.2020.624273/full), scientific article by Mohsen Yoosefzadeh-Najafabadi et al. (2021).
+
+[Phenotyping: Using Machine Learning for Improved Pairwise Genotype Classification Based on Root Traits](https://www.frontiersin.org/articles/10.3389/fpls.2016.01864/full) by Jiangsan Zhao et al. (2016).
+
+[Envirotyping for Deciphering Environmental Impacts on Crop Plants](https://link.springer.com/article/10.1007/s00122-016-2691-5), scientific article by Yunbi Xu (2016).
