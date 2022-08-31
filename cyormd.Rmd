@@ -614,7 +614,7 @@ To identify promising combinations, the variables were roughly grouped into six 
 
 To conserve memory, Group 0 variables were removed via the following code:
 
-```{r trim_group0, echo = F}
+```{r trim_group0, results = 'hide'}
 # trim off group 0 ("don't bother") variables, which will not be considered further
 beans <-
   subset(beans, select = -c(Extent, Solidity, ShapeFactor4))
@@ -1373,7 +1373,7 @@ The trend lines for Random Forest mf1 values over minimal node sizes were rather
 
 While model 4 (the sole Random Forests model) returned the highest training mF1 score, it would be worthwhile to perform validation runs on the representatives of all algorithm used not just to check for overfitting, but build confusion matrices to compare class-specific prediction weaknesses (if any are present) in each model. For Decision Trees, the basic 2-variable model was also validated alongside the optimized 3-variable model to compare their performances.
 
-```{r validation_setup}
+```{r validation_setup, results = 'hide'}
 # convert beans_y_val$Class to class: Factor
 beans_y_val$Class <- as.factor(beans_y_val$Class) # convert to factor class
 levels(beans_y_val$Class) # checking that format is right
